@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/static/css/layout/navbar.css">
+</head>
+<body>
+<div id="wrapper">
+
+
+    <div class="row">
+
+        <div class="col-sm-2">
+
+            <div class="left-side-menu" th:insert="layout/navbar.html :: header">
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-10">
+            <form action="/khuyen-mai/add" method="post" th:object="${att}">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-4" style="margin: auto">
+                            <label>Ten khuyen  mai</label>
+
+                            <input class="form-control" type="text" th:field="*{discountName}">
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-4" style="margin: auto">
+                            <label>Ngay bat dau</label>
+
+                            <input class="form-control" type="date" th:field="*{startDate}">
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4" style="margin: auto">
+                            <label>Ngay ket thuc</label>
+
+                            <input class="form-control" type="date" th:field="*{endDate}">
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4" style="margin: auto">
+                            <label>Gia tri giam</label>
+
+                            <input class="form-control" type="number" th:field="*{discountValue}">
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4" style="margin: auto">
+                            <label>Kieu gia giam</label>
+
+                            <input class="form-control" type="text" th:field="*{discountType}">
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4" style="margin: auto">
+                            <label>Ngay tao</label>
+
+                            <input class="form-control" type="date" th:field="*{cteateDate}">
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4" style="margin: auto">
+                            <label>Ngay sua</label>
+
+                            <input class="form-control" type="date" th:field="*{editDate}">
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+                    <div class="row" style="margin-top: 20px">
+                        <div class="col-sm-4" style="margin: auto">
+                            <button type="submit" class="btn btn-primary">Them</button>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
