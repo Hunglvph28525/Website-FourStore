@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+<div class="left-side-menu" th:fragment="sidebar">
+
+
+    <div class="user-box">
+        <div class="float-left">
+            <img src="/assets/images/users/avatar-1.jpg" alt="" class="avatar-md rounded-circle">
+        </div>
+        <div class="user-info">
+            <a href="#">Lê Việt Hưng</a>
+            <p class="text-muted m-0">Administrator</p>
+        </div>
+    </div>
+
+    <!--- Sidemenu -->
+    <div id="sidebar-menu">
+
+        <ul class="metismenu" id="side-menu">
+
+            <li>
+                <a href="index.html">
+                    <i class="ti-home"></i>
+                    <span> Bảng Điều Khiển </span>
+                </a>
+            </li>
+            <li>
+                <a href="ui-elements.html">
+                    <i class="ti-package"></i>
+                    <span> Sản Phẩm</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="ui-elements.html">
+                    <i class="ti-gift"></i>
+                    <span> Khuyễn Mãi</span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="typography.html">
+                    <i class="ti-menu-alt"></i>
+                    <span> Danh Mục </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="typography.html">
+                    <i class="ti-printer"></i>
+                    <span> Hóa Đơn </span>
+                </a>
+            </li>
+
+
+            <li>
+                <a href="charts.html">
+                    <i class="ti-pie-chart"></i>
+                    <span> Thống Kê </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- End Sidebar -->
+
+    <div class="clearfix"></div>
+
+
+</div>
+</body>
+</html>

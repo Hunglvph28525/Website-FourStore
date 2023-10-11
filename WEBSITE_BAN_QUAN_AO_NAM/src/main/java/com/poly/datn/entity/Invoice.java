@@ -31,9 +31,8 @@ import java.util.UUID;
 @Table(name = "Invoices")
 public class Invoice {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "code_bill")
-    private UUID codeBill; // Mã hóa đơn
+    private String codeBill; // Mã hóa đơn
 
     @ManyToOne
     @JoinColumn(name = "id_payment", referencedColumnName = "id")
