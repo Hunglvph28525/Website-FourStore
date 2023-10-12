@@ -1,4 +1,4 @@
-package com.poly.datn.controller;
+package com.poly.datn.controller.admin;
 
 import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Size;
@@ -60,6 +60,12 @@ public class SizeController {
         size.setName(size.getName());
         size.setStatus(size.getStatus());
         sizeService.add(size);
+        return "redirect:/size/hien-thi";
+    }
+
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable Integer id, Model model) {
+        sizeService.delete(id);
         return "redirect:/size/hien-thi";
     }
 }

@@ -5,6 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+            crossorigin="anonymous"
+    />
 </head>
 <body>
 <div class="left-side-menu" th:fragment="sidebar">
@@ -31,11 +38,30 @@
                     <span> Bảng Điều Khiển </span>
                 </a>
             </li>
+<!--            <li>-->
+<!--                <a href="ui-elements.html">-->
+<!--                    <i class="ti-package"></i>-->
+<!--                    <span> Sản Phẩm</span>-->
+<!--                </a>-->
+
+<!--            </li>-->
+
+
             <li>
-                <a href="ui-elements.html">
-                    <i class="ti-package"></i>
-                    <span> Sản Phẩm</span>
+                <a >
+                    <i class="mdi mdi-google-pages"></i>
+                    <span>Quản Lý Sản Phẩm</span>
+                    <span class="menu-arrow"></span>
                 </a>
+                <ul class="nav-second-level" aria-expanded="false">
+                    <li><a href="/san-pham/hien-thi">Sản phẩm</a></li>
+                    <li><a href="/chi-tiet-san-pham/hien-thi">Chi tiết sản phẩm</a></li>
+                    <li><a href="/the-loai/hien-thi">Thể loại</a></li>
+                    <li><a href="/mau-sac/hien-thi">Màu sắc</a></li>
+                    <li><a href="/size/hien-thi">Size</a></li>
+<!--                    <li><a href="/co-ao/hien-thi">Cổ Áo</a></li>-->
+<!--                    <li><a href="/kich-co/hien-thi">Kích cỡ</a></li>-->
+                </ul>
             </li>
 
 

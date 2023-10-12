@@ -1,4 +1,4 @@
-package com.poly.datn.controller;
+package com.poly.datn.controller.admin;
 
 import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Promotion;
@@ -78,6 +78,12 @@ public class PromotionController {
 
         model.addAttribute("att", promotion);
         promotionService.add(promotion);
+        return "redirect:/khuyen-mai/hien-thi";
+    }
+
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable Long id, Model model) {
+        promotionService.delete(id);
         return "redirect:/khuyen-mai/hien-thi";
     }
 

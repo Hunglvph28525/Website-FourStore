@@ -1,4 +1,4 @@
-package com.poly.datn.controller;
+package com.poly.datn.controller.admin;
 
 import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Color;
@@ -60,6 +60,12 @@ public class ColorController {
         color.setColorName(color.getColorName());
         color.setStatus(color.getStatus());
         colorService.add(color);
+        return "redirect:/mau-sac/hien-thi";
+    }
+
+    @GetMapping("delete/{id}")
+    public String delete(@PathVariable Integer id, Model model) {
+        colorService.delete(id);
         return "redirect:/mau-sac/hien-thi";
     }
 

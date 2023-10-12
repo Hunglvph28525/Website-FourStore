@@ -10,10 +10,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ColorServiceImpl implements ColorService {
     @Autowired
     ColorRepository colorRepository;
+
+    @Override
+    public List<Color> getAll() {
+        return colorRepository.findAll();
+    }
 
     @Override
     public Page<Color> phanTrang(Integer pageNum, Integer pageNo) {
@@ -30,5 +37,11 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Color detail(Integer id) {
         return colorRepository.getById(id);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        colorRepository.deleteById(id);
+
     }
 }

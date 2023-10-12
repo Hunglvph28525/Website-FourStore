@@ -1,4 +1,4 @@
-package com.poly.datn.controller;
+package com.poly.datn.controller.admin;
 
 import com.poly.datn.entity.Category;
 import com.poly.datn.service.CategoryService;
@@ -27,7 +27,7 @@ public class CategoryController {
         Page<Category> page = categoryService.phanTrang(pageNum, 1);
         model.addAttribute("list", page);
         model.addAttribute("att", new Category());
-        return "category/h";
+        return "category/index";
     }
 
     @GetMapping("/view-add")

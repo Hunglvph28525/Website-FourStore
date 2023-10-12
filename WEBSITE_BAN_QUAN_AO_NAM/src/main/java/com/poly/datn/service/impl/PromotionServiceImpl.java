@@ -9,10 +9,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PromotionServiceImpl implements PromotionService {
     @Autowired
     PromotionRepository promotionRepository;
+
+    @Override
+    public List<Promotion> getAll() {
+        return promotionRepository
+                .findAll();
+    }
 
     @Override
     public Page<Promotion> phanTrang(Integer pageNum, Integer pageNo) {
@@ -28,5 +36,10 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public Promotion detail(Long id) {
         return promotionRepository.getById(id);
+    }
+
+    @Override
+    public void delete(Long id) {
+        promotionRepository.deleteById(id);
     }
 }

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Responsive bootstrap 4 admin template" name="description">
+    <meta content="Coderthemes" name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+    <!-- App css -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet">
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet">
+
+</head>
+
+<body>
+
+
+<!-- Topbar Start -->
+<div th:replace="~{layout/topbar :: topbar}"></div>
+<!-- end Topbar -->
+<!-- ========== Left Sidebar Start ========== -->
+<div th:replace="~{layout/sidebar :: sidebar}"></div>
+<!-- Left Sidebar End -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
+
+<div class="content-page">
+
+
+    <!-- Start container-fluid -->
+    <div class="content">
+        <!-- viết các thành phần vào đây -->
+
+        <div class="container-fluid">
+
+            <!-- start  -->
+            <div class="row">
+                <div class="col-12">
+                    <div>
+                        <h4 class="header-title mb-3">Màu sắc</h4>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+
+            <div class="row">
+                <div class="col-12">
+                    <div>
+                        <div class="row">
+                            <div class="col-12">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card-box" style="display: flex;justify-content:center ">
+
+
+                                            <div class="col-xl-12">
+                                                <div class="dataTables_filter">
+                                                    <label>Search:
+                                                        <input
+                                                                type="search" class="form-control form-control-sm"
+                                                                placeholder="" aria-controls="datatable-buttons"
+                                                                style="width: 300px">
+                                                    </label>
+                                                    <button type="button"
+                                                            class="btn btn-primary waves-effect waves-light">
+                                                        <span class="btn-label"><i class="mdi mdi-search-web"></i>
+                                                        </span>Tìm Kiếm
+                                                    </button>
+                                                    <button type="button"
+                                                            class="btn btn-primary waves-effect waves-light">
+                                                        <span class="btn-label">
+                                                        </span>Làm mới
+                                                    </button>
+                                                    <div style="float: right">
+                                                        <a class="btn btn-primary"
+                                                           th:href="@{view-add}">
+                                                            Thêm mới
+                                                        </a>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row" style="margin-top: 50px">
+                                    <div class="col-sm-12">
+                                        <table id="datatable-buttons"
+                                               class="table table-striped table-bordered dt-responsive nowrap dataTable no-footer dtr-inline"
+                                               style="border-collapse: collapse; border-spacing: 0px; width: 100%;"
+                                               role="grid" aria-describedby="datatable-buttons_info">
+                                            <thead class="text-center">
+                                            <tr>
+
+                                                <td>Mã</td>
+                                                <td>Tên</td>
+                                                <td>Trạng thái</td>
+                                                <td>Action</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="l, row : ${list.content}" class="text-center">
+
+                                                <td class="align-middle" th:text="${l.id}"></td>
+                                                <td class="align-middle" th:text="${l.colorName}"></td>
+                                                <td class="align-middle" th:if="${l.status == '1'}">Hoạt động</td>
+                                                <td class="align-middle" th:if="${l.status == '0'}">Không hoạt
+                                                    động
+                                                </td>
+                                                <td class="align-middle">
+                                                    <a class="btn btn-primary"
+                                                       th:href="@{view-update/{id}(id=${l.id})}">
+                                                        Sửa
+                                                    </a>
+                                                    <a th:href="@{delete/{id}(id=${l.id})}" class="btn btn-primary">
+                                                        Xóa
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12" style="display: flex; justify-content: center">
+                                        <div class="dataTables_paginate paging_simple_numbers"
+                                             id="datatable-buttons_paginate">
+                                            <ul class="pagination">
+                                                <li class="page-item"
+                                                    th:classappend="${list.number == 0} ? disabled">
+                                                    <a class="page-link"
+                                                       th:href="@{/mau-sac/hien-thi(page=${list.number - 1})}">
+                                                        Previous
+                                                    </a>
+                                                </li>
+                                                <li class="page-item"
+                                                    th:each="pageNumber : ${#numbers.sequence(0, list.totalPages - 1)}">
+                                                    <a class="page-link"
+                                                       th:href="@{/mau-sac/hien-thi(page=${pageNumber})}"
+                                                       th:text="${pageNumber + 1}"
+                                                       th:classappend="${pageNumber == list.number} ? active">
+                                                    </a>
+                                                </li>
+                                                <li class="page-item"
+                                                    th:classappend="${list.number == list.totalPages - 1} ? disabled">
+                                                    <a class="page-link"
+                                                       th:href="@{/mau-sac/hien-thi(page=${list.number + 1})}">
+                                                        Next
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <!-- end -->
+
+            </div>
+        </div>
+        <!-- end row -->
+
+
+    </div>
+    <!-- end container-fluid -->
+
+
+    <!-- Footer Start -->
+    <div th:replace="~{layout/footer :: footer}"></div>
+    <!-- end Footer -->
+
+</div>
+<!-- end content -->
+
+</div>
+<!-- END content-page -->
+
+
+<!-- Vendor js -->
+<script src="/assets/js/vendor.min.js"></script>
+
+<script src="/assets/libs/morris-js/morris.min.js"></script>
+<script src="/assets/libs/raphael/raphael.min.js"></script>
+<script src="/assets/js/pages/dashboard.init.js"></script>
+
+<!-- App js -->
+<script src="/assets/js/app.min.js"></script>
+
+</body>
+
+</html>

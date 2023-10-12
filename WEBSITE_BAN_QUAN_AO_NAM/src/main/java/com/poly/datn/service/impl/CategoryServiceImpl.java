@@ -9,16 +9,21 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Override
+    public List<Category> getAll() {
+        return categoryRepository.findAll();
+    }
+
     @Override
     public Page<Category> phanTrang(Integer pageNum, Integer pageNo) {
-//        Pageable pageable = PageRequest.of(pageNum,pageNo);
-//        return categoryRepository.findAll(pageable);
         Pageable pageable = PageRequest.of(pageNum,pageNo);
         return categoryRepository.findAll(pageable);
     }

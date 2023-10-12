@@ -9,10 +9,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SizeServiceImpl implements SizeService {
     @Autowired
     SizeRepository sizeRepository;
+
+    @Override
+    public List<Size> getAll() {
+        return sizeRepository.findAll();
+    }
+
     @Override
     public Page<Size> phanTrang(Integer pageNum, Integer pageNo) {
         Pageable pageable = PageRequest.of(pageNum, pageNo);
@@ -28,5 +36,10 @@ public class SizeServiceImpl implements SizeService {
     @Override
     public Size detail(Integer id) {
         return sizeRepository.getById(id);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        sizeRepository.deleteById(id);
     }
 }

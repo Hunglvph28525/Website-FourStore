@@ -1,4 +1,4 @@
-package com.poly.datn.controller;
+package com.poly.datn.controller.admin;
 
 import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Color;
