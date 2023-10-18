@@ -1,5 +1,6 @@
 package com.poly.datn.service.impl;
 
+import com.poly.datn.dto.CategoryDto;
 import com.poly.datn.entity.Category;
 import com.poly.datn.repository.CategoryRepository;
 import com.poly.datn.service.CategoryService;
@@ -18,17 +19,6 @@ public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getAll() {
-        return categoryRepository.findAll();
-    }
-
-    @Override
-    public Page<Category> phanTrang(Integer pageNum, Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNum,pageNo);
-        return categoryRepository.findAll(pageable);
-    }
-
-    @Override
     public void add(Category category) {
         categoryRepository.save(category);
     }
@@ -42,5 +32,15 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long id) {
         categoryRepository.deleteById(id);
 
+    }
+
+    @Override
+    public List<CategoryDto> getAll() {
+        return categoryRepository.getAll();
+    }
+
+    @Override
+    public List<Category> fillAll() {
+        return categoryRepository.findAll();
     }
 }

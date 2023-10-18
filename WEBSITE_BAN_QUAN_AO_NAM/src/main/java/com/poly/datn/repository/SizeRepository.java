@@ -1,10 +1,10 @@
 package com.poly.datn.repository;
 
 import com.poly.datn.entity.Size;
-import jdk.jfr.Registered;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Registered
+@Repository
 public interface SizeRepository extends JpaRepository<Size,Integer> {
     Size getById(Integer id);
 }

@@ -1,5 +1,6 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.PromotionDto;
 import com.poly.datn.entity.Promotion;
 import com.poly.datn.entity.Size;
 import org.springframework.data.domain.Page;
@@ -9,13 +10,11 @@ import java.util.List;
 
 
 public interface PromotionService {
-
-    List<Promotion> getAll();
     Page<Promotion> phanTrang(Integer pageNum, Integer pageNo);
 
-    void add(Promotion promotion);
+    void add(PromotionDto dto);
 
     Promotion detail(Long id);
 
-    void delete(Long id);
+    List<PromotionDto> getAll();
 }

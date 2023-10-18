@@ -5,22 +5,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/thong-ke")
+@RequestMapping("/admin")
 public class StatisticalController {
 
-    @GetMapping("/hien-thi")
+    @GetMapping("/statictical")
     public String hienThi(){
-        return "statistical/index";
+        return "admin/statistical/index";
     }
 
-    @GetMapping("/thong-ke-theo-ngay")
+    @GetMapping("/statictical/day")
     public String theoNgay(){
-        return "statistical/thongketheongay";
+        return "admin/statistical/thongketheongay";
     }
 
-    @GetMapping("/thong-ke-theo-san-pham")
+    @GetMapping("/statictical/product")
     public String theoSP(){
-        return "statistical/thongketheosanpham";
+        return "admin/statistical/thongketheosanpham";
     }
 
 

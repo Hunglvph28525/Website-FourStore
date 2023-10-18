@@ -33,6 +33,16 @@ public class Image {
     @Column(name = "url")
     private String url;
 
+    @Column(name = "public_id")
+    private String publicId;
+
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
+
+    public Image(Product product, String url,String publicId) {
+        this.product = product;
+        this.url = url;
+        this.publicId = publicId;
+        this.status = "1";
+    }
 }

@@ -1,6 +1,6 @@
 package com.poly.datn.service;
 
-import com.poly.datn.entity.Color;
+import com.poly.datn.dto.ProductDetailDto;
 import com.poly.datn.entity.ProductDetail;
 import org.springframework.data.domain.Page;
 
@@ -15,5 +15,8 @@ public interface ProductDetailService {
     void add(ProductDetail productDetail);
 
     ProductDetail detail(Long id);
+
+    List<ProductDetailDto> getDetail(Long id);
 //    void delete(Integer id);
+    void update(Long id,Integer quantity);
 }

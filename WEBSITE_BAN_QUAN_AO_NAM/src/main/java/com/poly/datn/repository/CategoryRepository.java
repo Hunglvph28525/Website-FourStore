@@ -1,12 +1,19 @@
 package com.poly.datn.repository;
 
+import com.poly.datn.dto.CategoryDto;
 import com.poly.datn.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
+
+    @Query("select new com.poly.datn.dto.CategoryDto(c) from Category c ")
+    List<CategoryDto> getAll();
+
     Category getCoAoById(Long id);
 }

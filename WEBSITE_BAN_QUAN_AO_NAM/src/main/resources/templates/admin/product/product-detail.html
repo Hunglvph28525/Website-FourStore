@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Responsive bootstrap 4 admin template" name="description">
+    <meta content="Coderthemes" name="author">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <!-- App css -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet">
+    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet">
+    <!-- third party css -->
+    <link href="/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css">
+    <link href="/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css">
+    <link href="/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css">
+    <link href="/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css">
+
+
+</head>
+
+<body>
+
+
+<!-- Topbar Start -->
+<div th:replace="~{layout/topbar :: topbar}"></div>
+<!-- end Topbar -->
+<!-- ========== Left Sidebar Start ========== -->
+<div th:replace="~{layout/sidebar :: sidebar}"></div>
+<!-- Left Sidebar End -->
+
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
+
+<div class="content-page bg-white">
+
+
+    <!-- Start container-fluid -->
+    <div class="content">
+        <div class="content">
+
+            <!-- Start container-fluid -->
+            <div class="py-1">
+
+                <div class="row">
+                    <div class="col-12">
+                        <div>
+                            <h4 class="header-title mb-3">Sản phẩm</h4>
+                            <a href="/admin/product" style="float: right" class="btn btn-primary">Trở lại</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col py-2">
+                        <h5 class="font-14">Màu sắc kích cỡ sản phẩm</h5>
+                        <div class="table-responsive">
+                            <table class="table m-0">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>Màu sắc</th>
+                                    <th>Kích cỡ</th>
+                                    <th>Số lượng</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="x : ${list}">
+                                    <td th:text="${x.id}"></td>
+                                    <td th:text="${x.product.productName}"></td>
+                                    <td th:text="${x.color.colorName}"></td>
+                                    <td th:text="${x.size.name}"></td>
+                                    <td>
+                                        <form th:action="@{${x.product.id}+'/update/'+${x.id}}" method="post" >
+                                            <input type="number" th:value="${x.quantity}" id="quantity" name="quantity">
+                                            <button class="btn btn-success" type="submit">Save</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- viết các thành phần vào đây -->
+
+    <!-- end container-fluid -->
+
+
+    <!-- Footer Start -->
+    <div th:replace="~{layout/footer :: footer}"></div>
+    <!-- end Footer -->
+
+</div>
+<!-- end content -->
+<!-- END content-page -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<!-- Vendor js -->
+<script src="/assets/js/vendor.min.js"></script>
+
+<!-- Required datatable js -->
+<script src="/assets/libs/datatables/jquery.dataTables.min.js"></script>
+<script src="/assets/libs/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Buttons examples -->
+<script src="/assets/libs/datatables/dataTables.buttons.min.js"></script>
+<script src="/assets/libs/datatables/buttons.bootstrap4.min.js"></script>
+<script src="/assets/libs/datatables/dataTables.keyTable.min.js"></script>
+<script src="/assets/libs/datatables/dataTables.select.min.js"></script>
+<script src="/assets/libs/jszip/jszip.min.js"></script>
+<script src="/assets/libs/pdfmake/pdfmake.min.js"></script>
+<script src="/assets/libs/pdfmake/vfs_fonts.js"></script>
+<script src="/assets/libs/datatables/buttons.html5.min.js"></script>
+<script src="/assets/libs/datatables/buttons.print.min.js"></script>
+
+<!-- Responsive examples -->
+<script src="/assets/libs/datatables/dataTables.responsive.min.js"></script>
+<script src="/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
+
+<!-- Datatabl/es init -->
+<script src="/assets/js/pages/datatables.init.js"></script>
+
+<!-- App js -->
+<script src="/assets/js/app.min.js"></script>
+
+
+</body>
+
+</html>

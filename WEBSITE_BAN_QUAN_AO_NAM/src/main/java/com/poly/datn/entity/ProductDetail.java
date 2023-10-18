@@ -46,4 +46,10 @@ public class ProductDetail {
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
 
+    public ProductDetail(Product product, Color color, Size size, @Min(0) Integer quantity) {
+        this.product = product;
+        this.color = color;
+        this.size = size;
+        this.quantity = quantity;
+    }
 }

@@ -43,4 +43,11 @@ public class Description {
     @Column(name = "pattern",columnDefinition = ("nvarchar(255)"))   //  Họa tiết
     private String pattern;
 
+    public Description(String fabric, String descriptionProduct, String manual, String style, String pattern) {
+        this.fabric = fabric;
+        this.descriptionProduct = descriptionProduct;
+        this.manual = manual;
+        this.style = style;
+        this.pattern = pattern;
+    }
 }

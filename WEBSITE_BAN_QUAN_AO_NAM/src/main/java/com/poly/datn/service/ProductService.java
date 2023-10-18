@@ -1,19 +1,20 @@
 package com.poly.datn.service;
 
-import com.poly.datn.entity.Color;
+import com.poly.datn.dto.ProductDto;
 import com.poly.datn.entity.Product;
-import com.poly.datn.entity.Promotion;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface ProductService {
 
-    List<Product> getAll();
+    ProductDto getProductById(Long id);
 
-    Page<Product> phanTrang(Integer pageNum, Integer pageNo);
-
-    void add(Product product);
+    Product add(ProductDto product);
 
     Product detail(Long id);
+
+    List<ProductDto> getAll();
+
+    void updateProduct(ProductDto dto,Long sp);
 }

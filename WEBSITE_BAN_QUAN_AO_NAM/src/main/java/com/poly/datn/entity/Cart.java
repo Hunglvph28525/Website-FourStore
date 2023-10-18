@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 
@@ -37,10 +38,10 @@ public class Cart {
     private User user;
 
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "edit_date")
-    private Date editDate;
+    private LocalDateTime editDate;
 
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
