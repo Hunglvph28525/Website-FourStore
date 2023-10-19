@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +23,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "Roles")
-public class Role {
+public class Role implements GrantedAuthority {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,5 +32,10 @@ public class Role {
     private String roleName;
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    Set<User> users = new HashSet<>();
+    Set<User> users ;
+
+    @Override
+    public String getAuthority() {
+        return roleName;
+    }
 }
