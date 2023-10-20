@@ -2,6 +2,7 @@ package com.poly.datn.config;
 
 import com.poly.datn.entity.Role;
 import com.poly.datn.entity.User;
+import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.service.UserService;
 import com.poly.datn.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,23 +59,28 @@ public class SercurityConfig {
         return authProvider;
     }
 
+
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
-    public CommandLineRunner commandLineRunner(){
+    public CommandLineRunner commandLineRunner(RoleRepository roleRepository ,PasswordEncoder passwordEncoder){
+
         return args -> {
             System.out.println( "\n\n\t"+ userService.loadUserByUsername("admin").getUsername());
             if (userService.getAll().isEmpty())
 
             userService.add(User.builder()
                 .username("admin")
-                .password(passwordEncoder().encode("123456"))
+                .password(passwordEncoder.encode("123456"))
                 .roles(Arrays.asList(Role.builder()
                         .roleName("ROLE_ADMIN")
                         .build()))
+
                 .build()
-        );};
+            );
+                if (roleRepository.count()<2) {
+                    roleRepository.save(Role.builder()
+                            .roleName("ROLE_USER")
+                            .build());
+                }
+        };
     }
 }
