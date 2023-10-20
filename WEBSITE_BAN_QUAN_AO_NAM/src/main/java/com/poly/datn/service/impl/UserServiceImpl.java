@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +30,9 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public void add(User user) {
-        user.setRoles( Arrays.asList(roleRepository.getByName("ROLE_USER")));
+        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-
     }
 
     @Override

@@ -3,8 +3,11 @@ package com.poly.datn.config;
 import com.poly.datn.entity.Role;
 import com.poly.datn.entity.User;
 import com.poly.datn.repository.RoleRepository;
+import com.poly.datn.repository.UserRepository;
+import com.poly.datn.service.RoleService;
 import com.poly.datn.service.UserService;
 import com.poly.datn.service.impl.UserServiceImpl;
+import com.poly.datn.util.RoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 
 @Configuration
@@ -30,22 +35,24 @@ public class SercurityConfig {
 
     @Autowired
     private UserService userService;
+
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new UserServiceImpl();
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(c->c.requestMatchers("/admin/**")
-                        .hasRole("ADMIN")
-                        .anyRequest().permitAll()
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
+                .hasRole("ADMIN")
+                .anyRequest().permitAll()
 
-                )
-                .formLogin(c->c.loginPage("/login"))
-                .httpBasic(Customizer.withDefaults())
-                .build();
+            )
+            .formLogin(c -> c.loginPage("/login"))
+            .httpBasic(Customizer.withDefaults())
+            .build();
     }
 
     @Bean
@@ -61,26 +68,27 @@ public class SercurityConfig {
 
 
     @Bean
-    public CommandLineRunner commandLineRunner(RoleRepository roleRepository ,PasswordEncoder passwordEncoder){
-
+    public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            System.out.println( "\n\n\t"+ userService.loadUserByUsername("admin").getUsername());
-            if (userService.getAll().isEmpty())
-
-            userService.add(User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("123456"))
-                .roles(Arrays.asList(Role.builder()
+            // initial roles
+            if (roleRepository.count() < 2) {
+                roleRepository.saveAll(Arrays.asList(Role.builder()
+                        .roleName("ROLE_USER")
+                        .build(),
+                    Role.builder()
                         .roleName("ROLE_ADMIN")
-                        .build()))
-
-                .build()
-            );
-                if (roleRepository.count()<2) {
-                    roleRepository.save(Role.builder()
-                            .roleName("ROLE_USER")
-                            .build());
-                }
+                        .build()
+                ));
+            }
+            // initial default user "admin"
+            if (userRepository.count() == 0)
+                userRepository.save(User.builder()
+                    .username("admin")
+                    .password(passwordEncoder.encode("123456"))
+                    .roles(Collections.singletonList(roleRepository
+                        .getByName(RoleUtil.ADMIN.getValue())))
+                        .build()
+                );
         };
     }
 }

@@ -52,7 +52,7 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart carts;
 
-    @ManyToMany (fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToMany (fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "id_user"),
