@@ -48,15 +48,15 @@ public class SercurityConfig {
             .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
                 .hasRole("ADMIN")
                 .anyRequest().permitAll()
-
             )
-            .formLogin(c -> c.loginPage("/login"))
+            .formLogin(c -> c.loginPage("/login")
+                .successForwardUrl("/").permitAll())
+            .logout(lo -> lo.logoutUrl("/logout").permitAll())
             .httpBasic(Customizer.withDefaults())
             .build();
     }
 
     @Bean
-
     public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
                                                             PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -65,7 +65,6 @@ public class SercurityConfig {
 
         return authProvider;
     }
-
 
     @Bean
     public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
@@ -81,7 +80,7 @@ public class SercurityConfig {
                 ));
             }
             // initial default user "admin"
-            if (userRepository.count() == 0)
+            if (userRepository.getByUser("admin").isEmpty())
                 userRepository.save(User.builder()
                     .username("admin")
                     .password(passwordEncoder.encode("123456"))

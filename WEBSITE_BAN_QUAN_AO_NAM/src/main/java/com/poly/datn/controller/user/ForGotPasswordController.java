@@ -6,7 +6,6 @@ import com.poly.datn.service.UserService;
 import jakarta.validation.Valid;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -33,12 +33,15 @@ public class ForGotPasswordController {
     }
 
     @GetMapping("/forgot-password/user")
-    public String getUserName(@AuthenticationPrincipal Principal principal ,Model model){
+    public String getUserName(Principal principal , Model model,
+                              RedirectAttributes attributes) {
         model.addAttribute("userForgotPasswordRequest", this.userForgotPasswordRequest);
         if (principal == null) {
             return "User/forgot-password/user";
         }
-        return "User/forgot-password/user";
+        this.userForgotPasswordRequest.setUserName(principal.getName());
+        attributes.addFlashAttribute("userForgotPasswordRequest", userForgotPasswordRequest);
+        return "redirect:/forgot-password";
     }
 
     @PostMapping("/forgot-password/user")
@@ -67,7 +70,7 @@ public class ForGotPasswordController {
     public String forgotPassword(Model model, @ModelAttribute @Valid UserForgotPasswordRequest userForgotPasswordRequest
         , BindingResult bindingResult) {
 
-        Boolean passwordDoesNotMatch = userForgotPasswordRequest.getPassword()
+        Boolean passwordDoesNotMatch = !userForgotPasswordRequest.getPassword()
             .equals(userForgotPasswordRequest.getConfirmPassword());
         Boolean userNotFound = userService.getByUserName(userForgotPasswordRequest.getUserName()).isEmpty();
 

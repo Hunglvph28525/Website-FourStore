@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         userOptional.ifPresent(user -> {
             user.setPassword(passwordEncoder.encode(userForgotPasswordRequest.getPassword()));
             userRepository.save(user);
-            System.out.println("\n\n\t user user saved with password: " + userForgotPasswordRequest.getPassword() + "\n\n\t");
+            System.out.println("\n\n\t user user saved with password: " + userForgotPasswordRequest.getPassword() + "encoded: " + user.getPassword() + "\n\n\t");
         });
 
         return userOptional;
