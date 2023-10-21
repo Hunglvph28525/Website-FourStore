@@ -65,8 +65,10 @@
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
                             <th>Giá trị giảm</th>
-                            <th>Số sản phẩm</th>
+                            <th>Kiểu giảm gia</th>
                             <th>Trạng thái</th>
+                            <th>Action</th>
+
                             <th></th>
                         </tr>
                         </thead>
@@ -77,7 +79,7 @@
                             <td th:text="${x.startDate}"></td>
                             <td th:text="${x.endDate}"></td>
                             <td th:text="${x.discountValue}"></td>
-                            <td th:text="${x.product}"></td>
+                            <td th:text="${x.discountType} == true?'Giảm theo phần trăm':'Giảm thẳng'"></td>
                             <td th:text="${x.status}"></td>
                             <td>
                                 <a href=""><i class="ti-info-alt ml-2"></i></a>
@@ -102,13 +104,13 @@
                             <div class="form-group">
                                 <label class="col-md-12 col-form-label">Ngày bắt đầu</label>
                                 <div class="col-md-12">
-                                    <input type="date" th:field="*{startDate}" class="form-control"/>
+                                    <input type="datetime-local" th:field="*{startDate}" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12 col-form-label">Ngày kết thúc</label>
                                 <div class="col-md-12">
-                                    <input type="date" th:field="*{endDate}" class="form-control"/>
+                                    <input type="datetime-local" th:field="*{endDate}" class="form-control"/>
                                 </div>
                             </div>
 
