@@ -3,7 +3,7 @@ package com.poly.datn.service.impl;
 import com.poly.datn.entity.User;
 import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.repository.UserRepository;
-import com.poly.datn.request.RegisterUser;
+import com.poly.datn.request.UserSignUpRequest;
 import com.poly.datn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,9 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -45,7 +43,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.getByUser(username);
     }
     @Override
-    public User convert(RegisterUser source) {
+    public User convert(UserSignUpRequest source) {
         return User.builder()
                 .email(source.getEmail())
                 .username(source.getUserName())

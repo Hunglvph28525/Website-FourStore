@@ -11,8 +11,9 @@ import java.security.Principal;
 @Controller
 public class ForGotPasswort {
 
-    @Autowired
+
     private User user;
+
     @GetMapping("/forgot-passwort/user")
     public String getUserName(@AuthenticationPrincipal Principal principal){
         if (principal == null) {
