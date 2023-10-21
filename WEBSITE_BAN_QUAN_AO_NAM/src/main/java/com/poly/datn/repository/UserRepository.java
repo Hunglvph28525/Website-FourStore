@@ -5,11 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface UserRepository extends JpaRepository<User,Long> {
-    @Query("""  
-         from User where username = :u 
-    """)
+import java.util.Optional;
 
-    User getByUser(@Param("u") String username);
+public interface UserRepository extends JpaRepository<User,Long> {
+    @Query("""
+         from User where username = :u
+    """)
+    Optional<User> getByUser(@Param("u") String username);
 
 }

@@ -3,7 +3,7 @@ package com.poly.datn.controller.user;
 import com.poly.datn.request.UserSignUpRequest;
 import com.poly.datn.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Setter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,10 +16,9 @@ import java.security.Principal;
 
 
 @Controller
-
+@Setter
 public class UserController {
 
-    @Autowired
     private UserService userService;
     @RequestMapping("/login")
     public String login() {

@@ -4,6 +4,7 @@ import com.poly.datn.entity.User;
 import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.repository.UserRepository;
 import com.poly.datn.request.UserSignUpRequest;
+import com.poly.datn.request.forgot_passwort.UserForgotPasswordRequest;
 import com.poly.datn.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,13 +46,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> getByUserName(String userName) {
-        return Optional.ofNullable(userRepository.getByUser(userName));
+        return userRepository.getByUser(userName);
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getByUser(username);
+        return userRepository.getByUser(username).get();
     }
+
+
     @Override
     public User convert(UserSignUpRequest source) {
         return User.builder()
@@ -59,5 +62,19 @@ public class UserServiceImpl implements UserService {
                 .username(source.getUserName())
                 .password(source.getPassword())
                 .build();
+    }
+
+    @Override
+    public Optional<User> changePassword(UserForgotPasswordRequest userForgotPasswordRequest) {
+
+        Optional<User> userOptional = this.userRepository.getByUser(userForgotPasswordRequest.getUserName());
+
+        userOptional.ifPresent(user -> {
+            user.setPassword(passwordEncoder.encode(userForgotPasswordRequest.getPassword()));
+            userRepository.save(user);
+            System.out.println("\n\n\t user user saved with password: " + userForgotPasswordRequest.getPassword() + "\n\n\t");
+        });
+
+        return userOptional;
     }
 }
