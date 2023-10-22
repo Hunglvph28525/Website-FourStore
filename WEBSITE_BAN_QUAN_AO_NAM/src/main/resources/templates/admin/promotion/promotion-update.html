@@ -51,74 +51,18 @@
             </div>
 
             <div class="row">
-                <div class="col-lg-9">
+<!--                <div class="col-lg-9">-->
 
 
-                    <h5 class="font-14">Danh sách khuyến mãi</h5>
+<!--                  -->
 
-                    <table id="responsive-datatable"
-                           class="table table-bordered table-bordered dt-responsive nowrap"
-                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead>
-                        <tr>
-                            <th>Tên khuyến mãi</th>
-                            <th>Ngày bắt đầu</th>
-                            <th>Ngày kết thúc</th>
-                            <th>Giá trị giảm</th>
-                            <th>Kiểu giảm gia</th>
-                            <th>Trạng thái</th>
-                            <th>Action</th>
 
-                            <th></th>
-                        </tr>
-                        </thead>
 
-                        <tbody>
-                        <tr th:each="x : ${list}">
-                            <td th:text="${x.discountName}"></td>
-                            <td th:text="${x.startDate}"></td>
-                            <td th:text="${x.endDate}"></td>
-                            <td th:text="${x.discountValue}"></td>
-                            <td th:text="${x.discountType} == true?'Giảm theo phần trăm':'Giảm thẳng'"></td>
-                            <td th:text="${x.status}"></td>
-                            <td>
-                                <a th:href="@{promotion/{id}(id=${x.id})}"><i class="ti-info-alt ml-2"></i></a>
-<!--                                <a href=""><i class="ti-trash ml-3" style="color: #ff0000;"></i></a>-->
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                    <ul class="pagination" style="margin-left: 40%">
-                        <li class="page-item"
-                            th:classappend="${list.number == 0} ? disabled">
-                            <a class="page-link"
-                               th:href="@{/admin/promotion(page=${list.number - 1})}">
-                                Previous
-                            </a>
-                        </li>
-                        <li class="page-item"
-                            th:each="pageNumber : ${#numbers.sequence(0, list.totalPages - 1)}">
-                            <a class="page-link"
-                               th:href="@{/admin/promotion(page=${pageNumber})}"
-                               th:text="${pageNumber + 1}"
-                               th:classappend="${pageNumber == list.number} ? active">
-                            </a>
-                        </li>
-                        <li class="page-item"
-                            th:classappend="${list.number == list.totalPages - 1} ? disabled">
-                            <a class="page-link"
-                               th:href="@{/admin/promotion(page=${list.number + 1})}">
-                                Next
-                            </a>
-                        </li>
-                    </ul>
-
-                </div>
-                <div class="col-lg-3">
-                    <h5 class="font-14">Thêm khuyến mãi mới</h5>
+<!--                </div>-->
+                <div class="col-lg-3" style="margin: auto">
+                    <h5 class="font-14">Update khuyến mãi </h5>
                     <div class="table-responsive">
-                        <form class="form-horizontal" method="post" th:action="@{/admin/promotion/add}" th:object="${object}">
+                        <form class="form-horizontal" th:action="@{'/admin/promotion/update/'+${list.id}}" method="post" th:object="${list}">
                             <div class="form-group">
                                 <label class="col-md-12 col-form-label">Chương trình khuyến mãi</label>
                                 <div class="col-md-12">
