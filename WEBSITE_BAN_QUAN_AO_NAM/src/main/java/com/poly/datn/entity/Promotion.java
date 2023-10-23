@@ -7,13 +7,19 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @NoArgsConstructor
@@ -30,6 +36,7 @@ public class Promotion {
 
     @OneToMany(mappedBy = "promotion")
     private List<Product> products;
+
 
     @Column(name = "discount_name",columnDefinition = ("nvarchar(255)"))
     private String discountName;
@@ -54,4 +61,8 @@ public class Promotion {
 
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
+
+
+
+    private Integer quantity;
 }

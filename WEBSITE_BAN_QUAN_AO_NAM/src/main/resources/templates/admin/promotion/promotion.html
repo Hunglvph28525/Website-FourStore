@@ -19,6 +19,8 @@
     <link href="/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css">
 
+
+
 </head>
 
 <body>
@@ -57,7 +59,7 @@
                     <h5 class="font-14">Danh sách khuyến mãi</h5>
 
                     <table id="responsive-datatable"
-                           class="table table-bordered table-bordered dt-responsive nowrap"
+                           class="table table-bordered table-bordered "
                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                         <tr>
@@ -65,7 +67,8 @@
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
                             <th>Giá trị giảm</th>
-                            <th>Kiểu giảm gia</th>
+                            <th>Kiểu giảm giá</th>
+                            <th>Số lượng giảm</th>
                             <th>Trạng thái</th>
                             <th>Action</th>
 
@@ -76,14 +79,18 @@
                         <tbody>
                         <tr th:each="x : ${list}">
                             <td th:text="${x.discountName}"></td>
+
                             <td th:text="${x.startDate}"></td>
                             <td th:text="${x.endDate}"></td>
                             <td th:text="${x.discountValue}"></td>
                             <td th:text="${x.discountType} == true?'Giảm theo phần trăm':'Giảm thẳng'"></td>
+
+                            <td th:text="${x.quantity}"></td>
                             <td th:text="${x.status}"></td>
                             <td>
-                                <a th:href="@{promotion/{id}(id=${x.id})}"><i class="ti-info-alt ml-2"></i></a>
-<!--                                <a href=""><i class="ti-trash ml-3" style="color: #ff0000;"></i></a>-->
+                                <a th:href="@{promotion/{id}(id=${x.id})}"><i class="mdi mdi-square-edit-outline ml-4"
+                                                                              style="color: #019320;"></i></a>
+                                <!--                                <a href=""><i class="ti-trash ml-3" style="color: #ff0000;"></i></a>-->
                             </td>
                         </tr>
                         </tbody>
@@ -118,42 +125,68 @@
                 <div class="col-lg-3">
                     <h5 class="font-14">Thêm khuyến mãi mới</h5>
                     <div class="table-responsive">
-                        <form class="form-horizontal" method="post" th:action="@{/admin/promotion/add}" th:object="${object}">
+                        <form class="form-horizontal" method="post" th:action="@{/admin/promotion/add}"
+                              th:object="${object}">
                             <div class="form-group">
                                 <label class="col-md-12 col-form-label">Chương trình khuyến mãi</label>
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control" th:field="*{discountName}" placeholder="........."/>
+                                    <input type="text" class="form-control" th:field="*{discountName}"
+                                           placeholder="........."/>
                                 </div>
                             </div>
+
+
+
+
                             <div class="form-group">
                                 <label class="col-md-12 col-form-label">Ngày bắt đầu</label>
                                 <div class="col-md-12">
-                                    <input type="datetime-local" th:field="*{startDate}" class="form-control"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Ngày kết thúc</label>
-                                <div class="col-md-12">
-                                    <input type="datetime-local" th:field="*{endDate}" class="form-control"/>
+                                    <input type="datetime-local" id="date"  name="date"    th:field="*{startDate}" class="form-control"/>
+
+
                                 </div>
                             </div>
 
                             <div class="form-group">
+                                <label class="col-md-12 col-form-label">Ngày kết thúc</label>
+                                <div class="col-md-12">
+
+                                    <input type="datetime-local" id="d"  name="d"  th:field="*{endDate}" class="form-control"/>
+                                    <!--                                    <input type="datetime-local" id="date" name="date" th:field="*{endDate}" class="form-control"/>-->
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
                                 <label class="col-md-12 col-form-label">Giá trị giảm</label>
                                 <div class="col-md-12">
-                                    <input type="number" th:field="*{discountValue}" class="form-control" placeholder="10"/>
+                                    <input type="number" th:field="*{discountValue}" class="form-control"
+                                           placeholder="10"/>
 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12 col-form-label">Kiểu giảm giá</label>
                                 <div class="col-md-12">
-                                    <select class="custom-select" th:field="*{discountType}" >
+                                    <select class="custom-select" th:field="*{discountType}">
                                         <option selected value="true">Giảm theo %</option>
                                         <option value="false">Giảm thẳng</option>
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <label class="col-md-12 col-form-label">Số lượng giảm</label>
+                                <div class="col-md-12">
+                                    <input type="number" th:field="*{quantity}" class="form-control"
+                                           placeholder="10"/>
+
+                                    <p class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></p>
+
+
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <label class="col-md-12 col-form-label">Trạng
                                     thái</label>
@@ -224,6 +257,26 @@
 
 <!-- App js -->
 <script src="/assets/js/app.min.js"></script>
+
+<script>
+    var dateInput = document.getElementById("date");
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1; // months are 0-based in JavaScript Date object
+    var day = now.getDate();
+    var formattedDate = year + "-" + month.toString().padStart(2, '0') + "-" + day.toString().padStart(2, '0') + "T00:00";
+    dateInput.min = formattedDate;
+
+
+    var dateInput = document.getElementById("d");
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1; // months are 0-based in JavaScript Date object
+    var day = now.getDate();
+    var formattedDate = year + "-" + month.toString().padStart(2, '0') + "-" + day.toString().padStart(2, '0') + "T00:00";
+    dateInput.min = formattedDate;
+
+</script>
 
 
 </body>
