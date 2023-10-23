@@ -10,6 +10,7 @@ import com.poly.datn.service.ProductDetailService;
 import com.poly.datn.service.ProductService;
 import com.poly.datn.service.SizeService;
 import com.poly.datn.service.TypeProductService;
+import com.poly.datn.util.UserUltil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,7 @@ public class ProductController {
     @GetMapping("/product")
     public String hienThi(Model model) {
         model.addAttribute("list", productService.getAll());
+        model.addAttribute("user", UserUltil.getUser());
         return "admin/product/product";
     }
 
@@ -53,6 +55,7 @@ public class ProductController {
         model.addAttribute("sizes", sizeService.getAll());
         model.addAttribute("colors", colorService.getAll());
         model.addAttribute("types", typeProductService.getAll());
+        model.addAttribute("user", UserUltil.getUser());
         return "admin/product/new-product";
     }
 
@@ -65,6 +68,7 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public String detailProduct(Model model, @PathVariable("id") Long id) {
         model.addAttribute("list", productDetailService.getDetail(id));
+        model.addAttribute("user", UserUltil.getUser());
         return "admin/product/product-detail";
     }
 
@@ -78,6 +82,7 @@ public class ProductController {
         model.addAttribute("object",productService.getProductById(id));
         model.addAttribute("categorys", categoryService.fillAll());
         model.addAttribute("types", typeProductService.getAll());
+        model.addAttribute("user", UserUltil.getUser());
         return "admin/product/update-product";
     }
     @GetMapping("/product/delete/image/{id}/{sp}")

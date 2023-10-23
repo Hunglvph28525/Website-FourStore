@@ -9,7 +9,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("""  
          from User where username = :u 
     """)
-
     User getByUser(@Param("u") String username);
-
+//    @Query("select c from User c where c.username =:s")
+//    User getUserByUsername(String user);
 }

@@ -33,7 +33,7 @@ public class Color {
     private Set<ProductDetail> productDetails = new HashSet<>();
 
     @Column(name = "color_name",columnDefinition = ("nvarchar(255)"))
-    private String colorName;
+    private String name;
 
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;

@@ -39,10 +39,6 @@ public class Product {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_category", referencedColumnName = "id")
-    private Category category;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_product", referencedColumnName = "id")
     private TypeProduct typeProduct;
 

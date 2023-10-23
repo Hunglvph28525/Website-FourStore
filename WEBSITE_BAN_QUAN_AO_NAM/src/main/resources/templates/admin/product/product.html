@@ -69,7 +69,7 @@
                             <th>Hình ảnh</th>
                             <th>Tên sản phẩm</th>
                             <th>Giá bán</th>
-                            <th>Danh mục</th>
+                            <th>Loại Sản phẩm</th>
                             <th>Số lượng</th>
                             <th>trạng thái</th>
                             <th>Hành động</th>
@@ -81,7 +81,7 @@
                             <td><img th:src="@{${x.defaultImage}}" alt="Hình ảnh" width="150px"/></td>
                             <td th:text="${x.productName}"></td>
                             <td th:text="${x.price}"></td>
-                            <td th:text="${x.category.categoryName}"></td>
+                            <td th:text="${x.typeProduct.name}"></td>
                             <td th:text="${x.quantity}"></td>
                             <td th:text="${x.status}"></td>
                             <td>

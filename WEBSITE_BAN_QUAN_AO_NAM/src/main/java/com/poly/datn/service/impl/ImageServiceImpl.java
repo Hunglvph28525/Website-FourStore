@@ -38,7 +38,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void add(Long sp, MultipartFile[] files) {
-        String url = "/assets/images/users/avatar-2.jpg";
+        String url = "";
         String publicId = "";
         Product product = productRepository.getReferenceById(sp);
         try {

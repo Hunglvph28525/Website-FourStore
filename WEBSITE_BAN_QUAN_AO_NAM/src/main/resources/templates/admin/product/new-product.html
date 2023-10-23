@@ -89,33 +89,23 @@
                     <h5 class="font-14">Thêm sản phẩm mới</h5>
                     <form class="form-horizontal" enctype="multipart/form-data" method="post" th:action="@{/admin/product/add}"  th:object="${object}">
                         <div class="row">
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label class="col col-form-label">Tên sản phẩm</label>
                                 <div class="col">
                                     <input type="text" class="form-control" placeholder="quan ao" th:field="*{productName}">
                                 </div>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label class="col col-form-label" for="example-placeholder">Danh mục</label>
-                                <div class="col">
-                                    <select class="custom-select" th:field="*{category}">
-                                        <option th:each="x : ${categorys}"
-                                                th:value="${x.id}"
-                                                th:text="${x.categoryName}"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label class="col col-form-label" for="example-placeholder">Loại sản phẩm</label>
                                 <div class="col">
                                     <select class="custom-select" th:field="*{typeProduct}">
                                         <option th:each="x : ${types}"
                                                 th:value="${x.id}"
-                                                th:text="${x.typeName}"></option>
+                                                th:text="${x.name}"></option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label class="col col-form-label">Chất liệu</label>
                                 <div class="col">
                                     <input type="text" class="form-control" placeholder="cottong" th:field="*{fabric}">
@@ -150,7 +140,7 @@
                                     <select class="custom-select" th:field="*{color}" data-toggle="select2" multiple>
                                         <option th:each="x : ${colors}"
                                                 th:value="${x.id}"
-                                                th:text="${x.colorName}"></option>
+                                                th:text="${x.name}"></option>
                                     </select>
                                 </div>
                             </div>

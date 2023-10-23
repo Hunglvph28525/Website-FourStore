@@ -32,12 +32,18 @@ public class UserServiceImpl implements UserService {
     public void add(User user) {
         user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAvatar("/assets/images/users/avatar-2.jpg");
         userRepository.save(user);
     }
 
     @Override
     public Optional<User> detail(Long id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public User getUser(String username) {
+        return userRepository.getByUser(username);
     }
 
     @Override

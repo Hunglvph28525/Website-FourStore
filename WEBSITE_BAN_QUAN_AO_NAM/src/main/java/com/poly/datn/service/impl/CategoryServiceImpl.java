@@ -18,15 +18,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    @Override
-    public void add(Category category) {
-        categoryRepository.save(category);
-    }
-
-    @Override
-    public Category detail(Long id) {
-        return categoryRepository.getCoAoById(id);
-    }
 
     @Override
     public void delete(Long id) {
@@ -42,5 +33,15 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> fillAll() {
         return categoryRepository.findAll();
+    }
+
+    @Override
+    public void Save(CategoryDto dto) {
+            categoryRepository.save(dto.category());
+    }
+
+    @Override
+    public CategoryDto detail(Long id) {
+        return new CategoryDto(categoryRepository.getReferenceById(id));
     }
 }

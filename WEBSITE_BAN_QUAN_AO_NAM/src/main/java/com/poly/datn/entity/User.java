@@ -72,10 +72,10 @@ public class User implements UserDetails {
     @Column(name = "email", unique = true,columnDefinition = ("nvarchar(255)"))
     private String email;
 
-    @Column(name = "username",columnDefinition = ("varchar(200)"))
+    @Column(name = "username",unique = true,columnDefinition = ("varchar(200)"))
     private String username;
 
-    @Column(name = "password",unique = true,columnDefinition = ("varchar(255)"))
+    @Column(name = "password",columnDefinition = ("varchar(255)"))
     private String password;
 
     @Column(name = "avatar")

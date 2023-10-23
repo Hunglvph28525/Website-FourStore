@@ -14,4 +14,6 @@ public interface UserService extends  Converter<RegisterUser,User> , UserDetails
     void add(User user);
 
     Optional<User> detail(Long id);
+
+    User getUser(String username);
 }
