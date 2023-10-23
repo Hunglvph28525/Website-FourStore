@@ -3,15 +3,18 @@ package com.poly.datn.request;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
-public class RegisterUser {
+public class UserSignUpRequest {
     @NotEmpty(message = "email khong duoc de trong")
     @Email(message = "email khong hop le")
     private String email;

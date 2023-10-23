@@ -1,9 +1,9 @@
 package com.poly.datn.controller.user;
 
-import com.poly.datn.entity.User;
-import com.poly.datn.request.RegisterUser;
+import com.poly.datn.request.UserSignUpRequest;
 import com.poly.datn.service.UserService;
 import jakarta.validation.Valid;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,23 +12,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.xml.transform.Result;
 import java.security.Principal;
 
 
 @Controller
-
+@Setter
 public class UserController {
 
     @Autowired
     private UserService userService;
+
     @RequestMapping("/login")
     public String login() {
         return "User/login";
     }
 
-    @GetMapping("/")
+    @RequestMapping("/")
     public String vanne(Principal principal, Model model ) {
         model.addAttribute("username",principal.getName());
         return "User/hi";
@@ -36,22 +37,23 @@ public class UserController {
 
     @GetMapping("/sign-up")
     public String dangky(Model model){
-        model.addAttribute("registerUser",new RegisterUser());
+        model.addAttribute("registerUser",new UserSignUpRequest());
         return "User/sign-up";
     }
+
     @PostMapping("/sign-up")
-    public String dang(Model model , @ModelAttribute @Valid RegisterUser registerUser,
+    public String dang(Model model , @ModelAttribute @Valid UserSignUpRequest userSignUpRequest,
                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "User/sign-up";
-
         }
-        if (!registerUser.getPassword().equals(registerUser.getConfirmPassword())){
+
+        if (!userSignUpRequest.getPassword().equals(userSignUpRequest.getConfirmPassword())){
             model.addAttribute("error","mat khau khong khop");
             return "User/sign-up";
         }
-        userService.add(userService.convert(registerUser));
-        return "User/login";
 
+        userService.add(userService.convert(userSignUpRequest));
+        return "redirect:/login";
     }
 }

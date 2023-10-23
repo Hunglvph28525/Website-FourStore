@@ -1,10 +1,12 @@
 package com.poly.datn.dto;
 
 import com.poly.datn.entity.Promotion;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +14,13 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Data
 @Builder
+@Setter
+@Getter
 
 public class PromotionDto {
     private Long id;
+
+
     private String discountName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
@@ -23,7 +29,9 @@ public class PromotionDto {
     private Long product;
     private String status;
 
-    public Promotion promotion(){
+    private Integer quantity;
+
+    public Promotion promotion() {
         Promotion promotion = new Promotion();
         promotion.setId(this.id);
         promotion.setDiscountName(this.discountName);
@@ -31,6 +39,7 @@ public class PromotionDto {
         promotion.setEndDate(this.endDate);
         promotion.setDiscountType(this.discountType);
         promotion.setDiscountValue(this.discountValue);
+        promotion.setQuantity(this.quantity);
         promotion.setStatus(this.status);
         promotion.setCteateDate(LocalDateTime.now());
         promotion.setEditDate(LocalDateTime.now());
@@ -46,5 +55,8 @@ public class PromotionDto {
         this.discountType = x.getDiscountType();
         this.product = x.getProducts().stream().count();
         this.status = x.getStatus();
+        this.quantity = x.getQuantity();
     }
+
+
 }

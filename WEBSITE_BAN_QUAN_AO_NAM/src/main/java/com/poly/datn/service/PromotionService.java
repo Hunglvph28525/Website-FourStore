@@ -1,5 +1,6 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.PromotionDto;
 import com.poly.datn.entity.Promotion;
 import com.poly.datn.entity.Size;
@@ -17,4 +18,6 @@ public interface PromotionService {
     Promotion detail(Long id);
 
     List<PromotionDto> getAll();
+
+    void updateP(PromotionDto dto, Long id);
 }
