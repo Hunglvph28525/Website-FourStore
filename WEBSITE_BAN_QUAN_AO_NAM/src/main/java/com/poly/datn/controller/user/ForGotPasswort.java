@@ -6,11 +6,9 @@ import com.poly.datn.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +26,7 @@ public class ForGotPasswort {
 
     @Autowired
     private UserService userService;
-    @GetMapping("/forgot-passwort/user")
+    @GetMapping("/forgot-password/user")
     public String getUserName(@AuthenticationPrincipal Principal principal ,Model model){
         model.addAttribute("userForgotPasswordRequest",new UserForgotPasswordRequest());
         if (principal == null) {
@@ -36,7 +34,7 @@ public class ForGotPasswort {
         }
         return "User/forgot-password/user";
     }
-    @PostMapping("/forgot-passwort/user")
+    @PostMapping("/forgot-password/user")
     public String getUserName(@ModelAttribute @Valid UserForgotPasswordRequest userForgotPasswordRequest,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if (bindingResult.hasErrors()) {
@@ -45,12 +43,12 @@ public class ForGotPasswort {
         Optional<User> userOptional =userService.getByUserName(userForgotPasswordRequest.getUserName());
         if (userOptional.isPresent()) {
             redirectAttributes.addFlashAttribute("user",userOptional.get());
-            return "redirect:/forgot-passwort";
+            return "redirect:/forgot-password";
         }
         return "redirect:/forgot-password/user";
     }
 
-    @GetMapping("/forgot-passwort")
+    @GetMapping("/forgot-password")
     public String forGotPassword(){
         return "User/forgot-password";
     }

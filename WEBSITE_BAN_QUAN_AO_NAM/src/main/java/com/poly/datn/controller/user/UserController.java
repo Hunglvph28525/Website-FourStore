@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping("/sign-up")
     public String dangky(Model model){
-        model.addAttribute("registerUser",new UserSignUpRequest());
+        model.addAttribute("userSignUpRequest",new UserSignUpRequest());
         return "User/sign-up";
     }
     @PostMapping("/sign-up")
