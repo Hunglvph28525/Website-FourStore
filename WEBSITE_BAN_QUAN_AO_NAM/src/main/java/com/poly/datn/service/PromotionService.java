@@ -20,4 +20,8 @@ public interface PromotionService {
     List<PromotionDto> getAll();
 
     void updateP(PromotionDto dto, Long id);
+    void addProduct(PromotionDto promotionDto);
+    void addProductd(List<Long> list, Long id);
+
+
 }

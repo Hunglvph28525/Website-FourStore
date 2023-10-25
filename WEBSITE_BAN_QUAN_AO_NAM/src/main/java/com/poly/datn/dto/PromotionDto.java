@@ -1,5 +1,6 @@
 package com.poly.datn.dto;
 
+import com.poly.datn.entity.Product;
 import com.poly.datn.entity.Promotion;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Min;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +30,8 @@ public class PromotionDto {
     private Boolean discountType;
     private Long product;
     private String status;
+    private List<Product> products;
+
 
     private Integer quantity;
 
@@ -56,7 +60,9 @@ public class PromotionDto {
         this.product = x.getProducts().stream().count();
         this.status = x.getStatus();
         this.quantity = x.getQuantity();
+        this.products = x.getProducts();
     }
+
 
 
 }

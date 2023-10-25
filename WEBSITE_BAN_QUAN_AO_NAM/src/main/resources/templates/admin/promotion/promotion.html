@@ -72,7 +72,7 @@
                             <th>Trạng thái</th>
                             <th>Action</th>
 
-                            <th></th>
+
                         </tr>
                         </thead>
 
@@ -90,7 +90,7 @@
                             <td>
                                 <a th:href="@{promotion/{id}(id=${x.id})}"><i class="mdi mdi-square-edit-outline ml-4"
                                                                               style="color: #019320;"></i></a>
-                                <!--                                <a href=""><i class="ti-trash ml-3" style="color: #ff0000;"></i></a>-->
+                                                                <a th:href="@{promotion/update/{id}(id=${x.id})}"><i class="ti-trash ml-3" style="color: #ff0000;"></i></a>
                             </td>
                         </tr>
                         </tbody>
