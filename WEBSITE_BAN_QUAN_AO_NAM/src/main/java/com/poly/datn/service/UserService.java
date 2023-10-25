@@ -22,9 +22,11 @@ public interface UserService extends Converter<UserSignUpRequest,User>
     Optional<User> getByUserName(String userName);
 
 
+
     boolean isEmailExists(String email);
 
 
     Optional<User> changePassword(UserForgotPasswordRequest userForgotPasswordRequest);
 }
+
 
