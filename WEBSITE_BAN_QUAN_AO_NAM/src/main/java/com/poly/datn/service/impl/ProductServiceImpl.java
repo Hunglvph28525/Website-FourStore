@@ -64,19 +64,19 @@ public class ProductServiceImpl implements ProductService {
         //upload ảnh lên cloudinary
         Map<String, Object> params = ObjectUtils.asMap("folder", "sanpham");
         Map<?, ?> uploadResult;
-        try {
-            for (MultipartFile file : files) {
-                uploadResult = cloudinary.uploader().upload(file.getBytes(), params);
-                urlImage = uploadResult.get("url").toString();
-                publicId = uploadResult.get("public_id").toString();
-                System.out.println(urlImage);
-                imageRepository.save(new Image(product, urlImage, publicId));
+            try {
+                for (MultipartFile file : files) {
+                    uploadResult = cloudinary.uploader().upload(file.getBytes(), params);
+                    urlImage = uploadResult.get("url").toString();
+                    publicId = uploadResult.get("public_id").toString();
+                    System.out.println(urlImage);
+                    imageRepository.save(new Image(product, urlImage, publicId));
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
             }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
         for (Color color : dto.getColor()) {
             for (Size size : dto.getSize()) {
                 detailRepository.save(new ProductDetail(product, color, size, 0));

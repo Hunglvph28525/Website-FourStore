@@ -30,7 +30,6 @@ public class ProductDto {
     private String defaultImage;
     private BigDecimal price;
     private TypeProduct typeProduct;
-    private Category category;
     private MultipartFile[] files;
     private String fabric;
     private String descriptionProduct;
@@ -52,7 +51,7 @@ public class ProductDto {
         this.productName = x.getProductName();
         this.defaultImage = image.getUrl();
         this.price = x.getPrice();
-        this.category = x.getCategory();
+        this.typeProduct = x.getTypeProduct();
         this.quantity = x.getProductDetails().stream().mapToInt(ProductDetail::getQuantity).sum();
         this.status = (this.quantity>10?"Còn hàng":this.quantity==0?"Hết hàng":"Sắp hết hàng");
         this.images = x.getImages();
@@ -66,7 +65,7 @@ public class ProductDto {
         Description description = new Description(this.fabric, this.descriptionProduct, this.manual, this.style, this.pattern);
         Product product = new Product();
         product.setId(this.id);
-        product.setCategory(this.category);
+        product.setTypeProduct(this.typeProduct);
         product.setDescription(description);
         product.setProductName(this.productName);
         product.setPrice(this.price);

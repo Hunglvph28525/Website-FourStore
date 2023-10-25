@@ -19,14 +19,14 @@ public class SizeServiceImpl implements SizeService {
         return sizeRepository.findAll();
     }
 
-    @Override
-    public void add(Size size) {
-        sizeRepository.save(size);
-
-    }
 
     @Override
     public Size detail(Integer id) {
         return sizeRepository.getById(id);
+    }
+
+    @Override
+    public void save(Size size) {
+        sizeRepository.save(size);
     }
 }

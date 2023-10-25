@@ -34,6 +34,7 @@
 
                             <div class="form-group">
                                 <label for="email">Email</label>
+                                <span th:text="${emailExists}" class="text-danger"></span>
                                 <span th:errors="*{email}" class="text-danger"></span>
                                 <input th:field="*{email}" class="form-control" type="text" id="email"  placeholder="email">
                             </div>

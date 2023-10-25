@@ -20,9 +20,8 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
-    public void add(Color color) {
+    public void save(Color color) {
         colorRepository.save(color);
-
     }
 
     @Override

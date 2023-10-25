@@ -46,7 +46,7 @@
             <div class="row">
                 <div class="col-12">
                     <div>
-                        <h4 class="header-title mb-3">Danh mục</h4>
+                        <h4 class="header-title mb-3">Loại Sản Phẩm</h4>
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="col-lg-8">
 
 
-                    <h5 class="font-14">Danh sách Danh mục</h5>
+                    <h5 class="font-14">Danh sách Loại Sản Phẩm</h5>
 
                     <table id="responsive-datatable"
                            class="table table-bordered table-bordered dt-responsive nowrap"
@@ -63,25 +63,21 @@
                         <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Tên Danh mục</th>
-                            <th>Số loại Sản phẩm</th>
-                            <th>Tổng số sản phẩm</th>
+                            <th>Tên Loại</th>
+                            <th>Danh Mục</th>
+                            <th>Số lượng sản phẩm</th>
                             <th>Hành động</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <tr th:each="x : ${list}">
-                            <td th:text="${x.id}"></td>
-                            <td th:text="${x.name}"></td>
-                            <td th:text="${x.countType}"></td>
-                            <td th:text="${x.countProduct}"></td>
+                            <td th:text="${x.typeProduct.id}"></td>
+                            <td th:text="${x.typeProduct.name}"></td>
+                            <td th:text="${x.category.categoryName}"></td>
+                            <td th:text="${x.count}"></td>
                             <td>
-                                <a th:href="@{'/admin/category/'+${x.id}}"><i class="ti-info-alt ml-4"></i></a>
-                                <span th:if="${x.countType == 0}">
-                                    <a th:href="@{'/admin/category/delete/'+${x.id}}"><i class="ti-trash ml-4" style="color: red"></i></a>
-                                </span>
-
+                                <a th:href="@{'/admin/product-type/'+${x.id}}"><i class="ti-info-alt ml-4"></i></a>
                             </td>
                         </tr>
                         </tbody>
@@ -89,19 +85,29 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <h5 class="font-14">Thêm Danh mục</h5>
-                    <form name="form" class="form-horizontal" method="post" th:action="@{/admin/category/form}"
-                          th:object="${category}">
+                    <h5 class="font-14">Thông tin </h5>
+                    <form name="form" class="form-horizontal" method="post" th:action="@{/admin/product-type/form}"
+                          th:object="${productType}">
                         <div class="form-group">
-                            <label class="col-md-12 col-form-label">ID Danh Mục</label>
+                            <label class="col-md-12 col-form-label">ID Loại</label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" name="id" th:field="*{id}" readonly/>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12 col-form-label">Tên Danh Mục</label>
+                            <label class="col-md-12 col-form-label">Tên Loại</label>
                             <div class="col-md-12">
                                 <input type="text" class="form-control" name="name" th:field="*{name}" required/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12 col-form-label">Danh Mục</label>
+                            <div class="col">
+                                <select class="custom-select" th:field="*{category}">
+                                    <option th:each="x : ${categorys}"
+                                            th:value="${x.id}"
+                                            th:text="${x.categoryName}"></option>
+                                </select>
                             </div>
                         </div>
                         <div class="col py-3">

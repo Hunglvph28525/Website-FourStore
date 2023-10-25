@@ -12,10 +12,10 @@
 
     <div class="user-box">
         <div class="float-left">
-            <img src="/assets/images/users/avatar-1.jpg" alt="" class="avatar-md rounded-circle">
+            <img th:src="@{${user.avatar}}" alt="" class="avatar-md rounded-circle">
         </div>
         <div class="user-info">
-            <a href="#">Lê Việt Hưng</a>
+            <a href="/admin/dashboard" th:text="${user.name}"></a>
             <p class="text-muted m-0">Administrator</p>
         </div>
     </div>
@@ -39,13 +39,14 @@
                 </a>
                 <ul class="nav-second-level" aria-expanded="false">
                     <li><a href="/admin/product">Sản phẩm</a></li>
-                    <li><a href="/admin/size-color">Kích cỡ màu sắc</a></li>
+                    <li><a href="/admin/size">Kích cỡ</a></li>
+                    <li><a href="/admin/color">Màu sắc</a></li>
                     <li><a href="/admin/product-type">Loại hàng</a></li>
                 </ul>
             </li>
             <li>
                 <a href="/admin/category">
-                    <i class="ti-package"></i>
+                    <i class="mdi mdi-view-list"></i>
                     <span> Danh mục </span>
                 </a>
             </li>

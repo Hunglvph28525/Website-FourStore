@@ -8,7 +8,7 @@ public interface SizeService {
 
     List<Size> getAll();
 
-    void add(Size size);
-
     Size detail(Integer id);
+
+    void save(Size size);
 }

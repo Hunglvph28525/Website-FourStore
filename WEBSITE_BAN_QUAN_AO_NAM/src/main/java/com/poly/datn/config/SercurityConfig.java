@@ -4,7 +4,6 @@ import com.poly.datn.entity.Role;
 import com.poly.datn.entity.User;
 import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.repository.UserRepository;
-import com.poly.datn.service.RoleService;
 import com.poly.datn.service.UserService;
 import com.poly.datn.service.impl.UserServiceImpl;
 import com.poly.datn.util.RoleUtil;
@@ -19,11 +18,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -48,15 +45,16 @@ public class SercurityConfig {
             .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
                 .hasRole("ADMIN")
                 .anyRequest().permitAll()
-
             )
-            .formLogin(c -> c.loginPage("/login"))
+            .formLogin(c -> c.loginPage("/login")
+                .successForwardUrl("/").permitAll())
+            .logout(lo -> lo.logoutUrl("/logout").permitAll())
             .httpBasic(Customizer.withDefaults())
             .build();
+//        return http.csrf().disable().authorizeRequests().anyRequest().permitAll().and().build();
     }
 
     @Bean
-
     public DaoAuthenticationProvider authenticationProvider(UserDetailsService userDetailsService,
                                                             PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -66,27 +64,28 @@ public class SercurityConfig {
         return authProvider;
     }
 
-
     @Bean
     public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             // initial roles
             if (roleRepository.count() < 2) {
                 roleRepository.saveAll(Arrays.asList(Role.builder()
-                        .roleName("ROLE_USER")
-                        .build(),
-                    Role.builder()
-                        .roleName("ROLE_ADMIN")
-                        .build()
+                                .roleName("ROLE_USER")
+                                .build(),
+                        Role.builder()
+                                .roleName("ROLE_ADMIN")
+                                .build()
                 ));
             }
             // initial default user "admin"
-            if (userRepository.count() == 0)
+            if (userRepository.getByUser("admin").isEmpty())
                 userRepository.save(User.builder()
-                    .username("admin")
-                    .password(passwordEncoder.encode("123456"))
-                    .roles(Collections.singletonList(roleRepository
-                        .getByName(RoleUtil.ADMIN.getValue())))
+                        .username("admin")
+                        .password(passwordEncoder.encode("123456"))
+                        .avatar("/assets/images/users/avatar-2.jpg")
+                        .name("FourStore Shop")
+                        .roles(Collections.singletonList(roleRepository
+                                .getByName(RoleUtil.ADMIN.getValue())))
                         .build()
                 );
         };

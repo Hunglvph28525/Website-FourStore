@@ -15,5 +15,4 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
     @Query("select new com.poly.datn.dto.CategoryDto(c) from Category c ")
     List<CategoryDto> getAll();
 
-    Category getCoAoById(Long id);
 }

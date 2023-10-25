@@ -1,6 +1,7 @@
 package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.PromotionDto;
+import com.poly.datn.entity.Product;
 import com.poly.datn.entity.Promotion;
 import com.poly.datn.repository.PromotionRepository;
 import com.poly.datn.service.PromotionService;
@@ -36,9 +37,19 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public List<PromotionDto> getAll() {
-        List<PromotionDto> list = new ArrayList<>();
-        List<Promotion> promotions = promotionRepository.findAll();
-        promotions.stream().forEach(promotion -> list.add(new PromotionDto(promotion)));
-        return list;
+//        List<PromotionDto> list = new ArrayList<>();
+//        List<Promotion> promotions = promotionRepository.findAll();
+//        promotions.stream().forEach(promotion -> list.add(new PromotionDto(promotion)));
+
+        return promotionRepository.findAllDto();
     }
+
+    @Override
+    public void updateP(PromotionDto dto, Long id) {
+        Promotion promotion = dto.promotion();
+        promotion.setId(id);
+        promotionRepository.save(promotion);
+    }
+
+
 }
