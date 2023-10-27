@@ -1,23 +1,22 @@
 package com.poly.datn.controller.admin;
 
-import com.poly.datn.dto.CategoryDto;
-import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.PromotionDto;
-import com.poly.datn.dto.TtpeProductDto;
-import com.poly.datn.entity.Category;
+import com.poly.datn.entity.Product;
 import com.poly.datn.entity.Promotion;
-import com.poly.datn.service.CategoryService;
 import com.poly.datn.service.ProductService;
 import com.poly.datn.service.PromotionService;
-import com.poly.datn.service.TypeProductService;
 import com.poly.datn.util.UserUltil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,17 +30,10 @@ public class PromotionController {
     @Autowired
     private ProductService productService;
 
-    @Autowired
-    private TypeProductService typeProductService;
-
-    @Autowired
-    private CategoryService categoryService;
-
     @GetMapping("/promotion")
-    public String promition(@RequestParam(defaultValue = "0", name = "page") Integer pageNum, Model model) {
-//        Page<Promotion> page = service.phanTrang(pageNum, 5);
+    public String promition( Model model) {
         model.addAttribute("list", service.getAll());
-//        model.addAttribute("list", service.getAll());
+        model.addAttribute("product", productService.getProductNoPromotion());
         model.addAttribute("object", new Promotion());
         model.addAttribute("user", UserUltil.getUser());
         return "admin/promotion/promotion";
@@ -50,6 +42,7 @@ public class PromotionController {
     @PostMapping("/promotion/add")
     public String addPromition(@Valid @ModelAttribute("object") PromotionDto dto, Model model, BindingResult result) {
         if (result.hasErrors()) {
+            model.addAttribute("product", productService.getProductNoPromotion());
             model.addAttribute("user", UserUltil.getUser());
             return "admin/promotion/promotion";
         }
@@ -59,9 +52,10 @@ public class PromotionController {
 
     @GetMapping("/promotion/{id}")
     public String promotionDetail(@PathVariable Long id, Model model) {
-        Promotion promotion = service.detail(id);
-        model.addAttribute("list", promotion);
+        PromotionDto promotion = new PromotionDto(service.detail(id));
+        model.addAttribute("promotion", promotion);
         model.addAttribute("user", UserUltil.getUser());
+        model.addAttribute("product", productService.getProductNoPromotion());
         return "/admin/promotion/promotion-update";
     }
 
@@ -72,30 +66,25 @@ public class PromotionController {
         return "redirect:/admin/promotion";
     }
 
-    @GetMapping("/promotion/update/{id}")
-    public String newProduct(Model model, @PathVariable Long id) {
-
-        Promotion promotion = service.detail(id);
-        model.addAttribute("l", new PromotionDto(promotion));
-        model.addAttribute("object", new TtpeProductDto());
-
-
-        model.addAttribute("ob", new CategoryDto());
-
-        model.addAttribute("list", productService.getAll());
-        model.addAttribute("types", typeProductService.getAll());
-
-        model.addAttribute("category", categoryService.fillAll());
-        model.addAttribute("user", UserUltil.getUser());
-        return "admin/promotion/promotion-add-product";
+    @GetMapping("/promotion/{id}/delete/{sp}")
+    public String newProduct(Model model, @PathVariable Long id, @PathVariable Long sp) {
+        Product product = productService.detail(sp);
+        product.setPromotion(null);
+        productService.save(product);
+        return "redirect:/admin/promotion/" + id;
     }
 
-    @PostMapping("/promotion/update/product/{id}")
-    public String addPr(@RequestParam("product") List<Long> list, @PathVariable Long id) {
-        service.addProductd(list, id);
-
+    @GetMapping("/promotion/delete/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        service.delete(id);
         return "redirect:/admin/promotion";
+    }
 
+
+    @PostMapping("/promotion/add-product/{id}")
+    public String addPr(@RequestParam(value = "product",required = false) List<Product> products, @PathVariable Long id) {
+        service.addProduct(products, id);
+        return "redirect:/admin/promotion/"+id;
     }
 
 

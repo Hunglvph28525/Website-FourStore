@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -37,9 +38,11 @@ public class Cart {
     @JoinColumn(name = "id_user", referencedColumnName = "id")
     private User user;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "edit_date")
     private LocalDateTime editDate;
 

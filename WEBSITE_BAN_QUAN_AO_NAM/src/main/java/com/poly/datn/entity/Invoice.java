@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -49,6 +50,7 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice",fetch = FetchType.LAZY)
     private Set<Transaction> transactions;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
@@ -62,6 +64,7 @@ public class Invoice {
     @Column(name = "grand_total") // tổng tiền hóa đơn = tổng tiền sản phẩm + phí ship
     private BigDecimal grandTotal;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "payment_date") // ngày thanh toán
     private LocalDateTime paymentDate;
 

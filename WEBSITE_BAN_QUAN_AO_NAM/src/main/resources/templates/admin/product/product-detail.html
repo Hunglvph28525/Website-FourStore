@@ -67,19 +67,23 @@
                                     <th>Màu sắc</th>
                                     <th>Kích cỡ</th>
                                     <th>Số lượng</th>
+                                    <th>Xóa</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="x : ${list}">
                                     <td th:text="${x.id}"></td>
                                     <td th:text="${x.product.productName}"></td>
-                                    <td th:text="${x.color.colorName}"></td>
+                                    <td th:text="${x.color.name}"></td>
                                     <td th:text="${x.size.name}"></td>
                                     <td>
                                         <form th:action="@{${x.product.id}+'/update/'+${x.id}}" method="post" >
                                             <input type="number" th:value="${x.quantity}" id="quantity" name="quantity">
                                             <button class="btn btn-success" type="submit">Save</button>
                                         </form>
+                                    </td>
+                                    <td>
+                                        <a href="#"><i class="ti-info-alt ml-4"></i></a>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<!--header area -->
+<div class="header_area" th:fragment="webheader">
+    <!--header top-->
+    <div class="header_top">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6">
+                <div class="header_links">
+                    <ul>
+                        <li><a href="/lien-he" title="Contact">Liên hệ</a></li>
+                        <li><a href="/tai-khoan" title="My account">Tài khoản</a></li>
+                        <li><a href="/cart" title="My cart">Giỏ hàng</a></li>
+                        <li><a href="/login" title="Login">Đăng nhập</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--header top end-->
+
+    <!--header middel-->
+    <div class="header_middel">
+        <div class="row align-items-center">
+            <!--logo start-->
+            <div class="col-lg-3 col-md-3">
+                <div class="logo">
+                    <a href="index.html"><img src="web/assets/img/logo/logo31kb.png  " style="height: 45px; width: 200px;" alt=""></a>
+                </div>
+            </div>
+            <!--logo end-->
+            <div class="col-lg-9 col-md-9">
+                <div class="header_right_info">
+                    <div class="search_bar">
+                        <form action="#">
+                            <input placeholder="Tìm kiếm" type="text">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="shopping_cart">
+                        <a href="#"><i class="fa fa-shopping-cart"></i> 2 - 200.000đ <i class="fa fa-angle-down"></i></a>
+
+                        <!--mini cart-->
+                        <div class="mini_cart">
+                            <div class="cart_item">
+                                <div class="cart_img">
+                                    <a href="#"><img src="https://aristino.com/Data/ResizeImage/images/product/so-mi-ngan-tay/ass042s3/_TC_4917x500x500x4.webp" alt=""></a>
+                                </div>
+                                <div class="cart_info">
+                                    <a href="#">Áo sơ mi ngắn tay</a>
+                                    <span class="cart_price">115.000đ</span>
+                                    <span class="quantity">Số lượng: 1</span>
+                                </div>
+                                <div class="cart_remove">
+                                    <a title="Remove this item" href="#"><i class="fa fa-times-circle"></i></a>
+                                </div>
+                            </div>
+                            <div class="shipping_price">
+                                <span> Kích cỡ Màu sắc   </span>
+                                <span>  L - trắng  </span>
+                            </div>
+                            <div class="total_price">
+                                <span> Tổng tiền </span>
+                                <span class="prices">  235.000đ  </span>
+                            </div>
+                            <div class="cart_button">
+                                <a href="/thanh-toan"> Thanh toán ngay</a>
+                            </div>
+                        </div>
+                        <!--mini cart end-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--header middel end-->
+    <div class="header_bottom">
+        <div class="row">
+            <div class="col-12">
+                <div class="main_menu_inner">
+                    <div class="main_menu d-none d-lg-block">
+                        <nav>
+                            <ul>
+                                <li class="active"><a href="/">Trang chủ</a>
+                                </li>
+                                <li><a href="shop.html">Sản Phẩm bán chạy</a>
+                                </li>
+
+                                <li><a href="#">Áo</a>
+                                    <div class="mega_menu jewelry">
+                                        <div class="mega_top fix jewelry">
+                                            <div class="mega_items jewelry">
+                                                <ul>
+                                                    <li><a href="#">Áo sơ mi</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><a href="#">Quần</a>
+                                    <div class="mega_menu jewelry">
+                                        <div class="mega_top fix jewelry">
+                                            <div class="mega_items jewelry">
+                                                <!-- <h3><a href="#">Rings</a></h3> -->
+                                                <ul>
+                                                    <li><a href="#">Quần âu</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </li>
+                                <li><a href="/lien-he">Liên hệ</a></li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="mobile-menu d-lg-none">
+                        <nav>
+                            <ul>
+                                <li class="active"><a href="/">Trang chủ</a>
+                                </li>
+                                <li><a href="shop.html">Sản Phẩm bán chạy</a>
+                                </li>
+
+                                <li><a href="#">Áo</a>
+                                    <div class="mega_menu jewelry">
+                                        <div class="mega_top fix jewelry">
+                                            <div class="mega_items jewelry">
+                                                <ul>
+                                                    <li><a href="#">Áo sơ mi</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><a href="#">Quần</a>
+                                    <div class="mega_menu jewelry">
+                                        <div class="mega_top fix jewelry">
+                                            <div class="mega_items jewelry">
+                                                <!-- <h3><a href="#">Rings</a></h3> -->
+                                                <ul>
+                                                    <li><a href="#">Quần âu</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </li>
+                                <!-- <li><a href="blog.html">blog</a>
+                                    <div class="mega_menu jewelry">
+                                        <div class="mega_items jewelry">
+                                            <ul>
+                                                <li><a href="blog-details.html">blog details</a></li>
+                                                <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
+                                                <li><a href="blog-sidebar.html">blog sidebar</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li> -->
+                                <li><a href="/lien-he">Liên hệ</a></li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

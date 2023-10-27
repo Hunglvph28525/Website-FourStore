@@ -17,4 +17,8 @@ public interface ProductService {
     List<ProductDto> getAll();
 
     void updateProduct(ProductDto dto,Long sp);
+
+    List<Product> getProductNoPromotion();
+
+    Product save(Product product);
 }

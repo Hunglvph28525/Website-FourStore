@@ -46,11 +46,14 @@ public class SercurityConfig {
                 .hasRole("ADMIN")
                 .anyRequest().permitAll()
             )
-            .formLogin(c -> c.loginPage("/login")
-                .successForwardUrl("/").permitAll())
-            .logout(lo -> lo.logoutUrl("/logout").permitAll())
-            .httpBasic(Customizer.withDefaults())
-            .build();
+                .formLogin( c -> c.loginPage("/login").defaultSuccessUrl("/home",true))
+                .logout(c -> c.logoutUrl("/logout").logoutSuccessUrl("/home")).build();
+
+//            .formLogin(c -> c.loginPage("/login")
+//                .successForwardUrl("/home"))
+//            .logout(lo -> lo.logoutUrl("/logout"))
+//            .httpBasic(Customizer.withDefaults())
+//            .build();
 //        return http.csrf().disable().authorizeRequests().anyRequest().permitAll().and().build();
     }
 

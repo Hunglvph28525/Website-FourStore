@@ -1,5 +1,6 @@
 package com.poly.datn.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,16 +36,18 @@ public class Promotion {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "promotion")
+    @OneToMany(mappedBy = "promotion",cascade = CascadeType.ALL)
     private List<Product> products;
 
 
     @Column(name = "discount_name",columnDefinition = ("nvarchar(255)"))
     private String discountName;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
@@ -54,9 +57,11 @@ public class Promotion {
     @Column(name = "discount_type")
     private Boolean discountType;  // Kiểu giảm giá
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "create_date")
     private LocalDateTime cteateDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "edit_date")
     private LocalDateTime editDate;
 

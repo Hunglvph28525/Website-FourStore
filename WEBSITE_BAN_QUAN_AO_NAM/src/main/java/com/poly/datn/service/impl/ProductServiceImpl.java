@@ -48,6 +48,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getProductNoPromotion() {
+        return productRepository.getproductNoPromotion();
+    }
+
+    @Override
+    public Product save(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
     public ProductDto getProductById(Long id) {
         return productRepository.getProduct(id);
     }

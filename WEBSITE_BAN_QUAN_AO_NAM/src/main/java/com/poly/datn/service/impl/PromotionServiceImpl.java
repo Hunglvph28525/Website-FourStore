@@ -1,8 +1,10 @@
 package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.PromotionDto;
+import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.Promotion;
+import com.poly.datn.entity.TypeProduct;
 import com.poly.datn.repository.ProductRepository;
 import com.poly.datn.repository.PromotionRepository;
 import com.poly.datn.service.PromotionService;
@@ -31,7 +33,8 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public void add(PromotionDto dto) {
-        promotionRepository.save(dto.promotion());
+        PromotionDto promotionDto = new PromotionDto(promotionRepository.save(dto.promotion()));
+        addProduct(promotionDto);
     }
 
     @Override
@@ -41,9 +44,9 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public List<PromotionDto> getAll() {
-//        List<PromotionDto> list = new ArrayList<>();
-//        List<Promotion> promotions = promotionRepository.findAll();
-//        promotions.stream().forEach(promotion -> list.add(new PromotionDto(promotion)));
+        List<PromotionDto> list = new ArrayList<>();
+        List<Promotion> promotions = promotionRepository.findAll();
+        promotions.stream().forEach(promotion -> list.add(new PromotionDto(promotion)));
 
         return promotionRepository.findAllDto();
     }
@@ -55,8 +58,7 @@ public class PromotionServiceImpl implements PromotionService {
         promotionRepository.save(promotion);
     }
 
-    @Override
-    public void addProduct(PromotionDto promotionDto) {
+    private void addProduct(PromotionDto promotionDto) {
         promotionDto.getProducts().stream().forEach(x -> {
             x.setPromotion(Promotion.builder().id(promotionDto.getId()).build());
             productRepository.save(x);
@@ -66,17 +68,22 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public void addProductd(List<Long> list, Long id) {
-        List<Product> l = new ArrayList<>();
-        for (Long x : list) {
-            l.add(productRepository.getReferenceById(x));
-        }
-        l.stream().forEach(x -> {
+    public void addProduct(List<Product> list, Long id) {
+        if (list == null) return;
+        list.stream().forEach(x -> {
             x.setPromotion(Promotion.builder().id(id).build());
             productRepository.save(x);
         });
 
     }
 
-
+    @Override
+    public void delete(Long id) {
+        List<Product> list = productRepository.getProducByPromotion(id);
+        list.stream().forEach(x -> {
+            x.setPromotion(null);
+            productRepository.save(x);
+        });
+        promotionRepository.deleteById(id);
+    }
 }

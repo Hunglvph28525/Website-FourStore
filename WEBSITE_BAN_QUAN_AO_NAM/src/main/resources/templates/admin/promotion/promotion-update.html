@@ -18,6 +18,20 @@
     <link href="/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css">
     <link href="/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css">
+    <link href="\assets\libs\bootstrap-tagsinput\bootstrap-tagsinput.css" rel="stylesheet">
+    <link href="\assets\libs\switchery\switchery.min.css" rel="stylesheet" type="text/css">
+    <link href="\assets\libs\select2\select2.min.css" rel="stylesheet" type="text/css">
+    <link href="\assets\libs\clockpicker\bootstrap-clockpicker.min.css" rel="stylesheet">
+    <link href="\assets\libs\bootstrap-timepicker\bootstrap-timepicker.min.css" rel="stylesheet" type="text/css">
+    <link href="\assets\libs\bootstrap-colorpicker\bootstrap-colorpicker.min.css" rel="stylesheet" type="text/css">
+    <link href="\assets\libs\bootstrap-datepicker\bootstrap-datepicker.css" rel="stylesheet">
+    <link href="\assets\libs\bootstrap-daterangepicker\daterangepicker.css" rel="stylesheet">
+    <!-- Summernote css -->
+    <link href="\assets\libs\summernote\summernote-bs4.css" rel="stylesheet" type="text/css">
+    <!-- App css -->
+    <link href="\assets\css\bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet">
+    <link href="\assets\css\icons.min.css" rel="stylesheet" type="text/css">
+    <link href="\assets\css\app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet">
 
 </head>
 
@@ -51,91 +65,125 @@
             </div>
 
             <div class="row">
-<!--                <div class="col-lg-9">-->
-
-
-<!--                  -->
-
-
-
-<!--                </div>-->
-                <div class="col-lg-3" style="margin: auto">
+                <div class="col" style="margin: auto">
                     <h5 class="font-14">Update khuyến mãi </h5>
-                    <div class="table-responsive">
-                        <form class="form-horizontal" th:action="@{'/admin/promotion/update/'+${list.id}}" method="post" th:object="${list}">
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Chương trình khuyến mãi</label>
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control" th:field="*{discountName}" placeholder="........."/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Ngày bắt đầu</label>
-                                <div class="col-md-12">
-                                    <input type="datetime" th:field="*{startDate}" class="form-control"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Ngày kết thúc</label>
-                                <div class="col-md-12">
-                                    <input type="datetime" th:field="*{endDate}" class="form-control"/>
-                                </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Giá trị giảm</label>
-                                <div class="col-md-12">
-                                    <input type="number" th:field="*{discountValue}" class="form-control" placeholder="10"/>
+                    <form class="form-horizontal" method="post" th:action="@{'/admin/promotion/update/'+ ${promotion.id}}" th:object="${promotion}">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label class="col col-form-label">Chương trình khuyến mãi</label>
+                                <div class="col">
+                                    <input type="text" class="form-control" th:field="*{discountName}"
+                                           placeholder="........."/>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="col col-form-label">Ngày bắt đầu</label>
+                                <div class="col">
+                                    <input type="datetime-local" th:field="*{startDate}" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="col col-form-label">Ngày kết thúc</label>
+                                <div class="col">
+                                    <input type="datetime-local" th:field="*{endDate}" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="col col-form-label">Giá trị giảm</label>
+                                <div class="col">
+                                    <input type="number" th:field="*{discountValue}" class="form-control"
+                                           placeholder="10"/>
 
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Kiểu giảm giá</label>
-                                <div class="col-md-12">
-                                    <select class="custom-select" th:field="*{discountType}" >
+                            <div class="form-group col-md-6">
+                                <label class="col col-form-label">Kiểu giảm giá</label>
+                                <div class="col">
+                                    <select class="custom-select" th:field="*{discountType}">
                                         <option selected value="true">Giảm theo %</option>
                                         <option value="false">Giảm thẳng</option>
                                     </select>
                                 </div>
                             </div>
 
+                        </div>
+                        <div class=" col py-3">
+                            <button class="btn btn-primary" type="submit">Save</button>
+                            <button type="button" class="btn btn-info waves-effect waves-light ml-3" data-toggle="modal" data-target=".bs-example-modal-lg">Thêm Sản phẩm</button>
 
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Số lượng giảm</label>
-                                <div class="col-md-12">
-                                    <input type="number" th:field="*{quantity}" class="form-control"
-                                           placeholder="10"/>
+                        </div>
 
-                                </div>
-                            </div>
+                    </form>
 
-                            <div class="form-group">
-                                <label class="col-md-12 col-form-label">Trạng
-                                    thái</label>
-                                <div class="custom-control custom-radio ml-5">
-                                    <input type="radio" id="customRadio1" name="customRadio"
-                                           class="custom-control-input" th:field="*{status}" value="Bật">
-                                    <label class="custom-control-label" for="customRadio1">Bật</label>
-                                </div>
-                                <div class="custom-control custom-radio ml-5">
-                                    <input type="radio" id="customRadio2" name="customRadio"
-                                           class="custom-control-input" th:field="*{status}" value="Tắt">
-                                    <label class="custom-control-label" for="customRadio2">Tắt</label>
-                                </div>
-                            </div>
-                            <div class="col py-3">
-                                <button class="btn btn-primary" type="submit">Save</button>
-                            </div>
-
-
-                        </form>
-                    </div>
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12">
 
 
+                    <h5 class="font-14">Danh sách sản phẩm đang áp dụng khuyến mãi</h5>
+
+                    <table id="responsive-datatable"
+                           class="table table-bordered table-bordered dt-responsive nowrap"
+                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                        <tr>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá bán</th>
+                            <th>Loại Sản phẩm</th>
+                            <th>Hành động</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="x : ${promotion.products}">
+                            <td th:text="${x.productName}"></td>
+                            <td th:text="${x.price}"></td>
+                            <td th:text="${x.typeProduct.name}"></td>
+                            <td>
+                                <a th:href="@{'/admin/promotion/'+${promotion.id}+'/delete/'+${x.id}}"><i
+                                        class="ti-trash ml-4" style="color: red"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myLargeModalLabel">Chọn sản phẩm mới</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" th:action="@{'/admin/promotion/add-product/'+${promotion.id}}">
+                            <div class="form-group">
+                                <label class="col col-form-label">Sản phẩm</label>
+                                <div class="col">
+                                    <select class="custom-select" name="product" data-toggle="select2" multiple>
+                                        <option th:each="x : ${product}"
+                                                th:value="${x.id}"
+                                                th:text="${x.productName}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" type="submit">Save</button>
+                        </div>
+                        </form>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+
         <!-- viết các thành phần vào đây -->
 
     </div>
@@ -170,15 +218,34 @@
 <script src="/assets/libs/datatables/buttons.html5.min.js"></script>
 <script src="/assets/libs/datatables/buttons.print.min.js"></script>
 
+<script src="\assets\libs\select2\select2.min.js"></script>
+<script src="\assets\libs\moment\moment.min.js"></script>
+<script src="\assets\libs\bootstrap-tagsinput\bootstrap-tagsinput.min.js"></script>
+<script src="\assets\libs\switchery\switchery.min.js"></script>
+
 <!-- Responsive examples -->
 <script src="/assets/libs/datatables/dataTables.responsive.min.js"></script>
 <script src="/assets/libs/datatables/responsive.bootstrap4.min.js"></script>
-
+<script src="\assets\libs\moment\moment.min.js"></script>
+<script src="\assets\libs\bootstrap-tagsinput\bootstrap-tagsinput.min.js"></script>
+<script src="\assets\libs\switchery\switchery.min.js"></script>
+<script src="\assets\libs\select2\select2.min.js"></script>
+<script src="\assets\libs\parsleyjs\parsley.min.js"></script>
+<script src="\assets\libs\bootstrap-filestyle2\bootstrap-filestyle.min.js"></script>
+<script src="\assets\libs\bootstrap-timepicker\bootstrap-timepicker.min.js"></script>
+<script src="\assets\libs\bootstrap-colorpicker\bootstrap-colorpicker.min.js"></script>
+<script src="\assets\libs\clockpicker\bootstrap-clockpicker.min.js"></script>
+<script src="\assets\libs\bootstrap-datepicker\bootstrap-datepicker.min.js"></script>
+<script src="\assets\libs\bootstrap-daterangepicker\daterangepicker.js"></script>
 <!-- Datatabl/es init -->
 <script src="/assets/js/pages/datatables.init.js"></script>
+<script src="\assets\libs\summernote\summernote-bs4.min.js"></script>
 
+<!-- Init js-->
+<script src="\assets\js\pages\form-advanced.init.js"></script>
 <!-- App js -->
 <script src="/assets/js/app.min.js"></script>
+<script src="\assets\libs\summernote\summernote-bs4.min.js"></script>
 
 
 </body>
