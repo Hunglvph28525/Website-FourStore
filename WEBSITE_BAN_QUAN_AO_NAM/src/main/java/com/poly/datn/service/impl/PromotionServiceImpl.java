@@ -1,10 +1,8 @@
 package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.PromotionDto;
-import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.Promotion;
-import com.poly.datn.entity.TypeProduct;
 import com.poly.datn.repository.ProductRepository;
 import com.poly.datn.repository.PromotionRepository;
 import com.poly.datn.service.PromotionService;

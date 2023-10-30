@@ -10,25 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class StatisticalController {
 
-    @GetMapping("/statictical")
+    @GetMapping("/thong-ke")
     public String hienThi(Model model){
         model.addAttribute("user", UserUltil.getUser());
-        return "admin/statistical/index";
+        return "admin/thongke";
     }
-
-    @GetMapping("/statictical/day")
-    public String theoNgay(Model model){
-        model.addAttribute("user", UserUltil.getUser());
-        return "admin/statistical/thongketheongay";
-    }
-
-    @GetMapping("/statictical/product")
-    public String theoSP(Model model){
-        model.addAttribute("user", UserUltil.getUser());
-        return "admin/statistical/thongketheosanpham";
-    }
-
-
-
 
 }

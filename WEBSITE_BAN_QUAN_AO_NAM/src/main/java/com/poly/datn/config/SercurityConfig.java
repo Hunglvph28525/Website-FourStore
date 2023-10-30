@@ -40,21 +40,21 @@ public class SercurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
-                .hasRole("ADMIN")
-                .anyRequest().permitAll()
-            )
-                .formLogin( c -> c.loginPage("/login").defaultSuccessUrl("/home",true))
-                .logout(c -> c.logoutUrl("/logout").logoutSuccessUrl("/home")).build();
+//        return http
+//            .csrf(AbstractHttpConfigurer::disable)
+//            .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
+//                .hasRole("ADMIN")
+//                .anyRequest().permitAll()
+//            )
+//                .formLogin( c -> c.loginPage("/login").defaultSuccessUrl("/home",true))
+//                .logout(c -> c.logoutUrl("/logout").logoutSuccessUrl("/home")).build();
 
 //            .formLogin(c -> c.loginPage("/login")
 //                .successForwardUrl("/home"))
 //            .logout(lo -> lo.logoutUrl("/logout"))
 //            .httpBasic(Customizer.withDefaults())
 //            .build();
-//        return http.csrf().disable().authorizeRequests().anyRequest().permitAll().and().build();
+        return http.csrf().disable().authorizeRequests().anyRequest().permitAll().and().build();
     }
 
     @Bean
@@ -67,30 +67,30 @@ public class SercurityConfig {
         return authProvider;
     }
 
-    @Bean
-    public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
-            // initial roles
-            if (roleRepository.count() < 2) {
-                roleRepository.saveAll(Arrays.asList(Role.builder()
-                                .roleName("ROLE_USER")
-                                .build(),
-                        Role.builder()
-                                .roleName("ROLE_ADMIN")
-                                .build()
-                ));
-            }
-            // initial default user "admin"
-            if (userRepository.getByUser("admin").isEmpty())
-                userRepository.save(User.builder()
-                        .username("admin")
-                        .password(passwordEncoder.encode("123456"))
-                        .avatar("/assets/images/users/avatar-2.jpg")
-                        .name("FourStore Shop")
-                        .roles(Collections.singletonList(roleRepository
-                                .getByName(RoleUtil.ADMIN.getValue())))
-                        .build()
-                );
-        };
-    }
+//   @Bean
+//                public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+//                    return args -> {
+//                        // initial roles
+//                        if (roleRepository.count() < 2) {
+//                            roleRepository.saveAll(Arrays.asList(Role.builder()
+//                                            .roleName("ROLE_USER")
+//                                            .build(),
+//                                    Role.builder()
+//                                            .roleName("ROLE_ADMIN")
+//                                            .build()
+//                ));
+//            }
+//            // initial default user "admin"
+//            if (userRepository.getByUser("admin").isEmpty())
+//                userRepository.save(User.builder()
+//                        .username("admin")
+//                        .password(passwordEncoder.encode("123456"))
+//                        .avatar("/assets/images/users/avatar-2.jpg")
+//                        .name("FourStore Shop")
+//                        .roles(Collections.singletonList(roleRepository
+//                                .getByName(RoleUtil.ADMIN.getValue())))
+//                        .build()
+//                );
+//        };
+//    }
 }

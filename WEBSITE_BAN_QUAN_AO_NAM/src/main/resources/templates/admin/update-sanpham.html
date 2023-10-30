@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main1.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+    <style>
+
+        #imageContainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .imagePreview {
+            margin: 10px;
+            position: relative;
+        }
+
+
+        .deleteButton {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .uploadButton {
+
+            cursor: pointer;
+            background-color: #0f083b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body onload="time()" class="app sidebar-mini rtl">
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/product">Danh sách sản phẩm</a></li>
+            <li class="breadcrumb-item"><a href="#">Chỉnh sửa sản phẩm</a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Chỉnh sửa sản phẩm</h3>
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addthuonghieu"><i
+                                class="fas fa-folder-plus"></i> Thêm thương hiệu</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
+                                class="fas fa-folder-plus"></i> Thêm danh mục</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addloaihang"><i
+                                class="fas fa-folder-plus"></i> Thêm loại hàng</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addsize"><i
+                                class="fas fa-folder-plus"></i> Thêm kích cỡ</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addcolor"><i
+                                class="fas fa-folder-plus"></i> Thêm màu sắc</a>
+                    </div>
+                </div>
+                <form class="row" th:action="@{'/admin/product/update/'+${product.id}}" th:object="${product}"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Mã sản phẩm </label>
+                        <input class="form-control" type="text" readonly th:field="*{maSp}"
+                               placeholder="nhập mã hoặc tự sinh">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Tên sản phẩm</label>
+                        <input class="form-control" type="text" required th:field="*{name}">
+                    </div>
+                    <div class="form-group  col-md-4">
+                        <label class="control-label">Giá bán</label>
+                        <input class="form-control" type="number" min="10000" max="1000000000" required
+                               th:field="*{price}">
+                    </div>
+                    <div class="form-group col-md-4 ">
+                        <label for="exampleSelect2" class="control-label">Loại sản phẩm</label>
+                        <select class="form-control" id="exampleSelect2" required th:field="*{typeProduct}">
+                            <option th:each="x : ${types}" th:value="${x.id}" th:text="${x.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Họa tiết</label>
+                        <input class="form-control" type="text" required th:field="*{pattern}">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Kiểu dáng</label>
+                        <input class="form-control" type="text" required th:field="*{style}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Chất liệu</label>
+                        <input class="form-control" type="text" required th:field="*{fabric}">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label class="control-label">Hướng dẫn giặt</label>
+                        <input class="form-control" type="text" required th:field="*{manual}">
+                    </div>
+                    <div class="form-group col-md-3 ">
+                        <label for="exampleSelect1" class="control-label">Thương hiệu</label>
+                        <select class="form-control" id="exampleSelect1" th:field="*{brand}" required>
+                            <option th:each="x : ${brands}" th:value="${x.id}" th:text="${x.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3 ">
+                        <label for="exampleSelect" class="control-label">Trạng thái</label>
+                        <select class="form-control" id="exampleSelect" required th:field="*{status}">
+                            <option th:value="on">Hoạt dộng</option>
+                            <option th:value="off">Tạm ngưng</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Ảnh sản phẩm</label>
+                        <!-- Hiển thị ảnh từ listanh -->
+                        <div class="row">
+                            <div th:each="image, iterStat : ${listanh}" class="imagePreview col-md-2">
+                                <img th:src="${image.url}" style="max-width: 200px; max-height: 200px;"/>
+                                <a th:href="@{'/admin/product/'+${product.id}+'/deleteimg/'+${image.id}}"
+                                   class="deleteButton">x</a>
+                            </div>
+                            <div id="imageContainer">
+                                <div class="imagePreview">
+                                </div>
+
+                            </div>
+                        </div>
+                        <label for="fileInput" class="uploadButton">
+                            <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
+                        </label>
+                        <input type="file" name="files[]" id="fileInput" min="1" accept="image/*" multiple
+                               style="display: none;" th:field="*{files}">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Mô tả sản phẩm</label>
+                        <textarea class="form-control" name="mota" id="mota"
+                                  th:field="*{descriptionProduct}"></textarea>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-save mr-2 " type="submit" onsubmit="return validateForm()">Lưu lại</button>
+                        <a class="btn btn-cancel ml-2" href="/admin/product">Hủy bỏ</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Chỉnh sửa Chi tiết sản phẩm</h3>
+
+                <form enctype="multipart/form-data" action="/admin/product/update-detail" method="post">
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Màu sắc</th>
+                            <th>Kích cỡ</th>
+                            <th>Số lượng</th>
+                            <th>Giá tiền</th>
+                            <th>Trạng thái</th>
+                            <th>Chức năng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="x, iterStat : ${productDetails}">
+                            <td><input type="number" class="form-control" name="id" th:value="${x.id}" readonly/></td>
+                            <td th:text="${x.product.productName}"></td>
+                            <td th:text="${x.color.name}"></td>
+                            <td th:text="${x.size.name}"></td>
+                            <td><input class="form-control" type="number" required min="0" max="200000" name="quantity"
+                                       th:value="${x.quantity}"/></td>
+                            <td><input class="form-control" type="number" required name="price" min="10000" max="1000000000"
+                                       th:value="${x.price}"/></td>
+                            <td><select class="form-control" id="exampleSelect" required name="status" th:value="${x.status}">
+                                <option th:value="on" th:selected="${x.status == 'on'}">Hoạt dộng</option>
+                                <option th:value="off" th:selected="${x.status == 'off'}">Tạm ngưng</option>
+                            </select></td>
+                            <td>
+                                <a class="btn btn-primary btn-sm trash delete-link"
+                                   th:href="@{'/admin/product/delete/'+${x.id}}"
+                                   title="Xóa"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-save mr-2 " type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel ml-2" href="/admin/product">Hủy bỏ</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!--
+MODAL DANH MỤC
+-->
+<div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm mới danh mục </h5>
+              </span>
+                </div>
+                <form action="/admin/product/add-category" method="post">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Nhập tên danh mục mới</label>
+                        <input class="form-control" name="name" type="text" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Danh mục hiện đang có</label>
+                        <ul style="padding-left: 20px;">
+                            <li th:each="x : ${categorys}" th:text="${x.name}"></li>
+                        </ul>
+                    </div>
+                    <BR>
+                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </form>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addthuonghieu" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group  col-lg-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm mới thương hiệu </h5>
+              </span>
+                </div>
+                <form action="/admin/product/add-brand" enctype="multipart/form-data" method="post">
+                    <div class="form-group col-lg-12">
+                        <label class="control-label">Nhập tên thương hiệu mới</label>
+                        <input class="form-control" name="name" type="text" required>
+                    </div>
+                    <div class="form-group col-lg-12 ">
+                        <label for="exampleSelect" class="control-label">Chọn logo</label>
+                        <input class="form-control" name="file" type="file" required>
+                    </div>
+                    <div class="form-group col-lg-12">
+                        <label class="control-label">Thương hiệu hiện đang có</label>
+                        <ul style="padding-left: 20px;">
+                            <li th:each="x : ${brands}" th:text="${x.name}"></li>
+                        </ul>
+                    </div>
+                    <BR>
+                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </form>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--
+MODAL
+-->
+<div class="modal fade" id="addloaihang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col">
+                    <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm mới Loại hàng </h5>
+              </span>
+                    </div>
+                    <form action="/admin/product/add-type" method="post">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Nhập tên loại hàng mới</label>
+                            <input class="form-control" name="name" type="text" required>
+                        </div>
+                        <div class="form-group col-md-12 ">
+                            <label for="exampleSelect" class="control-label">Thuộc danh mục</label>
+                            <select class="form-control" name="category" id="exampleSelect">
+                                <option th:each="x : ${categorys}"
+                                        th:value="${x.id}" th:text="${x.name}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Loại hàng hiện đang có</label>
+                            <ul style="padding-left: 20px;">
+                                <li th:each="x : ${types}" th:text="${x.name}"></li>
+                            </ul>
+                        </div>
+                        <BR>
+                        <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                        <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                        <BR>
+                    </form>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addsize" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm mới kích cỡ </h5>
+              </span>
+                </div>
+                <form action="/admin/product/add-size" method="post">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Nhập tên kích cỡ mới</label>
+                        <input class="form-control" name="name" type="text" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Kích cỡ hiện đang có</label>
+                        <ul style="padding-left: 20px;">
+                            <li th:each="x : ${sizes}" th:text="${x.name}"></li>
+                        </ul>
+                    </div>
+                    <BR>
+                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </form>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addcolor" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm mới màu sắc </h5>
+              </span>
+                </div>
+                <form action="/admin/product/add-color" method="post">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Nhập tên màu sắc mới</label>
+                        <input class="form-control" name="name" type="text" required>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Màu sắc hiện đang có</label>
+                        <ul style="padding-left: 20px;">
+                            <li th:each="x : ${colors}" th:text="${x.name}"></li>
+                        </ul>
+                    </div>
+                    <BR>
+                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </form>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/popper.min.js"></script>
+<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/main1.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/assets/js/plugins/pace.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
+
+<!--===============================================================================================-->
+<script type="text/javascript">
+    //Thời Gian
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+    }
+</script>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const imageContainer = document.getElementById('imageContainer');
+
+    fileInput.addEventListener('change', () => {
+        // Kiểm tra và giới hạn số lượng tệp được chọn
+        if (fileInput.files.length > 5) {
+            alert('Chỉ được chọn tối đa 5 ảnh.');
+            fileInput.value = ''; // Xóa chọn tệp
+            return;
+        }
+
+        // Xóa các ảnh hiện có
+        while (imageContainer.firstChild) {
+            imageContainer.removeChild(imageContainer.firstChild);
+        }
+
+        const files = fileInput.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const imagePreview = document.createElement('div');
+            imagePreview.className = 'imagePreview';
+
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '200px';
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'x';
+            deleteButton.className = 'deleteButton';
+            deleteButton.addEventListener('click', () => {
+                imageContainer.removeChild(imagePreview);
+            });
+
+            imagePreview.appendChild(img);
+            imagePreview.appendChild(deleteButton);
+
+            imageContainer.appendChild(imagePreview);
+        }
+    });
+</script>
+<script>
+    function validateForm() {
+        // Lấy các trường dữ liệu từ form
+        var maSp = document.getElementById("maSp").value;
+        var name = document.getElementById("name").value;
+        var price = document.getElementById("price").value;
+        var files = document.getElementById("fileInput").files;
+
+        // Kiểm tra điều kiện và hiển thị thông báo lỗi nếu cần
+        if (maSp === '' || name === '' || price === '') {
+            alert('Vui lòng điền đầy đủ thông tin sản phẩm.');
+            return false; // Ngăn form được gửi đi
+        }
+
+        if (!files || files.length === 0) {
+            alert('Vui lòng chọn ít nhất một ảnh.');
+            return false; // Ngăn form được gửi đi
+        }
+
+        // Nếu điều kiện đúng, bạn có thể tiến hành submit form
+        return true;
+    }
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".delete-link").on("click", function (event) {
+            event.preventDefault();
+            var deleteLink = $(this).attr("href");
+
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.value) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    window.location.href = deleteLink;
+                }
+            });
+        });
+    });
+</script>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+</body>
+
+</html>

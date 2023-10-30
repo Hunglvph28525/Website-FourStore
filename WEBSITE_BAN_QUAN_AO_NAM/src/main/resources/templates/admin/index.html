@@ -1,381 +1,307 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <title>Dashboard</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Responsive bootstrap 4 admin template" name="description">
-    <meta content="Coderthemes" name="author">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-    <!-- App css -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet">
-    <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css">
-    <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet">
+<head>
+  <title>Quản trị Admin</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Main CSS-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/main1.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+  <!-- or -->
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+  <!-- Font-icon css-->
+  <link rel="stylesheet" type="text/css"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 
 </head>
-
-<body>
-
-
-<!-- Topbar Start -->
-<div th:replace="~{layout/topbar :: topbar}"></div>
-<!-- end Topbar -->
-<!-- ========== Left Sidebar Start ========== -->
-<div th:replace="~{layout/sidebar :: sidebar}"></div>
-<!-- Left Sidebar End -->
-
-<!-- ============================================================== -->
-<!-- Start Page Content here -->
-<!-- ============================================================== -->
-
-<div class="content-page bg-white">
-
-
-    <!-- Start container-fluid -->
-    <div class="content">
-        <div class="container-fluid">
-
-            <div class="row">
-                <div class="col-12">
-                    <div>
-                        <h4 class="header-title mb-3">Welcome !</h4>
-                    </div>
-                </div>
+<body onload="time()" class="app sidebar-mini rtl">
+</style>
+<div th:replace="~{layout/navbar :: navbar}"></div>
+<main class="app-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><a href="#"><b>Bảng điều khiển</b></a></li>
+        </ul>
+        <div id="clock"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Left-->
+    <div class="col-md-12 col-lg-6">
+      <div class="row">
+        <!-- col-6 -->
+        <div class="col-md-6">
+          <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user-account fa-3x'></i>
+            <div class="info">
+              <h4>Tổng khách hàng</h4>
+              <p><b>56 khách hàng</b></p>
+              <p class="info-tong">Tổng số khách hàng được quản lý.</p>
             </div>
-            <!-- end row -->
-
-            <div class="row">
-                <div class="col-12">
-                    <div>
-                        <div class="card-box widget-inline">
-                            <div class="row">
-                                <div class="col-xl-3 col-sm-6 widget-inline-box">
-                                    <div class="text-center p-3">
-                                        <h2 class="mt-2"><i
-                                                class="text-primary mdi mdi-access-point-network mr-2"></i>
-                                            <b>8954</b></h2>
-                                        <p class="text-muted mb-0">Lifetime total sales</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-3 col-sm-6 widget-inline-box">
-                                    <div class="text-center p-3">
-                                        <h2 class="mt-2"><i class="text-teal mdi mdi-airplay mr-2"></i>
-                                            <b>7841</b></h2>
-                                        <p class="text-muted mb-0">Income amounts</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-3 col-sm-6 widget-inline-box">
-                                    <div class="text-center p-3">
-                                        <h2 class="mt-2"><i class="text-info mdi mdi-black-mesa mr-2"></i>
-                                            <b>6521</b></h2>
-                                        <p class="text-muted mb-0">Total users</p>
-                                    </div>
-                                </div>
-
-                                <div class="col-xl-3 col-sm-6">
-                                    <div class="text-center p-3">
-                                        <h2 class="mt-2"><i class="text-danger mdi mdi-cellphone-link mr-2"></i>
-                                            <b>325</b></h2>
-                                        <p class="text-muted mb-0">Total visits</p>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--end row -->
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card-box">
-                        <h5 class="mt-0 font-14">Total Revenue</h5>
-                        <div class="text-center">
-                            <ul class="list-inline chart-detail-list">
-                                <li class="list-inline-item">
-                                    <p class="font-weight-semibold"><i
-                                            class="fa fa-circle mr-2 text-primary"></i>Series A</p>
-                                </li>
-                                <li class="list-inline-item">
-                                    <p class="font-weight-semibold"><i
-                                            class="fa fa-circle mr-2 text-muted"></i>Series B</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div id="dashboard-bar-stacked" class="morris-chart" dir="ltr" style="height: 300px;">
-                        </div>
-                    </div>
-                </div>
-                <!-- end col -->
-
-                <div class="col-lg-6">
-                    <div class="card-box">
-                        <h5 class="mt-0 font-14">Sales Analytics</h5>
-                        <div class="text-center">
-                            <ul class="list-inline chart-detail-list">
-                                <li class="list-inline-item">
-                                    <p class="font-weight-semibold"><i
-                                            class="fa fa-circle mr-2 text-primary"></i>Mobiles</p>
-                                </li>
-                                <li class="list-inline-item">
-                                    <p class="font-weight-semibold"><i
-                                            class="fa fa-circle mr-2 text-info"></i>Tablets</p>
-                                </li>
-                            </ul>
-                        </div>
-                        <div id="dashboard-line-chart" class="morris-chart" dir="ltr" style="height: 300px;">
-                        </div>
-                    </div>
-                </div>
-                <!-- end col -->
-            </div>
-            <!-- end row -->
-
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card-box">
-                        <h5 class="mt-0 font-14 mb-3">Contacts</h5>
-                        <div class="table-responsive">
-                            <table class="table table-hover mails m-0 table table-actions-bar table-centered">
-                                <thead>
-                                <tr>
-                                    <th style="min-width: 95px;">
-
-                                        <div class="checkbox checkbox-single checkbox-primary">
-                                            <input type="checkbox" class="custom-control-input"
-                                                   id="action-checkbox">
-                                            <label class="custom-control-label"
-                                                   for="action-checkbox">&nbsp;</label>
-                                        </div>
-                                    </th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Products</th>
-                                    <th>Start Date</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="checkbox checkbox-primary mr-2 float-left">
-                                            <input id="checkbox2" type="checkbox">
-                                            <label for="checkbox2"></label>
-                                        </div>
-
-                                        <img src="assets\images\users\avatar-2.jpg" alt="contact-img"
-                                             title="contact-img" class="rounded-circle avatar-sm">
-                                    </td>
-
-                                    <td>
-                                        Tomaslau
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-muted">tomaslau@dummy.com</a>
-                                    </td>
-
-                                    <td>
-                                        <b><a href="" class="text-dark"><b>356</b></a>
-                                        </b>
-                                    </td>
-
-                                    <td>
-                                        01/11/2003
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="checkbox checkbox-primary mr-2 float-left">
-                                            <input id="checkbox1" type="checkbox">
-                                            <label for="checkbox1"></label>
-                                        </div>
-
-                                        <img src="assets\images\users\avatar-1.jpg" alt="contact-img"
-                                             title="contact-img" class="rounded-circle avatar-sm">
-                                    </td>
-
-                                    <td>
-                                        Chadengle
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-muted">chadengle@dummy.com</a>
-                                    </td>
-
-                                    <td>
-                                        <b><a href="" class="text-dark"><b>568</b></a>
-                                        </b>
-                                    </td>
-
-                                    <td>
-                                        01/11/2003
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="checkbox checkbox-primary mr-2 float-left">
-                                            <input id="checkbox3" type="checkbox">
-                                            <label for="checkbox3"></label>
-                                        </div>
-
-                                        <img src="assets\images\users\avatar-3.jpg" alt="contact-img"
-                                             title="contact-img" class="rounded-circle avatar-sm">
-                                    </td>
-
-                                    <td>
-                                        Stillnotdavid
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-muted">stillnotdavid@dummy.com</a>
-                                    </td>
-                                    <td>
-                                        <b><a href="" class="text-dark"><b>201</b></a>
-                                        </b>
-                                    </td>
-
-                                    <td>
-                                        12/11/2003
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="checkbox checkbox-primary mr-2 float-left">
-                                            <input id="checkbox4" type="checkbox">
-                                            <label for="checkbox4"></label>
-                                        </div>
-
-                                        <img src="assets\images\users\avatar-4.jpg" alt="contact-img"
-                                             title="contact-img" class="rounded-circle avatar-sm">
-                                    </td>
-
-                                    <td>
-                                        Kurafire
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-muted">kurafire@dummy.com</a>
-                                    </td>
-
-                                    <td>
-                                        <b><a href="" class="text-dark"><b>56</b></a>
-                                        </b>
-                                    </td>
-
-                                    <td>
-                                        14/11/2003
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="checkbox checkbox-primary mr-2 float-left">
-                                            <input id="checkbox5" type="checkbox">
-                                            <label for="checkbox5"></label>
-                                        </div>
-
-                                        <img src="assets\images\users\avatar-5.jpg" alt="contact-img"
-                                             title="contact-img" class="rounded-circle avatar-sm">
-                                    </td>
-
-                                    <td>
-                                        Shahedk
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-muted">shahedk@dummy.com</a>
-                                    </td>
-
-                                    <td>
-                                        <b><a href="" class="text-dark"><b>356</b></a>
-                                        </b>
-                                    </td>
-
-                                    <td>
-                                        20/11/2003
-                                    </td>
-
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <div class="checkbox checkbox-primary mr-2 float-left">
-                                            <input id="checkbox6" type="checkbox">
-                                            <label for="checkbox6"></label>
-                                        </div>
-
-                                        <img src="assets\images\users\avatar-6.jpg" alt="contact-img"
-                                             title="contact-img" class="rounded-circle avatar-sm">
-                                    </td>
-
-                                    <td>
-                                        Adhamdannaway
-                                    </td>
-
-                                    <td>
-                                        <a href="#" class="text-muted">adhamdannaway@dummy.com</a>
-                                    </td>
-
-                                    <td>
-                                        <b><a href="" class="text-dark"><b>956</b></a>
-                                        </b>
-                                    </td>
-
-                                    <td>
-                                        24/11/2003
-                                    </td>
-
-                                </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- end row -->
-
+          </div>
         </div>
+        <!-- col-6 -->
+        <div class="col-md-6">
+          <div class="widget-small info coloured-icon"><i class='icon bx bxs-data fa-3x'></i>
+            <div class="info">
+              <h4>Tổng sản phẩm</h4>
+              <p><b>1850 sản phẩm</b></p>
+              <p class="info-tong">Tổng số sản phẩm được quản lý.</p>
+            </div>
+          </div>
+        </div>
+        <!-- col-6 -->
+        <div class="col-md-6">
+          <div class="widget-small warning coloured-icon"><i class='icon bx bxs-shopping-bags fa-3x'></i>
+            <div class="info">
+              <h4>Tổng đơn hàng</h4>
+              <p><b>247 đơn hàng</b></p>
+              <p class="info-tong">Tổng số hóa đơn bán hàng trong tháng.</p>
+            </div>
+          </div>
+        </div>
+        <!-- col-6 -->
+        <div class="col-md-6">
+          <div class="widget-small danger coloured-icon"><i class='icon bx bxs-error-alt fa-3x'></i>
+            <div class="info">
+              <h4>Sắp hết hàng</h4>
+              <p><b>4 sản phẩm</b></p>
+              <p class="info-tong">Số sản phẩm cảnh báo hết cần nhập thêm.</p>
+            </div>
+          </div>
+        </div>
+        <!-- col-12 -->
+        <div class="col-md-12">
+          <div class="tile">
+            <h3 class="tile-title">Tình trạng đơn hàng</h3>
+            <div>
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>ID đơn hàng</th>
+                  <th>Tên khách hàng</th>
+                  <th>Tổng tiền</th>
+                  <th>Trạng thái</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>AL3947</td>
+                  <td>Phạm Thị Ngọc</td>
+                  <td>
+                    19.770.000 đ
+                  </td>
+                  <td><span class="badge bg-info">Chờ xử lý</span></td>
+                </tr>
+                <tr>
+                  <td>ER3835</td>
+                  <td>Nguyễn Thị Mỹ Yến</td>
+                  <td>
+                    16.770.000 đ
+                  </td>
+                  <td><span class="badge bg-warning">Đang vận chuyển</span></td>
+                </tr>
+                <tr>
+                  <td>MD0837</td>
+                  <td>Triệu Thanh Phú</td>
+                  <td>
+                    9.400.000 đ
+                  </td>
+                  <td><span class="badge bg-success">Đã hoàn thành</span></td>
+                </tr>
+                <tr>
+                  <td>MT9835</td>
+                  <td>Đặng Hoàng Phúc </td>
+                  <td>
+                    40.650.000 đ
+                  </td>
+                  <td><span class="badge bg-danger">Đã hủy </span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- / div trống-->
+          </div>
+        </div>
+        <!-- / col-12 -->
+        <!-- col-12 -->
+        <div class="col-md-12">
+          <div class="tile">
+            <h3 class="tile-title">Khách hàng mới</h3>
+            <div>
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Tên khách hàng</th>
+                  <th>Ngày sinh</th>
+                  <th>Số điện thoại</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>#183</td>
+                  <td>Hột vịt muối</td>
+                  <td>21/7/1992</td>
+                  <td><span class="tag tag-success">0921387221</span></td>
+                </tr>
+                <tr>
+                  <td>#219</td>
+                  <td>Bánh tráng trộn</td>
+                  <td>30/4/1975</td>
+                  <td><span class="tag tag-warning">0912376352</span></td>
+                </tr>
+                <tr>
+                  <td>#627</td>
+                  <td>Cút rang bơ</td>
+                  <td>12/3/1999</td>
+                  <td><span class="tag tag-primary">01287326654</span></td>
+                </tr>
+                <tr>
+                  <td>#175</td>
+                  <td>Hủ tiếu nam vang</td>
+                  <td>4/12/20000</td>
+                  <td><span class="tag tag-danger">0912376763</span></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+        <!-- / col-12 -->
+      </div>
+    </div>
+    <!--END left-->
+    <!--Right-->
+    <div class="col-md-12 col-lg-6">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <h3 class="tile-title">Dữ liệu 6 tháng đầu vào</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <div class="tile">
+            <h3 class="tile-title">Thống kê 6 tháng doanh thu</h3>
+            <div class="embed-responsive embed-responsive-16by9">
+              <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
-    <!-- end container-fluid -->
+    <!--END right-->
+  </div>
 
 
-    <!-- Footer Start -->
-    <div th:replace="~{layout/footer :: footer}"></div>
-    <!-- end Footer -->
+  <div class="text-center" style="font-size: 13px">
+    <p><b>Copyright
+      <script type="text/javascript">
+        document.write(new Date().getFullYear());
+      </script> Phần mềm quản lý bán hàng | SD-66
+    </b></p>
+  </div>
+</main>
 
-</div>
-<!-- end content -->
 
-</div>
-<!-- END content-page -->
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/popper.min.js"></script>
+<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/main.js"></script>
+<!--===============================================================================================-->
+<script src="/assets//assets/js/plugins/pace.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript">
+  var data = {
+    labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6"],
+    datasets: [{
+      label: "Dữ liệu đầu tiên",
+      fillColor: "rgba(255, 213, 59, 0.767), 212, 59)",
+      strokeColor: "rgb(255, 212, 59)",
+      pointColor: "rgb(255, 212, 59)",
+      pointStrokeColor: "rgb(255, 212, 59)",
+      pointHighlightFill: "rgb(255, 212, 59)",
+      pointHighlightStroke: "rgb(255, 212, 59)",
+      data: [20, 59, 90, 51, 56, 100]
+    },
+      {
+        label: "Dữ liệu kế tiếp",
+        fillColor: "rgba(9, 109, 239, 0.651)  ",
+        pointColor: "rgb(9, 109, 239)",
+        strokeColor: "rgb(9, 109, 239)",
+        pointStrokeColor: "rgb(9, 109, 239)",
+        pointHighlightFill: "rgb(9, 109, 239)",
+        pointHighlightStroke: "rgb(9, 109, 239)",
+        data: [48, 48, 49, 39, 86, 10]
+      }
+    ]
+  };
+  var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+  var lineChart = new Chart(ctxl).Line(data);
 
+  var ctxb = $("#barChartDemo").get(0).getContext("2d");
+  var barChart = new Chart(ctxb).Bar(data);
+</script>
+<script type="text/javascript">
+  //Thời Gian
+  function time() {
+    var today = new Date();
+    var weekday = new Array(7);
+    weekday[0] = "Chủ Nhật";
+    weekday[1] = "Thứ Hai";
+    weekday[2] = "Thứ Ba";
+    weekday[3] = "Thứ Tư";
+    weekday[4] = "Thứ Năm";
+    weekday[5] = "Thứ Sáu";
+    weekday[6] = "Thứ Bảy";
+    var day = weekday[today.getDay()];
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+    m = checkTime(m);
+    s = checkTime(s);
+    nowTime = h + " giờ " + m + " phút " + s + " giây";
+    if (dd < 10) {
+      dd = '0' + dd
+    }
+    if (mm < 10) {
+      mm = '0' + mm
+    }
+    today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+    tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+    document.getElementById("clock").innerHTML = tmp;
+    clocktime = setTimeout("time()", "1000", "Javascript");
 
-<!-- Vendor js -->
-<script src="/assets/js/vendor.min.js"></script>
-
-<script src="/assets/libs/morris-js/morris.min.js"></script>
-<script src="/assets/libs/raphael/raphael.min.js"></script>
-<script src="/assets/js/pages/dashboard.init.js"></script>
-
-<!-- App js -->
-<script src="/assets/js/app.min.js"></script>
+    function checkTime(i) {
+      if (i < 10) {
+        i = "0" + i;
+      }
+      return i;
+    }
+  }
+</script>
 
 </body>
 

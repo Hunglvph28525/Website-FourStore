@@ -12,11 +12,16 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Setter
+@Getter
 @Builder
 @Entity
 @Table(name = "ProductDetails")
@@ -43,13 +48,19 @@ public class ProductDetail {
     @Min(0)
     private Integer quantity;
 
+    @Min(1)
+    @Column(name = "price")
+    private BigDecimal price;
+
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
 
-    public ProductDetail(Product product, Color color, Size size, @Min(0) Integer quantity) {
+    public ProductDetail(Product product, Color color, Size size, @Min(0) Integer quantity, @Min(1) BigDecimal price, String status) {
         this.product = product;
         this.color = color;
         this.size = size;
         this.quantity = quantity;
+        this.price = price;
+        this.status = status;
     }
 }

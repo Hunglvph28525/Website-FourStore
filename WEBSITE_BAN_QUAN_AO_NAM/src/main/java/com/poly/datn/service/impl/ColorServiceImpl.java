@@ -24,8 +24,4 @@ public class ColorServiceImpl implements ColorService {
         colorRepository.save(color);
     }
 
-    @Override
-    public Color detail(Integer id) {
-        return colorRepository.getById(id);
-    }
 }

@@ -1,9 +1,9 @@
 package com.poly.datn.service;
 
-import com.poly.datn.dto.ProductDetailDto;
 import com.poly.datn.entity.ProductDetail;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductDetailService {
@@ -16,7 +16,10 @@ public interface ProductDetailService {
 
     ProductDetail detail(Long id);
 
-    List<ProductDetailDto> getDetail(Long id);
-//    void delete(Integer id);
-    void update(Long id,Integer quantity);
+    List<ProductDetail> getDetail(Long id);
+
+    Long delete(Long id);
+
+    void update(List<Long> ids, List<Integer> quantitys, List<BigDecimal> prices, List<String> status);
+
 }

@@ -14,10 +14,10 @@ public class UserUltil {
     private static UserService userService;
 
     public static User getUser(){
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(user.getUsername());
-
-        return user;
-//        return new User();
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        System.out.println(user.getUsername());
+//
+//        return user;
+        return  User.builder().name("Lê Việt Hưng").avatar("https://res.cloudinary.com/dg8hhxkah/image/upload/v1698080470/avartar/vedidtoxs2wn2khvtekq.jpg").build();
     }
 }

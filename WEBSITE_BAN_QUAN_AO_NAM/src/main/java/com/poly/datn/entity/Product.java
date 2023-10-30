@@ -38,9 +38,16 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "maSP",unique = true)
+    private String maSp;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_type_product", referencedColumnName = "id")
     private TypeProduct typeProduct;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_brand", referencedColumnName = "id")
+    private Brand brand;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_description", referencedColumnName = "id")
@@ -62,15 +69,9 @@ public class Product {
     @Column(name = "product_name", columnDefinition = ("nvarchar(255)"))
     private String productName;
 
-    @Column(name = "price_import")
-    @Min(1)
-    private BigDecimal priceImport;
     @Min(1)
     @Column(name = "price")
     private BigDecimal price;
-
-    @Column(name = "qr_code")
-    private String qrCode;
 
     @Column(name = "create_date")
     private Date createDate;

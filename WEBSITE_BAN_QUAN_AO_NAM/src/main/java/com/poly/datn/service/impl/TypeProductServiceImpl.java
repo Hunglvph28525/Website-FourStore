@@ -1,6 +1,5 @@
 package com.poly.datn.service.impl;
 
-import com.poly.datn.dto.TtpeProductDto;
 import com.poly.datn.entity.TypeProduct;
 import com.poly.datn.repository.TypeProductRepository;
 import com.poly.datn.service.TypeProductService;
@@ -13,10 +12,6 @@ import java.util.List;
 public class TypeProductServiceImpl implements TypeProductService {
     @Autowired
     private TypeProductRepository repository;
-    @Override
-    public List<TtpeProductDto> getAllDto() {
-        return repository.getAll();
-    }
 
     @Override
     public void save(TypeProduct typeProduct) {

@@ -10,5 +10,4 @@ public interface ColorService {
 
     void save(Color color);
 
-    Color detail(Integer id);
 }

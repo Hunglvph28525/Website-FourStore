@@ -1,6 +1,5 @@
 package com.poly.datn.service.impl;
 
-import com.poly.datn.dto.ProductDetailDto;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.repository.ProductDetailRepository;
 import com.poly.datn.service.ProductDetailService;
@@ -10,12 +9,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class ProductDetailServiceImpl implements ProductDetailService {
 
-   @Autowired
+    @Autowired
     ProductDetailRepository productDetailRepository;
 
     @Override
@@ -42,19 +42,29 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
-    public List<ProductDetailDto> getDetail(Long id) {
+    public List<ProductDetail> getDetail(Long id) {
         return productDetailRepository.getDetailProduct(id);
     }
 
     @Override
-    public void update(Long id, Integer quantity) {
+    public Long delete(Long id) {
         ProductDetail productDetail = productDetailRepository.getReferenceById(id);
-        productDetail.setQuantity(quantity);
-        if (productDetail.getQuantity()<=0){
-            productDetail.setStatus("0");
-        }else {
-            productDetail.setStatus("1");
-        }
-        productDetailRepository.save(productDetail);
+        Long kq = productDetail.getProduct().getId();
+        productDetailRepository.delete(productDetail);
+        return kq;
     }
+
+    @Override
+    public void update(List<Long> ids, List<Integer> quantitys, List<BigDecimal> prices, List<String> status) {
+        ProductDetail detail = new ProductDetail();
+        for (int i = 0; i < ids.size(); i++) {
+            detail = productDetailRepository.getReferenceById(ids.get(i));
+            detail.setQuantity(quantitys.get(i));
+            detail.setPrice(prices.get(i));
+            detail.setStatus(status.get(i));
+            productDetailRepository.save(detail);
+        }
+    }
+
+
 }

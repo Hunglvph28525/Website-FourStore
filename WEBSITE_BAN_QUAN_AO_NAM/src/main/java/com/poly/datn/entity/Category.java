@@ -36,7 +36,7 @@ public class Category {
     private Set<TypeProduct> typeProducts = new HashSet<>();
 
     @Column(name = "category_name", columnDefinition = ("nvarchar(255)"))
-    private String categoryName;
+    private String name;
 
     @Column(name = "status", columnDefinition = ("nvarchar(255)"))
     private String status;

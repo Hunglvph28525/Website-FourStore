@@ -70,7 +70,7 @@ public class PromotionController {
     public String newProduct(Model model, @PathVariable Long id, @PathVariable Long sp) {
         Product product = productService.detail(sp);
         product.setPromotion(null);
-        productService.save(product);
+//        productService.save(product);
         return "redirect:/admin/promotion/" + id;
     }
 
