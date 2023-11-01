@@ -2,14 +2,17 @@ package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.ProductRequest;
+import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Color;
 import com.poly.datn.entity.Image;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.entity.Size;
+import com.poly.datn.entity.TypeProduct;
 import com.poly.datn.repository.ImageRepository;
 import com.poly.datn.repository.ProductDetailRepository;
 import com.poly.datn.repository.ProductRepository;
+import com.poly.datn.repository.PromotionRepository;
 import com.poly.datn.service.ImageService;
 import com.poly.datn.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +37,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDetailRepository detailRepository;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private PromotionRepository promotionRepository;
 
 
     @Override
@@ -78,12 +84,42 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void save(Long id) {
         Product product = productRepository.getReferenceById(id);
-        if (product.getStatus().equals("on")){
+        if (product.getStatus().equals("on")) {
             product.setStatus("off");
-        }else {
+        } else {
             product.setStatus("on");
         }
         productRepository.save(product);
+    }
+
+    @Override
+    public void updatePromotion(Long id, Category category, TypeProduct type, List<Long> products) {
+        if (category != null) {
+            List<Product> product = productRepository.getProductByCategory(category.getId());
+            product.stream().forEach(x -> {
+                x.setPromotion(promotionRepository.getReferenceById(id));
+            });
+            productRepository.saveAll(product);
+            return;
+        }
+        if (type != null) {
+            List<Product> product = productRepository.getProductByTypeProduct(type.getId());
+            product.stream().forEach(x -> {
+                x.setPromotion(promotionRepository.getReferenceById(id));
+            });
+            productRepository.saveAll(product);
+            return;
+        }
+        if (!products.isEmpty()){
+            List<Product> product = new ArrayList<>();
+            products.stream().forEach(x -> {
+                Product temp = productRepository.getReferenceById(x);
+                temp.setPromotion(promotionRepository.getReferenceById(id));
+                product.add(temp);
+            });
+            productRepository.saveAll(product);
+            return;
+        }
     }
 
     @Override

@@ -348,7 +348,7 @@
     .about_content p {
         font-size: 13px;
         line-height: 22px;
-        margin-bottom: 15p;
+        margin-bottom: 15px;
     }
     .about_content h1 {
         line-height: 23px;
@@ -382,7 +382,7 @@
         padding: 35px 20px 5px;
     }
     .modal-dialog.modal-dialog-centered {
-        min-width: 700px;
+        min-width: 800px;
     }
     .modal_tab_button ul li {
         width: 70px;

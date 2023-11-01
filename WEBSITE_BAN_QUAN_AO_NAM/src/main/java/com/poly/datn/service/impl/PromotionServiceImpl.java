@@ -7,11 +7,9 @@ import com.poly.datn.repository.ProductRepository;
 import com.poly.datn.repository.PromotionRepository;
 import com.poly.datn.service.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,56 +21,33 @@ public class PromotionServiceImpl implements PromotionService {
     @Autowired
     ProductRepository productRepository;
 
-    @Override
-    public Page<Promotion> phanTrang(Integer pageNum, Integer pageNo) {
-        Pageable pageable = PageRequest.of(pageNum, pageNo);
-        return promotionRepository.findAll(pageable);
-    }
 
     @Override
-    public void add(PromotionDto dto) {
-        PromotionDto promotionDto = new PromotionDto(promotionRepository.save(dto.promotion()));
-        addProduct(promotionDto);
+    public void add(Promotion dto, List<Long> products) {
+        dto = promotionRepository.save(dto);
+        Product product = new Product();
+        if (products == null || products.isEmpty()) return;
+        for (Long x : products) {
+            product = productRepository.getReferenceById(x);
+            product.setPromotion(dto);
+            productRepository.save(product);
+        }
     }
+
 
     @Override
     public Promotion detail(Long id) {
         return promotionRepository.getById(id);
     }
 
-    @Override
-    public List<PromotionDto> getAll() {
-        List<PromotionDto> list = new ArrayList<>();
-        List<Promotion> promotions = promotionRepository.findAll();
-        promotions.stream().forEach(promotion -> list.add(new PromotionDto(promotion)));
-
-        return promotionRepository.findAllDto();
-    }
 
     @Override
-    public void updateP(PromotionDto dto, Long id) {
-        Promotion promotion = dto.promotion();
-        promotion.setId(id);
-        promotionRepository.save(promotion);
-    }
-
-    private void addProduct(PromotionDto promotionDto) {
-        promotionDto.getProducts().stream().forEach(x -> {
-            x.setPromotion(Promotion.builder().id(promotionDto.getId()).build());
-            productRepository.save(x);
-        });
-
-
-    }
-
-    @Override
-    public void addProduct(List<Product> list, Long id) {
-        if (list == null) return;
-        list.stream().forEach(x -> {
-            x.setPromotion(Promotion.builder().id(id).build());
-            productRepository.save(x);
-        });
-
+    public void addProduct(List<Long> listPrd, Long id) {
+        for (Long x : listPrd) {
+            Product product = productRepository.getReferenceById(x);
+            product.setPromotion(promotionRepository.getReferenceById(id));
+            productRepository.save(product);
+        }
     }
 
     @Override
@@ -83,5 +58,55 @@ public class PromotionServiceImpl implements PromotionService {
             productRepository.save(x);
         });
         promotionRepository.deleteById(id);
+    }
+
+    @Override
+    public void update(PromotionDto dto) {
+        Promotion promotion = promotionRepository.getReferenceById(dto.getId());
+        promotion.setDiscountValue(dto.getDiscountValue());
+        promotion.setDiscountName(dto.getDiscountName());
+        promotion.setStartDate(dto.getStartDate());
+        promotion.setEndDate(dto.getEndDate());
+        promotion.setEditDate(LocalDateTime.now());
+        promotion.setStatus(dto.promotion().getStatus());
+        promotionRepository.save(promotion);
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        Product product = productRepository.getReferenceById(id);
+        product.setPromotion(null);
+        productRepository.save(product);
+    }
+
+    @Override
+    public void jopUpdateStatus() {
+        List<Promotion> promotions = promotionRepository.findAll();
+        for (Promotion x : promotions) {
+            if (LocalDateTime.now().isBefore(x.getStartDate())) {
+                x.setStatus("0"); //chưa diễn ra
+            } else if (LocalDateTime.now().isAfter(x.getEndDate())) {
+                x.setStatus("2");
+            } else {
+                x.setStatus("1");// đang diễn ra
+            }
+        }
+        promotions = promotionRepository.saveAll(promotions);
+        List<Product> products = new ArrayList<>();
+        for (Promotion x : promotions) {
+            if (x.getStatus().equals("2")){
+                products = x.getProducts();
+                products.stream().forEach( o -> o.setPromotion(null));
+                productRepository.saveAll(products);
+            }
+        }
+    }
+
+    @Override
+    public Object getAll(String status, LocalDateTime start, LocalDateTime end) {
+        if (status.equals("-1") && start == null && end == null) {
+            return promotionRepository.findAllDto();
+        }
+        return promotionRepository.findAllDto(status, start, end);
     }
 }

@@ -2,7 +2,9 @@ package com.poly.datn.service;
 
 import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.ProductRequest;
+import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Product;
+import com.poly.datn.entity.TypeProduct;
 
 import java.util.List;
 
@@ -21,4 +23,6 @@ public interface ProductService {
     void update(ProductRequest request, Long id);
 
     void save(Long id);
+
+    void updatePromotion(Long id, Category category, TypeProduct type, List<Long> products);
 }

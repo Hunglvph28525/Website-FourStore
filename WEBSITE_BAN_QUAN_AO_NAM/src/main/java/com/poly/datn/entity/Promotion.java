@@ -39,7 +39,6 @@ public class Promotion {
     @OneToMany(mappedBy = "promotion",cascade = CascadeType.ALL)
     private List<Product> products;
 
-
     @Column(name = "discount_name",columnDefinition = ("nvarchar(255)"))
     private String discountName;
 
@@ -54,9 +53,6 @@ public class Promotion {
     @Column(name = "discount_value")
     private Integer discountValue; // giá trị giảm
 
-    @Column(name = "discount_type")
-    private Boolean discountType;  // Kiểu giảm giá
-
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "create_date")
     private LocalDateTime cteateDate;
@@ -68,8 +64,7 @@ public class Promotion {
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
 
-    @Min(0)
-    @Max(1000)
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "description", columnDefinition = ("nvarchar(555)"))
+    private String description;
+
 }

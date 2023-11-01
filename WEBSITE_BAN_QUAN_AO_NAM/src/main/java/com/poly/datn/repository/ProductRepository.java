@@ -28,4 +28,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select new com.poly.datn.dto.ProductDto(c) from Product c where c.status = :status or c.typeProduct.category.id = :category or c.typeProduct.id = :type or c.brand.id = :brand order by c.id desc ")
     List<ProductDto> locProduct(String status, Long category,Long type, Long brand);
+
+    @Query("select c from Product c where c.typeProduct.category.id = :id")
+    List<Product> getProductByCategory(Long id);
 }

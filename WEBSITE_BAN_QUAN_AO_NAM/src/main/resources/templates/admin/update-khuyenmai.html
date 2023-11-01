@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main1.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+    <style>
+
+        #imageContainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .imagePreview {
+            margin: 10px;
+            position: relative;
+        }
+
+
+        .deleteButton {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .uploadButton {
+
+            cursor: pointer;
+            background-color: #0f083b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body onload="time()" class="app sidebar-mini rtl">
+<div th:replace="~{layout/navbar :: navbar}"></div>
+
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><a href="/admin/promotion">Danh sách khuyến mãi</a></li>
+            <li class="breadcrumb-item"><a href="#">Sửa khuyến mãi </a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Thêm khuyến mãi mới</h3>
+                <form class="row" th:action="@{'/admin/promotion/'+ ${promotion.id}}" th:object="${promotion}"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Tên Chương trình khuyến mãi</label>
+                        <input class="form-control" type="text" required th:field="*{discountName}">
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label class="control-label">Giá trị giảm</label>
+                        <input class="form-control" type="number" min="0" max="80" required
+                               th:field="*{discountValue}">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Ngày bắt đầu</label>
+                        <input type="datetime-local" required name="start" th:field="*{startDate}" class="form-control" id="start-date"/>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Ngày kết thúc</label>
+                        <input type="datetime-local" required name="end" th:field="*{endDate}" class="form-control" id="end-date"/>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Mô tả</label>
+                        <textarea class="form-control" name="mota" id="mota"
+                                  th:field="*{description}"></textarea>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-save mr-2 " type="submit">Lưu lại</button>
+                        <a class="btn btn-cancel ml-2" href="/admin/promotion">Hủy bỏ</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">Đanh sách sản phẩm đang áp dụng</h3>
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#adddanhmuc"><i
+                                class="fas fa-folder-plus"></i> Thêm sản phẩm theo danh mục</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addloaihang"><i
+                                class="fas fa-folder-plus"></i> Thêm sản phẩm theo loại hàng</a>
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addsize"><i
+                                class="fas fa-folder-plus"></i> Thêm sản phẩm </a>
+                    </div>
+                </div>
+                <table class="table table-hover table-bordered" id="sampleTable">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Mã sản phẩm</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá tiền</th>
+                        <th>Trạng thái</th>
+                        <th class="text-center">Chức năng</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="x,arr : ${product}">
+                        <td th:text="${arr.index}"></td>
+                        <td th:text="${x.maSp}"></td>
+                        <td th:text="${x.productName}"></td>
+                        <td th:text="${x.price } + ' đ'"></td>
+                        <td><span class="badge" th:classappend="${x.status == 'on'?'bg-success':'bg-danger'}"
+                                  th:text="${x.status == 'on'?'HD':'TN'}"></span></td>
+                        <td class="text-center">
+                            <a class="btn btn-primary btn-sm trash delete-link"
+                               th:href="@{${promotion.id}+'/delete-product/'+${x.id}}"
+                               title="Xóa"><i class="fas fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm sản phẩm theo danh mục </h5>
+              </span>
+                </div>
+                <form th:action="'/admin/promotion/add-product/'+${promotion.id}" method="post">
+                    <div class="form-group col-md-12 ">
+                        <label for="exampleSelect" class="control-label">Chọn danh mục</label>
+                        <select class="form-control" name="category" id="exampleSelect">
+                            <option th:each="x : ${categorys}"
+                                    th:value="${x.id}" th:text="${x.name}"></option>
+                        </select>
+                    </div>
+                    <BR>
+                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </form>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addloaihang" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="col">
+                    <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm sản phẩm theo Loại hàng </h5>
+              </span>
+                    </div>
+                    <form th:action="'/admin/promotion/add-product/'+${promotion.id}" method="post">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Chọn loại hàng</label>
+                            <select class="form-control" id="exampleSelect2" required name="type" >
+                                <option th:each="x : ${types}" th:value="${x.id}" th:text="${x.name}"></option>
+                            </select>
+                        </div>
+                        <BR>
+                        <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                        <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                        <BR>
+                    </form>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addsize" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Thêm mới kích cỡ </h5>
+              </span>
+                </div>
+                <form th:action="'/admin/promotion/add-product/'+${promotion.id}" method="post">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Chọn sản phẩm áp dụng</label>
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                            <tr>
+                                <th>Mã sản phẩm</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Giá tiền</th>
+                                <th>Trạng thái</th>
+                                <th class="text-center"><input type="checkbox" id="select-all-checkbox"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x : ${products}">
+                                <td th:text="${x.maSp}"></td>
+                                <td th:text="${x.productName}"></td>
+                                <td th:text="${x.price } + ' đ'"></td>
+                                <td><span class="badge" th:classappend="${x.status == 'on'?'bg-success':'bg-danger'}"
+                                          th:text="${x.status == 'on'?'HD':'TN'}"></span></td>
+                                <td class="text-center">
+                                    <input type="checkbox" name="products" th:value="${x.id}">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <BR>
+                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <BR>
+                </form>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/popper.min.js"></script>
+<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/main1.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/assets/js/plugins/pace.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
+
+<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript">
+    //Thời Gian
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+    }
+</script>
+
+<script type="text/javascript">
+
+    $('#sampleTable').DataTable();
+
+    $(document).ready(function () {
+        $(".delete-link").on("click", function (event) {
+            event.preventDefault();
+            var deleteLink = $(this).attr("href");
+
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.value) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    window.location.href = deleteLink;
+                }
+            });
+        });
+    });
+</script>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.getElementById('select-all-checkbox').addEventListener('change', function () {
+        var checkboxes = document.getElementsByName('products');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = this.checked;
+        }
+    });
+</script>
+<script>
+    // Lấy các phần tử input
+    const startDateInput = document.getElementById('start-date');
+    const endDateInput = document.getElementById('end-date');
+
+    // Sử dụng sự kiện onchange để kiểm tra ngày khi người dùng thay đổi giá trị
+    startDateInput.addEventListener('change', function () {
+        const startDate = new Date(startDateInput.value);
+        const currentDate = new Date();
+
+        if (startDate < currentDate) {
+            alert('Ngày bắt đầu không được nhỏ hơn ngày hiện tại');
+            startDateInput.value = ''; // Xoá giá trị nếu không hợp lệ
+        }
+    });
+
+    endDateInput.addEventListener('change', function () {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (endDate < startDate) {
+            alert('Ngày kết thúc không được nhỏ hơn ngày bắt đầu');
+            endDateInput.value = ''; // Xoá giá trị nếu không hợp lệ
+        }
+    });
+</script>
+</body>
+
+</html>
