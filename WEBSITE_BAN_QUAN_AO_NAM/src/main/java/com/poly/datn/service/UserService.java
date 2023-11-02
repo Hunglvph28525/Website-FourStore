@@ -1,5 +1,7 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.ProductDto;
+import com.poly.datn.dto.UserDto;
 import com.poly.datn.entity.User;
 import com.poly.datn.request.UserSignUpRequest;
 import com.poly.datn.request.forgot_passwort.UserForgotPasswordRequest;
@@ -27,6 +29,10 @@ public interface UserService extends Converter<UserSignUpRequest,User>
 
 
     Optional<User> changePassword(UserForgotPasswordRequest userForgotPasswordRequest);
+
+    List<UserDto> getAll(String status);
+
+    User detailCustomer(Long id);
 }
 
 

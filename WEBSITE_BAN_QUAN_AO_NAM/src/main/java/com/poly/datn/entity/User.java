@@ -66,13 +66,13 @@ public class User implements UserDetails {
     @Column(name = "gender")
     private Boolean gender;
 
-    @Column(name = "phone_number",unique = true, columnDefinition = ("nvarchar(12)"))
+    @Column(name = "phone_number", columnDefinition = ("nvarchar(12)"))
     private String phoneNumber;
 
-    @Column(name = "email", unique = true,columnDefinition = ("nvarchar(255)"))
+    @Column(name = "email", columnDefinition = ("nvarchar(255)"))
     private String email;
 
-    @Column(name = "username",unique = true,columnDefinition = ("varchar(200)"))
+    @Column(name = "username",columnDefinition = ("varchar(200)"))
     private String username;
 
     @Column(name = "password",columnDefinition = ("varchar(255)"))

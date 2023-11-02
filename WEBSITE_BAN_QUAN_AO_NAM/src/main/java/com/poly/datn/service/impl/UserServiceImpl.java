@@ -1,5 +1,6 @@
 package com.poly.datn.service.impl;
 
+import com.poly.datn.dto.UserDto;
 import com.poly.datn.entity.User;
 import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.repository.UserRepository;
@@ -91,5 +92,19 @@ public class UserServiceImpl implements UserService {
         });
 
         return userOptional;
+    }
+
+    @Override
+    public List<UserDto> getAll(String status) {
+        if (status.equals("0")) {
+            return userRepository.getAll();
+        } else {
+            return userRepository.tkStatus(status);
+        }
+    }
+
+    @Override
+    public User detailCustomer(Long id) {
+        return userRepository.getReferenceById(id);
     }
 }

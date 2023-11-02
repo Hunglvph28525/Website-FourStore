@@ -26,10 +26,50 @@
 <main class="app-content">
     <div class="app-title">
         <ul class="app-breadcrumb breadcrumb side">
-            <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhân viên</b></a></li>
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách khách hàng</b></a></li>
         </ul>
         <div id="clock"></div>
     </div>
+
+
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="row ml-3">
+                        <p class="breadcrumb-item active"><b>Lọc khách hàng</b></p>
+                    </div>
+                    <form class="row ml-3" method="get">
+<!--                        <div class="form-group col ">-->
+<!--                            <label for="exampleSelect" class="control-label">Trạng thái</label>-->
+<!--                            <select class="form-control" id="exampleSelect" name="status">-->
+<!--                                <option value="0">&#45;&#45;Chọn trạng thái&#45;&#45;</option>-->
+<!--                                <option value="onKH">Hoạt dộng</option>-->
+<!--                                <option value="offKH">Không hoạt động</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+                        <div class="form-group col ">
+                            <label for="exampleSelect1" class="control-label">Trạng thái</label>
+                            <select class="form-control" id="exampleSelect1" name="status" style="width: 200px">
+                                <option value="0">--Chọn trạng thái--</option>
+                                <option value="onKH">Hoạt động</option>
+                                <option value="offKH">Không hoạt động</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col" style="margin-top: 33px">
+                            <button type="submit" class="btn btn-save ">Lọc</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <div class="row">
         <div class="col-md-12">
@@ -39,8 +79,8 @@
                     <div class="row element-button">
                         <div class="col-sm-2">
 
-                            <a class="btn btn-add btn-sm" href="form-add-nhan-vien.html" title="Thêm"><i class="fas fa-plus"></i>
-                                Tạo mới nhân viên</a>
+                            <a class="btn btn-add btn-sm" href="/admin/view-add/customer" title="Thêm"><i class="fas fa-plus"></i>
+                                Tạo khách hàng mới</a>
                         </div>
                         <div class="col-sm-2">
                             <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập" onclick="myFunction(this)"><i
@@ -68,149 +108,40 @@
                                     class="fas fa-trash-alt"></i> Xóa tất cả </a>
                         </div>
                     </div>
-                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"
-                           id="sampleTable">
+<!--                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0" border="0"-->
+<!--                           id="sampleTable">-->
+                    <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
-                        <tr>
-                            <th width="10"><input type="checkbox" id="all"></th>
-                            <th>ID nhân viên</th>
-                            <th width="150">Họ và tên</th>
-                            <th width="20">Ảnh thẻ</th>
-                            <th width="300">Địa chỉ</th>
-                            <th>Ngày sinh</th>
-                            <th>Giới tính</th>
-                            <th>SĐT</th>
-                            <th>Chức vụ</th>
-                            <th width="100">Tính năng</th>
-                        </tr>
+                        <th>STT</th>
+                        <th>Mã khách hàng</th>
+                        <th>Ảnh</th>
+                        <th>Họ tên</th>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Giới tính</th>
+                        <th>SĐT</th>
+                        <th>Trạng thái</th>
+
                         </thead>
                         <tbody>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>#CD12837</td>
-                            <td>Hồ Thị Thanh Ngân</td>
-                            <td><img class="img-card-person" src="/img-anhthe/1.jpg" alt=""></td>
-                            <td>155-157 Trần Quốc Thảo, Quận 3, Hồ Chí Minh </td>
-                            <td>12/02/1999</td>
-                            <td>Nữ</td>
-                            <td>0926737168</td>
-                            <td>Bán hàng</td>
-                            <td class="table-td-center"><button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                                                onclick="myFunction(this)"><i class="fas fa-trash-alt"></i>
-                            </button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i>
-                                </button>
+                        <tr th:each="x,arr : ${listKH}">
+                            <td th:text="${arr.index}"></td>
+                            <td th:text="${x.Id}"></td>
+                            <td><img th:src="@{${x.avatar}}"  width="80px;"></td>
+                            <td th:text="${x.username}"></td>
+                            <td th:text="${x.name}"></td>
+                            <td th:text="${x.email}"></td>
+                            <td th:text="${x.gender} == true?'Nam':'Nữ'"></td>
+                            <td th:text="${x.phoneNumber}"></td>
+                            <td th:text="${x.status} =='onKH'?'Hoạt động':'Không hoạt động'"></td>
+                            <td>
+                                <a class="btn btn-primary" th:href="@{customer/view-update/{id}(id=${x.Id})}">
+
+                                    <i class="fas fa-edit"></i>
+                                </a>
                             </td>
                         </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check2" value="2"></td>
-                            <td>#SX22837</td>
-                            <td>Trần Khả Ái</td>
-                            <td><img class="img-card-person" src="/img-anhthe/2.jpg" alt=""></td>
-                            <td>6 Nguyễn Lương Bằng, Tân Phú, Quận 7, Hồ Chí Minh</td>
-                            <td>22/12/1999</td>
-                            <td>Nữ</td>
-                            <td>0931342432</td>
-                            <td>Bán hàng</td>
-                            <td><button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                        onclick="myFunction(this)"><i class="fas fa-trash-alt"></i>
-                            </button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check3" value="3"></td>
-                            <td>#LO2871</td>
-                            <td>Phạm Thu Cúc</td>
-                            <td><img class="img-card-person" src="/img-anhthe/3.jpg" alt=""></td>
-                            <td>Số 3 Hòa Bình, Phường 3, Quận 11, Hồ Chí Minh </td>
-                            <td>02/06/1998</td>
-                            <td>Nữ</td>
-                            <td>0931491997</td>
-                            <td>Thu ngân</td>
-                            <td><button class="btn btn-primary btn-sm trash" type="button" title="Xóa" onclick="myFunction()"><i
-                                    class="fas fa-trash-alt"></i>
-                            </button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox"></td>
-                            <td>#SR28746</td>
-                            <td>Trần Anh Khoa</td>
-                            <td><img class="img-card-person" src="/img-anhthe/4.jpg" alt=""></td>
-                            <td>19 Đường Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh </td>
-                            <td>18/02/1995</td>
-                            <td>Nam</td>
-                            <td>0916706633</td>
-                            <td>Tư vấn</td>
-                            <td><button class="btn btn-primary btn-sm trash" type="button" title="Xóa" onclick="myFunction()"><i
-                                    class="fas fa-trash-alt"></i>
-                            </button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox"></td>
-                            <td>#KJS276</td>
-                            <td>Nguyễn Thành Nhân</td>
-                            <td><img class="img-card-person" src="/img-anhthe/5.jpg" alt=""></td>
-                            <td>Số 13, Tân Thuận Đông, Quận 7, Hồ Chí Minh </td>
-                            <td>10/03/1996</td>
-                            <td>Nam</td>
-                            <td>0971038066</td>
-                            <td>Bảo trì</td>
-                            <td><button class="btn btn-primary btn-sm trash" type="button" title="Xóa" onclick="myFunction()"><i
-                                    class="fas fa-trash-alt"></i>
-                            </button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox"></td>
-                            <td>#BS76228</td>
-                            <td>Nguyễn Đặng Trọng Nhân</td>
-                            <td><img class="img-card-person" src="/img-anhthe/6.jpg" alt=""></td>
-                            <td>59C Nguyễn Đình Chiểu, Quận 3, Hồ Chí Minh </td>
-                            <td>23/07/1996</td>
-                            <td>Nam</td>
-                            <td>0846881155</td>
-                            <td>Dịch vụ</td>
-                            <td><button class="btn btn-primary btn-sm trash" type="button" title="Xóa" onclick="myFunction()"><i
-                                    class="fas fa-trash-alt"></i>
-                            </button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa" id="show-emp"
-                                        data-toggle="modal" data-target="#ModalUP"><i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox"></td>
-                            <td>#YUI21376</td>
-                            <td>Nguyễn Thị Mai</td>
-                            <td><img class="img-card-person" src="/img-anhthe/4.jpg" alt=""></td>
-                            <td>Đường Số 3, Tân Tạo A, Bình Tân, Hồ Chí Minh</td>
-                            <td>09/12/2000</td>
-                            <td>Nữ </td>
-                            <td>0836333037</td>
-                            <td>Tư vấn</td>
-                            <td><button class="btn btn-primary btn-sm trash" title="Xóa" onclick="myFunction()"><i
-                                    class="fas fa-trash-alt"></i>
-                            </button>
-                                <button class="btn btn-primary btn-sm edit" title="Sửa" id="show-emp" data-toggle="modal"
-                                        data-target="#ModalUP"><i class="fas fa-edit"></i>
-                                </button>
-                            </td>
-                        </tr>
+
 
                         </tbody>
                     </table>
@@ -287,6 +218,15 @@ MODAL
         </div>
     </div>
 </div>
+
+<div class="text-center" style="font-size: 13px">
+    <p><b>Copyright
+        <script type="text/javascript">
+            document.write(new Date().getFullYear());
+        </script>
+        Phần mềm quản lý bán hàng | SD-66
+    </b></p>
+</div>
 <!--
 MODAL
 -->
@@ -296,54 +236,16 @@ MODAL
 <script src="/assets/js/popper.min.js"></script>
 <script src="/assets/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 <!-- The javascript plugin to display page loading on top-->
 <script src="js/plugins/pace.min.js"></script>
 <!-- Page specific javascripts-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <!-- Data table plugin-->
-<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript">$('#sampleTable').DataTable();</script>
-<script>
-    function deleteRow(r) {
-        var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("myTable").deleteRow(i);
-    }
-    jQuery(function () {
-        jQuery(".trash").click(function () {
-            swal({
-                title: "Cảnh báo",
-
-                text: "Bạn có chắc chắn là muốn xóa nhân viên này?",
-                buttons: ["Hủy bỏ", "Đồng ý"],
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        swal("Đã xóa thành công.!", {
-
-                        });
-                    }
-                });
-        });
-    });
-    oTable = $('#sampleTable').dataTable();
-    $('#all').click(function (e) {
-        $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-        e.stopImmediatePropagation();
-    });
-
-    //EXCEL
-    // $(document).ready(function () {
-    //   $('#').DataTable({
-
-    //     dom: 'Bfrtip',
-    //     "buttons": [
-    //       'excel'
-    //     ]
-    //   });
-    // });
-
+<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+    $('#sampleTable').DataTable();
 
     //Thời Gian
     function time() {
@@ -385,39 +287,77 @@ MODAL
             return i;
         }
     }
-    //In dữ liệu
-    var myApp = new function () {
-        this.printTable = function () {
-            var tab = document.getElementById('sampleTable');
-            var win = window.open('', '', 'height=700,width=700');
-            win.document.write(tab.outerHTML);
-            win.document.close();
-            win.print();
+</script>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script type="text/javascript">
+    $('#sampleTable').DataTable();
+
+    //Thời Gian
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
         }
     }
-    //     //Sao chép dữ liệu
-    //     var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
+</script>
+<script type="text/javascript">
 
-    // copyTextareaBtn.addEventListener('click', function(event) {
-    //   var copyTextarea = document.querySelector('.js-copytextarea');
-    //   copyTextarea.focus();
-    //   copyTextarea.select();
+    $(document).ready(function () {
+        $(".delete-link").on("click", function (event) {
+            event.preventDefault();
+            var deleteLink = $(this).attr("href");
 
-    //   try {
-    //     var successful = document.execCommand('copy');
-    //     var msg = successful ? 'successful' : 'unsuccessful';
-    //     console.log('Copying text command was ' + msg);
-    //   } catch (err) {
-    //     console.log('Oops, unable to copy');
-    //   }
-    // });
-
-
-    //Modal
-    $("#show-emp").on("click", function () {
-        $("#ModalUP").modal({ backdrop: false, keyboard: false })
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.value) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    window.location.href = deleteLink;
+                }
+            });
+        });
     });
 </script>
+
 </body>
 
 </html>

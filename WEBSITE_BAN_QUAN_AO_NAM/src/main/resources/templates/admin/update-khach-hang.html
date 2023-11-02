@@ -96,8 +96,8 @@
 <main class="app-content">
     <div class="app-title">
         <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item">Danh sách nhân viên</li>
-            <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
+            <li class="breadcrumb-item">Danh sách khách hàng</li>
+            <li class="breadcrumb-item"><a href="#">Chỉnh sửa khách hàng</a></li>
         </ul>
     </div>
     <div class="row">
@@ -105,13 +105,13 @@
 
             <div class="tile">
 
-                <h3 class="tile-title">Thêm khách hàng mới</h3>
+                <h3 class="tile-title">Chỉnh sửa khách hàng</h3>
                 <div class="tile-body">
 
-                    <form class="row" action="/admin/customer/add" method="post" th:object="${att}" enctype="multipart/form-data">
+                    <form class="row" th:action="@{/admin/customer/update(id=${att.Id})}" method="post" th:object="${att}" enctype="multipart/form-data">
                         <div class="form-group col-md-4">
                             <label class="control-label">ID khách hàng</label>
-                            <input class="form-control" type="text">
+                            <input class="form-control" type="text" th:field="*{Id}">
                         </div>
                         <div class="form-group col-md-4">
                             <label class="control-label">Họ tên</label>
@@ -146,10 +146,25 @@
                         </div>
 
 
+                        <div class="form-group  col-md-3">
+                            <label class="control-label">Trạng thái</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" th:value="onKH" th:field="*{status}" checked/>
+                                <label class="form-check-label">Hoạt động</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" th:value="offKH" th:field="*{status}"/>
+                                <label class="form-check-label">Không hoạt động</label>
+                            </div>
+                        </div>
+
+
+
+
                         <div class="form-group col-md-3">
                             <label class="control-label">Ảnh</label>
 
-<!--                            <label  class="control-label">Chọn ảnh</label>-->
+                            <!--                            <label  class="control-label">Chọn ảnh</label>-->
                             <input class="form-control" name="file" type="file" required>
 
 
