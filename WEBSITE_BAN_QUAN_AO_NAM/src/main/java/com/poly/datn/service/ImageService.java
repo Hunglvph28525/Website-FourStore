@@ -10,8 +10,6 @@ import java.util.Map;
 public interface ImageService {
     Boolean deleteImage(Long id);
 
-    void add(Long sp, MultipartFile[] files);
-
     Map<?, ?> upload(MultipartFile file, String foder) throws IOException;
 
     List<Image> getListanh(Long id);

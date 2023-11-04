@@ -32,7 +32,6 @@ public class ProductDto {
     private String maSp;
     private String name;
     private String image;
-    private BigDecimal price;
     private Integer quantity;
     private String status;
     private String fabric;
@@ -54,7 +53,6 @@ public class ProductDto {
         this.maSp = x.getMaSp();
         this.name = x.getProductName();
         this.image = image.getUrl();
-        this.price = x.getPrice();
         this.typeProduct = x.getTypeProduct();
         this.quantity = x.getProductDetails().stream().mapToInt(ProductDetail::getQuantity).sum();
         this.status = x.getStatus();

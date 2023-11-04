@@ -10,18 +10,14 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @NoArgsConstructor
@@ -36,11 +32,25 @@ public class Promotion {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "promotion",cascade = CascadeType.ALL)
-    private List<Product> products;
+    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
+    private List<Invoice> invoices;
 
-    @Column(name = "discount_name",columnDefinition = ("nvarchar(255)"))
+    @Column(name = "discount_name", columnDefinition = ("nvarchar(255)"))
     private String discountName;
+
+    @Column(name = "gift_code", columnDefinition = "varchar(8)", unique = true)
+    private String giftCode;
+
+    @Column(name = "min_value")
+    private BigDecimal minValue;
+
+    @Column(name = "max_value")
+    private BigDecimal maxValue;
+
+    @Max(10000)
+    @Min(1)
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "start_date")
@@ -51,20 +61,17 @@ public class Promotion {
     private LocalDateTime endDate;
 
     @Column(name = "discount_value")
+    @Min(0)
+    @Max(90)
     private Integer discountValue; // giá trị giảm
+
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "create_date")
     private LocalDateTime cteateDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
-    @Column(name = "edit_date")
-    private LocalDateTime editDate;
 
-    @Column(name = "status",columnDefinition = ("nvarchar(255)"))
+    @Column(name = "status", columnDefinition = ("nvarchar(255)"))
     private String status;
-
-    @Column(name = "description", columnDefinition = ("nvarchar(555)"))
-    private String description;
 
 }

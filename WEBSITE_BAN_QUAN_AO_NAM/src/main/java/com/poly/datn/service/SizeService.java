@@ -1,6 +1,7 @@
 package com.poly.datn.service;
 
 import com.poly.datn.entity.Size;
+import com.poly.datn.util.MessageUtil;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ public interface SizeService {
 
     Size detail(Integer id);
 
-    void save(Size size);
+    MessageUtil save(Size size);
 }

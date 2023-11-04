@@ -29,10 +29,6 @@ public class Transaction {
     private Long Id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user", referencedColumnName = "id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Id_invoice", referencedColumnName = "code_bill")
     private Invoice invoice;
 

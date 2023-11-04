@@ -1,112 +1,78 @@
 package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.PromotionDto;
-import com.poly.datn.entity.Product;
 import com.poly.datn.entity.Promotion;
-import com.poly.datn.repository.ProductRepository;
 import com.poly.datn.repository.PromotionRepository;
 import com.poly.datn.service.PromotionService;
+import com.poly.datn.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class PromotionServiceImpl implements PromotionService {
     @Autowired
     PromotionRepository promotionRepository;
 
-    @Autowired
-    ProductRepository productRepository;
-
-
     @Override
-    public void add(Promotion dto, List<Long> products) {
-        dto = promotionRepository.save(dto);
-        Product product = new Product();
-        if (products == null || products.isEmpty()) return;
-        for (Long x : products) {
-            product = productRepository.getReferenceById(x);
-            product.setPromotion(dto);
-            productRepository.save(product);
+    public MessageUtil add(PromotionDto dto) {
+        if (promotionRepository.existsByGiftCodeOrDiscountName(dto.getGiftCode(), dto.getName())) {
+            return new MessageUtil(1, "Thất bại phiếu giảm giá này đã có", "bg-danger");
         }
-    }
-
-
-    @Override
-    public Promotion detail(Long id) {
-        return promotionRepository.getById(id);
-    }
-
-
-    @Override
-    public void addProduct(List<Long> listPrd, Long id) {
-        for (Long x : listPrd) {
-            Product product = productRepository.getReferenceById(x);
-            product.setPromotion(promotionRepository.getReferenceById(id));
-            productRepository.save(product);
-        }
+        Promotion promotion = dto.promotion();
+        promotion.setCteateDate(LocalDateTime.now());
+        promotionRepository.save(promotion);
+        return new MessageUtil(1, "Thêm thành công", "bg-success");
     }
 
     @Override
-    public void delete(Long id) {
-        List<Product> list = productRepository.getProducByPromotion(id);
-        list.stream().forEach(x -> {
-            x.setPromotion(null);
-            productRepository.save(x);
-        });
-        promotionRepository.deleteById(id);
-    }
-
-    @Override
-    public void update(PromotionDto dto) {
-        Promotion promotion = promotionRepository.getReferenceById(dto.getId());
-        promotion.setDiscountValue(dto.getDiscountValue());
-        promotion.setDiscountName(dto.getDiscountName());
+    public MessageUtil update(PromotionDto dto, Long id) {
+        Promotion promotion = promotionRepository.getReferenceById(id);
+        promotion.setDiscountName(dto.getName());
+        promotion.setQuantity(dto.getQuantity());
+        promotion.setDiscountValue(dto.getDiscount());
+        promotion.setMinValue(dto.getMinValue());
+        promotion.setMaxValue(dto.getMaxValue());
         promotion.setStartDate(dto.getStartDate());
         promotion.setEndDate(dto.getEndDate());
-        promotion.setEditDate(LocalDateTime.now());
-        promotion.setStatus(dto.promotion().getStatus());
         promotionRepository.save(promotion);
+        return new MessageUtil(1, "Thêm thành công", "bg-success");
     }
 
     @Override
-    public void deleteProduct(Long id) {
-        Product product = productRepository.getReferenceById(id);
-        product.setPromotion(null);
-        productRepository.save(product);
-    }
-
-    @Override
-    public void jopUpdateStatus() {
-        List<Promotion> promotions = promotionRepository.findAll();
-        for (Promotion x : promotions) {
-            if (LocalDateTime.now().isBefore(x.getStartDate())) {
-                x.setStatus("0"); //chưa diễn ra
-            } else if (LocalDateTime.now().isAfter(x.getEndDate())) {
-                x.setStatus("2");
-            } else {
-                x.setStatus("1");// đang diễn ra
-            }
-        }
-        promotions = promotionRepository.saveAll(promotions);
-        List<Product> products = new ArrayList<>();
-        for (Promotion x : promotions) {
-            if (x.getStatus().equals("2")){
-                products = x.getProducts();
-                products.stream().forEach( o -> o.setPromotion(null));
-                productRepository.saveAll(products);
-            }
-        }
-    }
-
-    @Override
-    public Object getAll(String status, LocalDateTime start, LocalDateTime end) {
-        if (status.equals("-1") && start == null && end == null) {
+    public Object getAll(String status) {
+        if (status.equals("-1")) {
             return promotionRepository.findAllDto();
         }
-        return promotionRepository.findAllDto(status, start, end);
+        return promotionRepository.findAllDto(status);
+    }
+
+    @Override
+    public void jobUpdate() {
+        List<Promotion> list = promotionRepository.findAll();
+        list.stream().forEach(x -> {
+            if (LocalDateTime.now().isBefore(x.getStartDate())) {
+                x.setStatus("0"); // Chưa diễn ra
+            } else if (LocalDateTime.now().isAfter(x.getEndDate())) {
+                x.setStatus("2"); // Đã kết thúc
+            } else {
+                x.setStatus("1"); // Đang diễn ra
+            }
+        });
+        promotionRepository.saveAll(list);
+    }
+
+    private String generateRandomString(int length) {
+        String characters = "abcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder randomString = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            randomString.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return randomString.toString().toUpperCase();
     }
 }

@@ -22,8 +22,6 @@ public class ImageServiceImpl implements ImageService {
     private ImageRepository repository;
     @Autowired
     private Cloudinary cloudinary;
-    @Autowired
-    private ProductRepository productRepository;
 
 
     @Override
@@ -44,27 +42,6 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    @Override
-    public void add(Long sp, MultipartFile[] files) {
-        String url = "";
-        String publicId = "";
-        Product product = productRepository.getReferenceById(sp);
-        try {
-            for (MultipartFile file : files) {
-                Map<String, Object> params = ObjectUtils.asMap("folder", "sanpham"); // Thay your_folder_name bằng tên folder bạn muốn lưu ảnh
-                Map<?, ?> uploadResult = cloudinary.uploader().upload(file.getBytes(), params);
-                url = uploadResult.get("url").toString();
-                publicId = uploadResult.get("public_id").toString();
-                System.out.println(url);
-//            Lưu src vào db
-
-                repository.save(new Image(product, url, publicId));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public Map<?, ?> upload(MultipartFile file, String foder) throws IOException {

@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ColorRepository extends JpaRepository<Color,Integer> {
     Color getById(Integer id);
+
+    Boolean existsByName(String name);
 }

@@ -11,9 +11,9 @@ public class UpdateJopStatus {
     @Autowired
     private PromotionService service;
 
-    @Scheduled(fixedRate = 600000) //10p
+    @Scheduled(fixedRate = 300000) //10p
     public void schedulePromotionProgramUpdate() {
         System.out.println("đã update");
-        service.jopUpdateStatus();
+        service.jobUpdate();
     }
 }

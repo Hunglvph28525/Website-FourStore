@@ -2,26 +2,24 @@ package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.ProductRequest;
-import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Color;
 import com.poly.datn.entity.Image;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.entity.Size;
-import com.poly.datn.entity.TypeProduct;
 import com.poly.datn.repository.ImageRepository;
 import com.poly.datn.repository.ProductDetailRepository;
 import com.poly.datn.repository.ProductRepository;
-import com.poly.datn.repository.PromotionRepository;
 import com.poly.datn.service.ImageService;
 import com.poly.datn.service.ProductService;
+import com.poly.datn.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,27 +35,20 @@ public class ProductServiceImpl implements ProductService {
     private ProductDetailRepository detailRepository;
     @Autowired
     private ImageService imageService;
-    @Autowired
-    private PromotionRepository promotionRepository;
 
 
     @Override
     public List<ProductDto> getAll(String status, Long category, Long type, Long brand) {
-        if (status.equals("0") && category == 0 && type == 0 && brand == 0) {
+        if (status.equals("0") && category == null && type == null && brand == null) {
             return productRepository.getAll();
         } else {
             return productRepository.locProduct(status, category, type, brand);
         }
     }
 
-    @Override
-    public List<Product> getProductNoPromotion() {
-        return productRepository.getproductNoPromotion();
-    }
-
 
     @Override
-    public void update(ProductRequest request, Long id) {
+    public MessageUtil update(ProductRequest request, Long id) {
         Product product = request.product();
         product.setId(id);
         product = productRepository.save(product);
@@ -66,7 +57,8 @@ public class ProductServiceImpl implements ProductService {
         //upload ảnh lên cloudinary
         Map<?, ?> uploadResult = new HashMap<>();
         List<MultipartFile> files = request.getFiles();
-        if (files.stream().count() == 0) return;
+        if (files.isEmpty())
+            return MessageUtil.builder().status(1).message("Thành công !").type("bg-success").build();
         try {
             for (MultipartFile file : request.getFiles()) {
                 uploadResult = imageService.upload(file, "sanpham");
@@ -78,11 +70,11 @@ public class ProductServiceImpl implements ProductService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return MessageUtil.builder().status(1).message("Thành công !").type("bg-success").build();
     }
 
     @Override
-    public void save(Long id) {
+    public MessageUtil save(Long id) {
         Product product = productRepository.getReferenceById(id);
         if (product.getStatus().equals("on")) {
             product.setStatus("off");
@@ -90,36 +82,7 @@ public class ProductServiceImpl implements ProductService {
             product.setStatus("on");
         }
         productRepository.save(product);
-    }
-
-    @Override
-    public void updatePromotion(Long id, Category category, TypeProduct type, List<Long> products) {
-        if (category != null) {
-            List<Product> product = productRepository.getProductByCategory(category.getId());
-            product.stream().forEach(x -> {
-                x.setPromotion(promotionRepository.getReferenceById(id));
-            });
-            productRepository.saveAll(product);
-            return;
-        }
-        if (type != null) {
-            List<Product> product = productRepository.getProductByTypeProduct(type.getId());
-            product.stream().forEach(x -> {
-                x.setPromotion(promotionRepository.getReferenceById(id));
-            });
-            productRepository.saveAll(product);
-            return;
-        }
-        if (!products.isEmpty()){
-            List<Product> product = new ArrayList<>();
-            products.stream().forEach(x -> {
-                Product temp = productRepository.getReferenceById(x);
-                temp.setPromotion(promotionRepository.getReferenceById(id));
-                product.add(temp);
-            });
-            productRepository.saveAll(product);
-            return;
-        }
+        return MessageUtil.builder().status(1).message("Thành công !").type("bg-success").build();
     }
 
     @Override
@@ -128,38 +91,43 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product add(ProductRequest req) {
-        Product product = req.product();
-        product.setCreateDate(Date.valueOf(LocalDate.now()));
-        //zen mã nếu không tạo mã
-        if (req.getMaSp().equals(""))
-            product.setMaSp(generateProductCode(req.getTypeProduct().getCategory().getName(), req.getName()));
-        //thêm sản phẩm mơi
-        product = productRepository.save(product);
-        List<MultipartFile> files = req.getFiles();
-        String urlImage = "";
-        String publicId = "";
-        //upload ảnh lên cloudinary
-        Map<?, ?> uploadResult = new HashMap<>();
-        try {
-            if (files.stream().count() >= 1) {
-                for (MultipartFile file : files) {
-                    uploadResult = imageService.upload(file, "sanpham");
-                    urlImage = uploadResult.get("url").toString();
-                    publicId = uploadResult.get("public_id").toString();
-                    System.out.println(urlImage);
-                    imageRepository.save(new Image(product, urlImage, publicId));
+    public MessageUtil add(ProductRequest req) {
+        if (productRepository.existsByProductName(req.getName())) {
+            return MessageUtil.builder().status(1).message("Thêm thất bại vì đã có sản phẩm này !").type("bg-danger").build();
+        } else {
+            Product product = req.product();
+            product.setCreateDate(Date.valueOf(LocalDate.now()));
+            product.setStatus("on");
+            //zen mã nếu không tạo mã
+            if (req.getMaSp().equals(""))
+                product.setMaSp(generateProductCode(req.getTypeProduct().getCategory().getName(), req.getName()));
+            //thêm sản phẩm mơi
+            product = productRepository.save(product);
+            List<MultipartFile> files = req.getFiles();
+            String urlImage = "";
+            String publicId = "";
+            //upload ảnh lên cloudinary
+            Map<?, ?> uploadResult = new HashMap<>();
+            try {
+                if (files.stream().count() >= 1) {
+                    for (MultipartFile file : files) {
+                        uploadResult = imageService.upload(file, "sanpham");
+                        urlImage = uploadResult.get("url").toString();
+                        publicId = uploadResult.get("public_id").toString();
+                        System.out.println(urlImage);
+                        imageRepository.save(new Image(product, urlImage, publicId));
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for (Color color : req.getColors()) {
+                for (Size size : req.getSizes()) {
+                    detailRepository.save(new ProductDetail(product, color, size, 1, BigDecimal.valueOf(10), req.getStatus()));
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(product).build();
         }
-        for (Color color : req.getColors()) {
-            for (Size size : req.getSizes()) {
-                detailRepository.save(new ProductDetail(product, color, size, 0, req.getPrice(), req.getStatus()));
-            }
-        }
-        return product;
     }
 
 

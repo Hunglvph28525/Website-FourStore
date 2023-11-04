@@ -2,10 +2,8 @@ package com.poly.datn.repository;
 
 import com.poly.datn.entity.ProductDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,4 +13,6 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail,Lon
     List<ProductDetail> getDetailProduct(Long id);
 
     ProductDetail getById(Long id);
+
+    boolean existsById(Long id);
 }

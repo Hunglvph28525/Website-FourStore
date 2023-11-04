@@ -16,6 +16,8 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     @Query("select new com.poly.datn.dto.PromotionDto(c) from Promotion c order by c.id desc ")
     List<PromotionDto> findAllDto();
 
-    @Query("select new com.poly.datn.dto.PromotionDto(c) from Promotion c where c.status = :status or c.startDate <= :start or c.endDate >= :end order by c.id desc ")
-    List<PromotionDto> findAllDto(String status, LocalDateTime start, LocalDateTime end);
+    @Query("select new com.poly.datn.dto.PromotionDto(c) from Promotion c where c.status = :status order by c.id desc ")
+    List<PromotionDto> findAllDto(String status);
+
+    Boolean existsByGiftCodeOrDiscountName(String giftCode, String name);
 }

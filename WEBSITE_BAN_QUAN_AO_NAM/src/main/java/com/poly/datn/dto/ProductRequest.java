@@ -16,6 +16,8 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -28,7 +30,6 @@ public class ProductRequest {
     private Long id;
     private String maSp;
     private String name;
-    private BigDecimal price;
     private String status;
     private String fabric;
     private String descriptionProduct;
@@ -54,9 +55,9 @@ public class ProductRequest {
                         .style(this.style)
                         .build())
                 .brand(this.brand)
+                .createDate(Date.valueOf(LocalDate.now()))
+                .status("on")
                 .productName(this.name)
-                .price(this.price)
-                .status(this.getStatus())
                 .maSp(this.maSp)
                 .build();
         return product;
@@ -66,7 +67,6 @@ public class ProductRequest {
         this.id = x.getId();
         this.maSp = x.getMaSp();
         this.name = x.getProductName();
-        this.price = x.getPrice();
         this.status = x.getStatus();
         this.fabric = x.getDescription().getFabric();
         this.descriptionProduct = x.getDescription().getDescriptionProduct();

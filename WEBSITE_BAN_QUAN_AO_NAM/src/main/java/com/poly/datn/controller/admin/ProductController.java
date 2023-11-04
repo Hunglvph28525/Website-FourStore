@@ -2,7 +2,6 @@ package com.poly.datn.controller.admin;
 
 
 import com.poly.datn.dto.ProductRequest;
-import com.poly.datn.entity.Brand;
 import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Color;
 import com.poly.datn.entity.Product;
@@ -17,6 +16,7 @@ import com.poly.datn.service.ProductDetailService;
 import com.poly.datn.service.ProductService;
 import com.poly.datn.service.SizeService;
 import com.poly.datn.service.TypeProductService;
+import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,12 +27,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -57,21 +59,22 @@ public class ProductController {
 
     @GetMapping("/product")
     public String hienThi(Model model, @RequestParam(value = "status", defaultValue = "0") String status,
-                          @RequestParam(value = "category", defaultValue = "0") Long category,
-                          @RequestParam(value = "type", defaultValue = "0") Long type,
-                          @RequestParam(value = "brand", defaultValue = "0") Long brand) {
+                          @RequestParam(value = "category", required = false) Long category,
+                          @RequestParam(value = "type", required = false) Long type,
+                          @RequestParam(value = "brand", required = false) Long brand) {
         model.addAttribute("products", productService.getAll(status, category, type, brand));
         model.addAttribute("brands", brandService.getAll());
         model.addAttribute("types", typeProductService.getAll());
         model.addAttribute("categorys", categoryService.getAll());
-        model.addAttribute("user", UserUltil.getUser());
         return "admin/san-pham";
     }
 
     @PostMapping("/product/new")
-    public String addProduct(@ModelAttribute("product") ProductRequest prductReq) {
-        Product product = productService.add(prductReq);
-        return "redirect:/admin/product/" + product.getId();
+    public String addProduct(@ModelAttribute("product") ProductRequest prductReq, RedirectAttributes attributes) {
+        MessageUtil message = productService.add(prductReq);
+        Product product = (Product) message.getObject();
+        attributes.addFlashAttribute("message", message);
+        return "redirect:/admin/product";//" + product.getId()
     }
 
     @GetMapping("/product/{id}")
@@ -86,7 +89,6 @@ public class ProductController {
 
         ProductDetail[] details = productDetailService.getDetail(id).toArray(new ProductDetail[0]);
         model.addAttribute("productDetails", details);
-        model.addAttribute("user", UserUltil.getUser());
         return "admin/update-sanpham";
     }
 
@@ -98,7 +100,7 @@ public class ProductController {
         model.addAttribute("colors", colorService.getAll());
         model.addAttribute("brands", brandService.getAll());
         model.addAttribute("types", typeProductService.getAll());
-        model.addAttribute("user", UserUltil.getUser());
+
         model.addAttribute("typeProduct", new TypeProduct());
         return "admin/add-sanpham";
     }
@@ -110,8 +112,9 @@ public class ProductController {
     }
 
     @PostMapping("product/update/{id}")
-    public String updateProduct(@ModelAttribute("product") ProductRequest request, @PathVariable("id") Long id) {
-        productService.update(request, id);
+    public String updateProduct(@ModelAttribute("product") ProductRequest request, @PathVariable("id") Long id, RedirectAttributes attributes) {
+        MessageUtil message = productService.update(request, id);
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product";
     }
 
@@ -119,53 +122,65 @@ public class ProductController {
     public String updateProductdetail(@RequestParam("id") List<Long> ids,
                                       @RequestParam("quantity") List<Integer> quantitys,
                                       @RequestParam("price") List<BigDecimal> prices,
-                                      @RequestParam("status") List<String> status) {
-
-        productDetailService.update(ids, quantitys, prices, status);
-
+                                      RedirectAttributes attributes) {
+        MessageUtil message = productDetailService.update(ids, quantitys, prices);
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product";
     }
 
     @GetMapping("/product/tat/{id}")
-    public String tatBan(@PathVariable("id") Long id) {
-        productService.save(id);
+    public String tatBan(@PathVariable("id") Long id, RedirectAttributes attributes) {
+        MessageUtil message = productService.save(id);
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product";
     }
 
-    @GetMapping("/product/delete/{id}")
-    public String delete(@PathVariable("id") Long id) {
-        Long kq = productDetailService.delete(id);
-        return "redirect:/admin/product/"+kq;
+    @GetMapping("/product/{id}/delete/{sp}")
+    public String delete(@PathVariable("id") Long id, @PathVariable("sp") Long sp,RedirectAttributes attributes) {
+        MessageUtil message = productDetailService.delete(sp);
+        attributes.addFlashAttribute("message",message);
+        return "redirect:/admin/product/" + id;
     }
 
     @PostMapping("/product/add-color")
-    public String addColor(@RequestParam("name") String name) {
-        colorService.save(Color.builder().name(name).build());
+    public String addColor(@RequestParam("name") String name, RedirectAttributes attributes) {
+        MessageUtil message = colorService.save(Color.builder().name(name).build());
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product/new";
     }
 
     @PostMapping("/product/add-size")
-    public String addSize(@RequestParam("name") String name) {
-        sizeService.save(Size.builder().name(name).build());
+    public String addSize(@RequestParam("name") String name, RedirectAttributes attributes) {
+        MessageUtil message = sizeService.save(Size.builder().name(name).build());
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product/new";
     }
 
     @PostMapping("/product/add-type")
-    public String addType(@RequestParam("name") String name, @RequestParam("category") Category category) {
-        typeProductService.save(TypeProduct.builder().category(category).name(name).build());
+    public String addType(@RequestParam("name") String name, @RequestParam("category") Category category, RedirectAttributes attributes) {
+        MessageUtil message = typeProductService.save(TypeProduct.builder().category(category).name(name).build());
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product/new";
     }
 
     @PostMapping("/product/add-category")
-    public String addCategory(@RequestParam("name") String name) {
-        categoryService.save(Category.builder().name(name).build());
+    public String addCategory(@RequestParam("name") String name, RedirectAttributes attributes) {
+        MessageUtil message = categoryService.save(Category.builder().name(name).build());
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product/new";
     }
 
     @PostMapping("/product/add-brand")
-    public String addBrand(@RequestParam("name") String name, @RequestParam("file") MultipartFile file) throws IOException {
-        Map<?, ?> map = imageService.upload(file, "other");
-        brandService.save(Brand.builder().name(name).logo(map.get("url").toString()).build());
+    public String addBrand(@RequestParam("name") String name, @RequestParam("file") MultipartFile file, RedirectAttributes attributes) throws IOException {
+        MessageUtil message = brandService.save(name, file);
+        attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product/new";
     }
+
+    @ModelAttribute("message")
+    public MessageUtil initMessage() {
+        return new MessageUtil();
+    }
+
+
 }

@@ -3,6 +3,7 @@ package com.poly.datn.service;
 import com.poly.datn.dto.PromotionDto;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.Promotion;
+import com.poly.datn.util.MessageUtil;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
@@ -12,20 +13,11 @@ import java.util.List;
 
 public interface PromotionService {
 
-    void add(Promotion dto, List<Long> products);
+    MessageUtil add(PromotionDto dto);
 
-    Promotion detail(Long id);
+    MessageUtil update(PromotionDto dto,Long id);
 
-    void addProduct(List<Long> listPrd, Long id);
+    Object getAll(String status);
 
-
-    void delete(Long id);
-
-    void update(PromotionDto dto);
-
-    void deleteProduct(Long id);
-
-    void jopUpdateStatus();
-
-    Object getAll(String status, LocalDateTime start, LocalDateTime end);
+    void jobUpdate();
 }

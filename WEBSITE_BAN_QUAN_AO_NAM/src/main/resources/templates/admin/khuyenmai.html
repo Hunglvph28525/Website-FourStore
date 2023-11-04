@@ -32,7 +32,7 @@
 <main class="app-content">
     <div class="app-title">
         <ul class="app-breadcrumb breadcrumb side">
-            <li class="breadcrumb-item active"><a href="#"><b>Danh sách chương trình giảm giá</b></a></li>
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách phiếu giảm giá</b></a></li>
         </ul>
         <div id="clock"></div>
     </div>
@@ -41,28 +41,25 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="row ml-3">
-                        <p class="breadcrumb-item active"><b>Khuyến mãi</b></p>
+                        <p class="breadcrumb-item active"><b>Phiếu giàm giá</b></p>
                     </div>
                     <form class="row ml-5" method="get">
-                        <div class="form-group col ">
-                            <label for="exampleSelect" class="control-label">Ngày bắt đầu</label>
-                            <input type="datetime-local" class="form-control" name="start" id="date-range">
+                        <div class="form-group col-md-6 ">
+                            <label for="exampleSelect" class="control-label mr-2">Trạng thái : </label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="o">
+                                <label class="form-check-label" for="inlineRadio1">Chưa diễn ra</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="1">
+                                <label class="form-check-label" for="inlineRadio1">Đang diễn ra</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="2">
+                                <label class="form-check-label" for="inlineRadio1">Đã kết thúc</label>
+                            </div>
                         </div>
-                        <div class="form-group col ">
-                            <label for="exampleSelect" class="control-label">Đến ngày</label>
-                            <input type="datetime-local" class="form-control" name="end">
-                        </div>
-                        <div class="form-group col ">
-                            <label for="exampleSelect" class="control-label">Trạng thái</label>
-                            <select class="form-control" id="exampleSelect" name="status">
-                                <option value="-1">--Chọn trạng thái--</option>
-                                <option value="0">Chưa diễn ra</option>
-                                <option value="1">Đang diễn ra </option>
-                                <option value="2">Đã kết thúc </option>
-                            </select>
-                        </div>
-
-                        <div class="form-group col" style="margin-top: 33px">
+                        <div class="form-group col-md-4">
                             <button type="submit" class="btn btn-save ">Lọc</button>
                         </div>
                     </form>
@@ -79,17 +76,20 @@
 
                             <a class="btn btn-add btn-sm" href="/admin/promotion/new" title="Thêm"><i
                                     class="fas fa-plus"></i>
-                                Tạo mới chương trình giảm giá</a>
+                                Tạo phiếu giảm giá mới</a>
                         </div>
                     </div>
                     <table class="table table-hover table-bordered" id="sampleTable">
                         <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Tên chương trình</th>
+                            <th>Mã giảm giá</th>
+                            <th>Tên mã giảm giá</th>
                             <th>Thời gian</th>
                             <th>Giá trị giảm</th>
-                            <th>Số sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Cho đơn tối thiểu</th>
+                            <th>giảm tối đa</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
                         </tr>
@@ -97,18 +97,18 @@
                         <tbody>
                         <tr th:each="x,arr : ${promotions}">
                             <td th:text="${arr.index+1}"></td>
-                            <td th:text="${x.discountName}"></td>
+                            <td th:text="${x.giftCode}"></td>
+                            <td th:text="${x.name}"></td>
                             <td> <span class="badge bg-info" th:text="${x.time}"></span></td>
-                            <td th:text="${x.discountValue + '%'}"></td>
-                            <td th:text="${x.countProduct}"></td>
+                            <td th:text="${x.discount + '%'}"></td>
+                            <td th:text="${x.quantity}"></td>
+                            <td th:text="${x.minValue}"></td>
+                            <td th:text="${x.maxValue}"></td>
                             <td><span class="badge"
                                       th:classappend="${x.status == '1' ? 'bg-success' : (x.status == '2' ? 'bg-danger' : 'bg-warning')}"
                                       th:text="${x.status == '1' ? 'Đang diễn ra' : (x.status == '2' ? 'Đã kết thúc' : 'Chưa diễn ra')}"></span>
                             </td>
                             <td>
-                                <a href="#" class="delete-link btn trash bg-danger"
-                                   th:href="@{'/admin/promotion/delete/'+${x.id}}"><i class="fas fa-trash"></i>
-                                </a>
                                 <a class=" btn btn-primary btn edit bg-warning"
                                    th:href="@{'/admin/promotion/'+${x.id}}"
                                    title="Sửa"><i class="fas fa-edit"></i></a>

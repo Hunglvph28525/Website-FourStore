@@ -94,7 +94,6 @@
                             <th>Ảnh</th>
                             <th>Số lượng</th>
                             <th>Tình trạng</th>
-                            <th>Giá tiền</th>
                             <th>Danh mục</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
@@ -102,7 +101,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="x,arr : ${products}">
-                            <td th:text="${arr.index}"></td>
+                            <td th:text="${arr.index + 1}"></td>
                             <td th:text="${x.maSp}"></td>
                             <td th:text="${x.name}"></td>
                             <td><img th:src="@{${x.brand.logo}}" alt="ảnh san pham" width="80px;"></td>
@@ -110,7 +109,6 @@
                             <td th:text="${x.quantity}"></td>
                             <td><span class="badge " th:classappend="${x.quantity == 0 ? 'bg-danger' : 'bg-success'}"
                                       th:text="${x.quantity == 0?'Hết hàng':'Còn hàng'}"></span></td>
-                            <td th:text="${x.price } + ' đ'"></td>
                             <td th:text="${x.category.name}"></td>
                             <td><span class="badge" th:classappend="${x.status == 'on'?'bg-success':'bg-danger'}"
                                       th:text="${x.status == 'on'?'HD':'TN'}"></span></td>
@@ -139,7 +137,14 @@
         </b></p>
     </div>
 </main>
-
+<div th:if="${message.status != null}">
+    <div id="myAlert" class="alert alert-dismissible fade show position-fixed" style="top: 120px; right: 30px;width: 400px; height: 50px" th:classappend="${message.type}">
+        <p th:text="${message.message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
 <!-- Essential javascripts for application to work-->
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
@@ -154,7 +159,6 @@
 <script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
-    $('#sampleTable').DataTable();
 
     //Thời Gian
     function time() {
@@ -201,47 +205,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script type="text/javascript">
     $('#sampleTable').DataTable();
-
-    //Thời Gian
-    function time() {
-        var today = new Date();
-        var weekday = new Array(7);
-        weekday[0] = "Chủ Nhật";
-        weekday[1] = "Thứ Hai";
-        weekday[2] = "Thứ Ba";
-        weekday[3] = "Thứ Tư";
-        weekday[4] = "Thứ Năm";
-        weekday[5] = "Thứ Sáu";
-        weekday[6] = "Thứ Bảy";
-        var day = weekday[today.getDay()];
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1;
-        var yyyy = today.getFullYear();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-        nowTime = h + " giờ " + m + " phút " + s + " giây";
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
-            '</span>';
-        document.getElementById("clock").innerHTML = tmp;
-        clocktime = setTimeout("time()", "1000", "Javascript");
-
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i;
-            }
-            return i;
-        }
-    }
+    var myAlert = document.getElementById("myAlert");
+    // Tự đóng thông báo sau 5 giây
+    setTimeout(function () {
+        myAlert.style.display = "none";
+    }, 5000); // 5000 ms = 5 giây
 </script>
 <script type="text/javascript">
 
@@ -266,7 +234,6 @@
         });
     });
 </script>
-
 </body>
 
 </html>

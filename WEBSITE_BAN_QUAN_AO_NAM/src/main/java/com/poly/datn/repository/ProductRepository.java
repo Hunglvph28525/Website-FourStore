@@ -14,14 +14,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select new com.poly.datn.dto.ProductDto(c) from Product c where c.id = :id")
     ProductDto getProduct(Long id);
 
-    @Query("select c from Product c where c.promotion is NULL")
-    List<Product> getproductNoPromotion();
-
     @Query("select c from Product c where c.typeProduct.id = :id")
     List<Product> getProductByTypeProduct(Long id);
 
-    @Query("select c from Product c where c.promotion.id = :id")
-    List<Product> getProducByPromotion(Long id);
 
     @Query("select new com.poly.datn.dto.ProductDto(c) from Product c order by c.id DESC ")
     List<ProductDto> getAll();
@@ -31,4 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select c from Product c where c.typeProduct.category.id = :id")
     List<Product> getProductByCategory(Long id);
+
+    Boolean existsByProductName(String name);
 }

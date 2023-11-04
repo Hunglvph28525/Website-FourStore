@@ -56,10 +56,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Image> images;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_promotion")
-    private Promotion promotion;
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<Reviews> reviews = new HashSet<>();
 
@@ -68,10 +64,6 @@ public class Product {
 
     @Column(name = "product_name", columnDefinition = ("nvarchar(255)"))
     private String productName;
-
-    @Min(1)
-    @Column(name = "price")
-    private BigDecimal price;
 
     @Column(name = "create_date")
     private Date createDate;

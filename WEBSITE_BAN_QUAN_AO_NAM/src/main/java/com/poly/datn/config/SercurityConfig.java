@@ -12,11 +12,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -67,30 +65,30 @@ public class SercurityConfig {
         return authProvider;
     }
 
-   @Bean
-                public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-                    return args -> {
-                        // initial roles
-                        if (roleRepository.count() < 2) {
-                            roleRepository.saveAll(Arrays.asList(Role.builder()
-                                            .roleName("ROLE_USER")
-                                            .build(),
-                                    Role.builder()
-                                            .roleName("ROLE_ADMIN")
-                                            .build()
+    @Bean
+    public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+            // initial roles
+            if (roleRepository.count() < 2) {
+                roleRepository.saveAll(Arrays.asList(Role.builder()
+                                .roleName("ROLE_USER")
+                                .build(),
+                        Role.builder()
+                                .roleName("ROLE_ADMIN")
+                                .build()
                 ));
             }
             // initial default user "admin"
             if (userRepository.getByUser("admin").isEmpty())
                 userRepository.save(User.builder()
-                        .username("admin")
-                        .password(passwordEncoder.encode("123456"))
+                                .username("admin")
+                                .password(passwordEncoder.encode("123456"))
 //                        .avatar("/assets/images/users/avatar-2.jpg")
-                        .avatar("http://res.cloudinary.com/dg8hhxkah/image/upload/v1698829775/other/hicavrlz4yxdasq1uasw.jpg")
-                        .name("FourStore Shop")
-                        .roles(Collections.singletonList(roleRepository
-                                .getByName(RoleUtil.ADMIN.getValue())))
-                        .build()
+                                .avatar("http://res.cloudinary.com/dg8hhxkah/image/upload/v1698829775/other/hicavrlz4yxdasq1uasw.jpg")
+                                .name("FourStore Shop")
+                                .roles(Collections.singletonList(roleRepository
+                                        .getByName(RoleUtil.ADMIN.getValue())))
+                                .build()
                 );
         };
     }

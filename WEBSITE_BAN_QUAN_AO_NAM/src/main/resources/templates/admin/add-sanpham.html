@@ -58,18 +58,21 @@
             padding: 5px 10px;
             margin-top: 10px;
         }
+
         .select2-container .select2-selection__choice {
             background-color: #0058f6; /* Màu nền xám khi chọn */
             color: #ffffff; /* Màu chữ trắng khi chọn */
             border: 1px solid #0a0202; /* Viền khi chọn */
             border-radius: 5px; /* Góc bo tròn khi chọn */
         }
-        .select2-selection__choice--selected{
+
+        .select2-selection__choice--selected {
             background-color: #0058f6; /* Màu nền xám khi chọn */
             color: #ffffff; /* Màu chữ trắng khi chọn */
             border: 1px solid #0a0202; /* Viền khi chọn */
             border-radius: 5px; /* Góc bo tròn khi chọn */
         }
+
         /* Đổi màu nền khi hover tag */
         .select2-container .select2-selection__choice:hover {
             background-color: #0056b3;
@@ -131,35 +134,31 @@
                                 class="fas fa-folder-plus"></i> Thêm màu sắc</a>
                     </div>
                 </div>
-                <form class="row" action="/admin/product/new" th:object="${product}" method="post"
+                <form id="myForm" class="row" th:action="@{/admin/product/new}" th:object="${product}" method="post"
                       enctype="multipart/form-data">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Mã sản phẩm </label>
                         <input class="form-control" type="text" th:field="*{maSp}" placeholder="nhập mã hoặc tự sinh">
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Tên sản phẩm</label>
                         <input class="form-control" type="text" required th:field="*{name}">
                     </div>
-                    <div class="form-group  col-md-3">
-                        <label class="control-label">Giá bán</label>
-                        <input class="form-control" type="number" min="10000" max="1000000000" required th:field="*{price}">
-                    </div>
-                    <div class="form-group col-md-3 ">
+                    <div class="form-group col-md-4 ">
                         <label for="exampleSelect2" class="control-label">Loại sản phẩm</label>
                         <select class="form-control" id="exampleSelect2" required th:field="*{typeProduct}">
                             <option th:each="x : ${types}" th:value="${x.id}" th:text="${x.name}"></option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Họa tiết</label>
                         <input class="form-control" type="text" required th:field="*{pattern}">
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Kiểu dáng</label>
                         <input class="form-control" type="text" required th:field="*{style}">
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Chất liệu</label>
                         <input class="form-control" type="text" required th:field="*{fabric}">
                     </div>
@@ -175,22 +174,17 @@
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Màu sắc</label>
-                        <select class="js-example-tags form-control" multiple data-live-search="false" required th:field="*{colors}">
-                            <option  th:each="x : ${colors}" th:value="${x.id}"
+                        <select class="js-example-tags form-control" multiple data-live-search="false" required
+                                th:field="*{colors}">
+                            <option th:each="x : ${colors}" th:value="${x.id}"
                                     th:text="${x.name}"></option>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
                         <label class="control-label">Kích cỡ</label>
-                        <select class="js-example-tags form-control" multiple data-live-search="false" required th:field="*{sizes}">
+                        <select class="js-example-tags form-control" multiple data-live-search="false" required
+                                th:field="*{sizes}">
                             <option th:each="x : ${sizes}" th:value="${x.id}" th:text="${x.name}"></option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3 ">
-                        <label for="exampleSelect" class="control-label">Trạng thái</label>
-                        <select class="form-control" id="exampleSelect" th:field="*{status}">
-                            <option value="on">Hoạt dộng</option>
-                            <option value="off">Tạm ngưng</option>
                         </select>
                     </div>
                     <div class="form-group col-md-12">
@@ -210,7 +204,7 @@
                                   th:field="*{descriptionProduct}"></textarea>
                     </div>
                     <div class="col">
-                        <button class="btn btn-save mr-2 " type="submit" onsubmit="return validateForm()">Lưu lại</button>
+                        <button class="btn btn-save mr-2 submit-button " type="submit">Lưu lại</button>
                         <a class="btn btn-cancel ml-2" href="/admin/product">Hủy bỏ</a>
                     </div>
 
@@ -219,6 +213,15 @@
         </div>
     </div>
 </main>
+<div th:if="${message.status != null}">
+    <div id="myAlert" class="alert alert-dismissible fade show position-fixed"
+         style="top: 120px; right: 30px;width: 400px; height: 50px" th:classappend="${message.type}">
+        <p th:text="${message.message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
 <!--
 MODAL DANH MỤC
 -->
@@ -388,7 +391,7 @@ MODAL
                         </ul>
                     </div>
                     <BR>
-                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                    <button class="btn btn-save ml-3 " type="submit">Lưu lại</button>
                     <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
                     <BR>
                 </form>
@@ -500,35 +503,68 @@ MODAL
     });
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.js-example-tags').select2({
             tags: false
         });
     });
 </script>
 <script>
-    function validateForm() {
-        // Lấy các trường dữ liệu từ form
-        var maSp = document.getElementById("maSp").value;
-        var name = document.getElementById("name").value;
-        var price = document.getElementById("price").value;
-        var files = document.getElementById("fileInput").files;
+    // Lấy tham chiếu đến thông báo Bootstrap
+    var myAlert = document.getElementById("myAlert");
 
-        // Kiểm tra điều kiện và hiển thị thông báo lỗi nếu cần
-        if (maSp === '' || name === '' || price === '') {
-            alert('Vui lòng điền đầy đủ thông tin sản phẩm.');
-            return false; // Ngăn form được gửi đi
-        }
-
-        if (!files || files.length === 0) {
-            alert('Vui lòng chọn ít nhất một ảnh.');
-            return false; // Ngăn form được gửi đi
-        }
-
-        // Nếu điều kiện đúng, bạn có thể tiến hành submit form
-        return true;
-    }
+    // Tự đóng thông báo sau 5 giây
+    setTimeout(function () {
+        myAlert.style.display = "none";
+    }, 5000); // 5000 ms = 5 giây
 </script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".delete-link").on("click", function (event) {
+            event.preventDefault();
+            var deleteLink = $(this).attr("href");
+
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.value) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    window.location.href = deleteLink;
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        // Bắt sự kiện click trên nút Submit
+        $(".submit-button").on("click", function (event) {
+            event.preventDefault();
+            const form = document.getElementById("myForm");
+
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.value) {
+                    // Nếu người dùng xác nhận, gửi biểu mẫu
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 
 </html>

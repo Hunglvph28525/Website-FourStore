@@ -31,7 +31,7 @@ public class Description {
     @Column(name = "fabric",columnDefinition = ("nvarchar(255)"))
     private String fabric; // chất liệu
 
-    @Column(name = "description_product",columnDefinition = ("nvarchar(255)"))
+    @Column(name = "description_product",columnDefinition = ("nvarchar(max)"))
     private String descriptionProduct; // mô tả sản phẩm
 
     @Column(name = "manual",columnDefinition = ("nvarchar(255)"))

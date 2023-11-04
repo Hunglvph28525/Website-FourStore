@@ -39,6 +39,10 @@ public class Invoice {
     @JoinColumn(name = "id_payment", referencedColumnName = "id")
     private PaymentMethod paymentMethod;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_promotion")
+    private Promotion promotion;
+
     @ManyToOne
     @JoinColumn(name = "id_user",referencedColumnName = "id")
     private User user;
