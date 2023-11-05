@@ -20,7 +20,6 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-        model.addAttribute("user", UserUltil.getUser());
         return "admin/index";
     }
 }

@@ -93,8 +93,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public MessageUtil add(ProductRequest req) {
         if (productRepository.existsByProductName(req.getName())) {
-            return MessageUtil.builder().status(1).message("Thêm thất bại vì đã có sản phẩm này !").type("bg-danger").build();
-        } else {
+            return MessageUtil.builder().status(0).message("Thêm thất bại vì đã có sản phẩm này !").type("bg-danger").object(req).build();
+        } else if (productRepository.existsByMaSp(req.getMaSp()))
+        {
+            return MessageUtil.builder().status(0).message("Thêm thất bại vì đã có mã sản phẩm này !").type("bg-danger").object(req).build();
+        }
+        else {
             Product product = req.product();
             product.setCreateDate(Date.valueOf(LocalDate.now()));
             product.setStatus("on");
@@ -126,7 +130,7 @@ public class ProductServiceImpl implements ProductService {
                     detailRepository.save(new ProductDetail(product, color, size, 1, BigDecimal.valueOf(10), req.getStatus()));
                 }
             }
-            return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(product).build();
+            return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").object(product).build();
         }
     }
 

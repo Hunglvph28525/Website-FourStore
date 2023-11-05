@@ -19,12 +19,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <!--    date ranger pick-->
 
-<style>
-    th , td{
-        text-align: center;
-    }
+    <style>
+        th, td {
+            text-align: center;
+        }
 
-</style>
+    </style>
 </head>
 <body onload="time()" class="app sidebar-mini rtl">
 <div th:replace="~{layout/navbar :: navbar}"></div>
@@ -45,18 +45,18 @@
                     </div>
                     <form class="row ml-5" method="get">
                         <div class="form-group col-md-6 ">
-                            <label for="exampleSelect" class="control-label mr-2">Trạng thái : </label>
+                            <label class="control-label mr-2">Trạng thái : </label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="o">
+                                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="0">
                                 <label class="form-check-label" for="inlineRadio1">Chưa diễn ra</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="1">
-                                <label class="form-check-label" for="inlineRadio1">Đang diễn ra</label>
+                                <input class="form-check-input" type="radio" name="status" id="inlineRadio2" value="1">
+                                <label class="form-check-label" for="inlineRadio2">Đang diễn ra</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="status" id="inlineRadio1" value="2">
-                                <label class="form-check-label" for="inlineRadio1">Đã kết thúc</label>
+                                <input class="form-check-input" type="radio" name="status" id="inlineRadio3" value="2">
+                                <label class="form-check-label" for="inlineRadio3">Đã kết thúc</label>
                             </div>
                         </div>
                         <div class="form-group col-md-4">
@@ -89,7 +89,6 @@
                             <th>Giá trị giảm</th>
                             <th>Số lượng</th>
                             <th>Cho đơn tối thiểu</th>
-                            <th>giảm tối đa</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
                         </tr>
@@ -99,11 +98,10 @@
                             <td th:text="${arr.index+1}"></td>
                             <td th:text="${x.giftCode}"></td>
                             <td th:text="${x.name}"></td>
-                            <td> <span class="badge bg-info" th:text="${x.time}"></span></td>
+                            <td><span class="badge bg-info" th:text="${x.time}"></span></td>
                             <td th:text="${x.discount + '%'}"></td>
                             <td th:text="${x.quantity}"></td>
-                            <td th:text="${x.minValue}"></td>
-                            <td th:text="${x.maxValue}"></td>
+                            <td th:text="${x.minValue1 + 'đ'}"></td>
                             <td><span class="badge"
                                       th:classappend="${x.status == '1' ? 'bg-success' : (x.status == '2' ? 'bg-danger' : 'bg-warning')}"
                                       th:text="${x.status == '1' ? 'Đang diễn ra' : (x.status == '2' ? 'Đã kết thúc' : 'Chưa diễn ra')}"></span>
@@ -129,6 +127,15 @@
         </b></p>
     </div>
 </main>
+<div th:if="${message.status != null}">
+    <div id="myAlert" class="alert alert-dismissible fade show position-fixed"
+         style="top: 120px; right: 30px;width: 400px; height: 50px" th:classappend="${message.type}">
+        <p th:text="${message.message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
 
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -191,6 +198,12 @@
 </script>
 <script>
     $('#sampleTable').DataTable();
+
+    var myAlert = document.getElementById("myAlert");
+    // Tự đóng thông báo sau 5 giây
+    setTimeout(function () {
+        myAlert.style.display = "none";
+    }, 5000); // 5000 ms = 5 giây
 </script>
 </body>
 

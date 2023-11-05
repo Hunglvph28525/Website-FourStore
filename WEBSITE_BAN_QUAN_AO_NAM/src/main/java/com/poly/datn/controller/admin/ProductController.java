@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-
+@SessionAttributes("user")
 @Controller
 @RequestMapping("/admin")
 public class ProductController {
@@ -72,9 +72,16 @@ public class ProductController {
     @PostMapping("/product/new")
     public String addProduct(@ModelAttribute("product") ProductRequest prductReq, RedirectAttributes attributes) {
         MessageUtil message = productService.add(prductReq);
-        Product product = (Product) message.getObject();
         attributes.addFlashAttribute("message", message);
-        return "redirect:/admin/product";//" + product.getId()
+        if (message.getStatus() == 1){
+            Product product = (Product) message.getObject();
+            return "redirect:/admin/product/" + product.getId();
+        }
+        else {
+            attributes.addFlashAttribute("product", message.getObject());
+            return "redirect:/admin/product/new";
+        }
+
     }
 
     @GetMapping("/product/{id}")
@@ -94,7 +101,6 @@ public class ProductController {
 
     @GetMapping("/product/new")
     public String newProduct(Model model) {
-        model.addAttribute("product", new ProductRequest());
         model.addAttribute("categorys", categoryService.getAll());
         model.addAttribute("sizes", sizeService.getAll());
         model.addAttribute("colors", colorService.getAll());
@@ -181,6 +187,12 @@ public class ProductController {
     public MessageUtil initMessage() {
         return new MessageUtil();
     }
-
-
+    @ModelAttribute("user")
+    public Object initUser(){
+        return UserUltil.getUser();
+    }
+    @ModelAttribute("product")
+    public Object initNewProduct(){
+        return new ProductRequest();
+    }
 }

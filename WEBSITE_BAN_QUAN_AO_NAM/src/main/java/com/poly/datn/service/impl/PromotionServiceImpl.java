@@ -20,24 +20,33 @@ public class PromotionServiceImpl implements PromotionService {
     @Override
     public MessageUtil add(PromotionDto dto) {
         if (promotionRepository.existsByGiftCodeOrDiscountName(dto.getGiftCode(), dto.getName())) {
-            return new MessageUtil(1, "Thất bại phiếu giảm giá này đã có", "bg-danger");
+            return new MessageUtil(0, "Thất bại phiếu giảm giá này đã có", "bg-danger", dto);
         }
         Promotion promotion = dto.promotion();
+        promotion.setGiftCode(generateRandomString(8));
         promotion.setCteateDate(LocalDateTime.now());
         promotionRepository.save(promotion);
-        return new MessageUtil(1, "Thêm thành công", "bg-success");
+        return new MessageUtil(1, "Thêm thành công", "bg-success", promotion);
     }
 
     @Override
     public MessageUtil update(PromotionDto dto, Long id) {
+        String text = "";
+        if (LocalDateTime.now().isBefore(dto.getStartDate())) {
+            text = "0";//chưa diễn ra
+        } else if (LocalDateTime.now().isAfter(dto.getEndDate())) {
+            text = "2";// Kết thúc
+        } else {
+            text = "1";// đang diễn ra
+        }
         Promotion promotion = promotionRepository.getReferenceById(id);
         promotion.setDiscountName(dto.getName());
         promotion.setQuantity(dto.getQuantity());
         promotion.setDiscountValue(dto.getDiscount());
         promotion.setMinValue(dto.getMinValue());
-        promotion.setMaxValue(dto.getMaxValue());
         promotion.setStartDate(dto.getStartDate());
         promotion.setEndDate(dto.getEndDate());
+        promotion.setStatus(text);
         promotionRepository.save(promotion);
         return new MessageUtil(1, "Thêm thành công", "bg-success");
     }
@@ -63,6 +72,11 @@ public class PromotionServiceImpl implements PromotionService {
             }
         });
         promotionRepository.saveAll(list);
+    }
+
+    @Override
+    public Object detail(Long id) {
+        return new PromotionDto(promotionRepository.getReferenceById(id));
     }
 
     private String generateRandomString(int length) {

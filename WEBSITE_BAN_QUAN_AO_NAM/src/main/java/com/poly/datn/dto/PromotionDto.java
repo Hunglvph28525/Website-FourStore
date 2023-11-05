@@ -27,7 +27,7 @@ public class PromotionDto {
     private Integer quantity;
     private Integer discount;
     private BigDecimal minValue;
-    private BigDecimal maxValue;
+    private Integer minValue1;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
@@ -39,21 +39,14 @@ public class PromotionDto {
 
 
     public PromotionDto(Promotion x) {
-        String text = "";
-        if (LocalDateTime.now().isBefore(x.getStartDate())) {
-            text = "0";//chưa diễn ra
-        } else if (LocalDateTime.now().isAfter(x.getEndDate())) {
-            text = "2";// Kết thúc
-        } else {
-            text = "1";// đang diễn ra
-        }
         this.id = x.getId();
         this.giftCode = x.getGiftCode();
         this.name = x.getDiscountName();
         this.quantity = x.getQuantity();
         this.discount = x.getDiscountValue();
         this.minValue = x.getMinValue();
-        this.maxValue = x.getMaxValue();
+        this.minValue1 = x.getMinValue().intValue();
+        this.startDate = x.getStartDate();
         this.endDate = x.getEndDate();
         this.status = x.getStatus();
         this.time = x.getStartDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + " - " + x.getEndDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
@@ -74,7 +67,6 @@ public class PromotionDto {
                 .discountName(this.name)
                 .giftCode(this.giftCode)
                 .minValue(this.minValue)
-                .maxValue(this.maxValue)
                 .quantity(this.quantity)
                 .startDate(this.getStartDate())
                 .endDate(this.getEndDate())

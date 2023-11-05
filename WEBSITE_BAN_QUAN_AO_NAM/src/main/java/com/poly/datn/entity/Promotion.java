@@ -44,8 +44,6 @@ public class Promotion {
     @Column(name = "min_value")
     private BigDecimal minValue;
 
-    @Column(name = "max_value")
-    private BigDecimal maxValue;
 
     @Max(10000)
     @Min(1)

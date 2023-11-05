@@ -28,4 +28,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> getProductByCategory(Long id);
 
     Boolean existsByProductName(String name);
+
+    Boolean existsByMaSp(String maSp);
 }

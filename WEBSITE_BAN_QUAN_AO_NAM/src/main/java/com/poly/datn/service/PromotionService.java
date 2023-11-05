@@ -20,4 +20,6 @@ public interface PromotionService {
     Object getAll(String status);
 
     void jobUpdate();
+
+    Object detail(Long id);
 }
