@@ -1,21 +1,29 @@
 package com.poly.datn.service.impl;
 
 import com.poly.datn.dto.UserDto;
+import com.poly.datn.dto.UserRequest;
+import com.poly.datn.entity.Address;
+import com.poly.datn.entity.Product;
 import com.poly.datn.entity.User;
+import com.poly.datn.repository.AddressRepository;
 import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.repository.UserRepository;
 import com.poly.datn.request.UserSignUpRequest;
 import com.poly.datn.request.forgot_passwort.UserForgotPasswordRequest;
+import com.poly.datn.service.ImageService;
 import com.poly.datn.service.UserService;
+import com.poly.datn.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,14 +33,31 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserService userService;
+
+
+
+    @Autowired
+    private ImageService imageService;
+
+
+    @Autowired
+    JavaMailSender javaMailSender;
+
+    @Autowired
+    AddressRepository addressRepository;
+
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
     @Override
     public void add(User user) {
-        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -53,12 +78,9 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     *
      * @param email
-     * @return
-     * nếu mà ko tìm đc email thì ko tồn tại -> đăng ký
+     * @return nếu mà ko tìm đc email thì ko tồn tại -> đăng ký
      * nếu mà email tồn tại -> lỗi
-     *
      */
     @Override
     public boolean isEmailExists(String email) {
@@ -107,4 +129,64 @@ public class UserServiceImpl implements UserService {
     public User detailCustomer(Long id) {
         return userRepository.getReferenceById(id);
     }
+
+    @Override
+    public MessageUtil add(UserRequest userRequest, MultipartFile file)  {
+
+//        if (userRequest.getName() == null || userRequest.getName().isEmpty()) {
+//            throw new IllegalArgumentException("Name cannot be empty");
+//        }
+
+        Random random = new Random();
+        int number;
+        String mk = "";
+        for (int i = 0; i < 5; i++) {
+            number = random.nextInt(9);
+            mk += number;
+        }
+        String matKhau = "abcd" + mk;
+        User uer = userRequest.user();
+
+        uer.setPassword(passwordEncoder.encode(matKhau));
+
+        String s1 = uer.getEmail();
+        String[] parts = s1.split("@");
+        String part1 = parts[0];
+        uer.setUsername(part1);
+        uer.setStatus("onKH");
+        uer.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(uer.getEmail());
+        mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
+
+        mailMessage.setText("Tên đăng nhập:"+part1 + "\nMật khẩu đăng nhập:"  + matKhau);
+        javaMailSender.send(mailMessage);
+
+
+        Map<?, ?> uploadResult = null;
+        try {
+            uploadResult = imageService.upload(file, "avatar");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        uploadResult.get("url");
+        String avatar = uploadResult.get("url").toString();
+        uer.setAvatar(avatar);
+
+        User u = userRepository.save(uer);
+
+        Address address = userRequest.address();
+        address.setUser(u);
+
+        Address a = addressRepository.save(address);
+
+
+        return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(uer).build();
+
+
+
+    }
+
+
 }

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -18,201 +20,350 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 
+    <!--    =====================-->
+
+    <link rel="stylesheet" href="/assets/vendor/select2/select2.css">
+    <link rel="stylesheet" href="/assets/vendor/select2/select2.min.css">
+
+
+    <style>
+
+        #imageContainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .imagePreview {
+            margin: 10px;
+            position: relative;
+        }
+
+        .deleteButton {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .uploadButton {
+            cursor: pointer;
+            background-color: #0f083b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-top: 10px;
+        }
+
+        .select2-container .select2-selection__choice {
+            background-color: #0058f6; /* Màu nền xám khi chọn */
+            color: #ffffff; /* Màu chữ trắng khi chọn */
+            border: 1px solid #0a0202; /* Viền khi chọn */
+            border-radius: 5px; /* Góc bo tròn khi chọn */
+        }
+
+        .select2-selection__choice--selected {
+            background-color: #0058f6; /* Màu nền xám khi chọn */
+            color: #ffffff; /* Màu chữ trắng khi chọn */
+            border: 1px solid #0a0202; /* Viền khi chọn */
+            border-radius: 5px; /* Góc bo tròn khi chọn */
+        }
+
+        /* Đổi màu nền khi hover tag */
+        .select2-container .select2-selection__choice:hover {
+            background-color: #0056b3;
+        }
+
+        /* Đổi màu nền khi click vào tag */
+        .select2-container .select2-selection__choice.select2-selection__choice--selected {
+            background-color: #0056b3;
+        }
+
+        /* Đổi màu nền input khi nhập dữ liệu */
+        .select2-container .select2-selection--multiple .select2-selection__rendered {
+            background-color: #ffffff;
+            padding: 5px;
+        }
+
+        /* Đổi màu nền icon xóa tag */
+        .select2-container .select2-selection__choice__remove {
+            color: #fff;
+        }
+
+    </style>
+
 </head>
-<body class="app sidebar-mini rtl">
+<body onload="time()" class="app sidebar-mini rtl">
 <div th:replace="~{layout/navbar :: navbar}"></div>
-<style>
-    .Choicefile {
-        display: block;
-        background: #14142B;
-        border: 1px solid #fff;
-        color: #fff;
-        width: 150px;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        padding: 5px 0px;
-        border-radius: 5px;
-        font-weight: 500;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .Choicefile:hover {
-        text-decoration: none;
-        color: white;
-    }
-
-    #uploadfile,
-    .removeimg {
-        display: none;
-    }
-
-    #thumbbox {
-        position: relative;
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    .removeimg {
-        height: 25px;
-        position: absolute;
-        background-repeat: no-repeat;
-        top: 5px;
-        left: 5px;
-        background-size: 25px;
-        width: 25px;
-        /* border: 3px solid red; */
-        border-radius: 50%;
-
-    }
-
-    .removeimg::before {
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        content: '';
-        border: 1px solid red;
-        background: red;
-        text-align: center;
-        display: block;
-        margin-top: 11px;
-        transform: rotate(45deg);
-    }
-
-    .removeimg::after {
-        /* color: #FFF; */
-        /* background-color: #DC403B; */
-        content: '';
-        background: red;
-        border: 1px solid red;
-        text-align: center;
-        display: block;
-        transform: rotate(-45deg);
-        margin-top: -2px;
-    }
-</style>
-<!-- Navbar-->
 
 <main class="app-content">
-    <div class="app-title">
-        <ul class="app-breadcrumb breadcrumb">
-            <li class="breadcrumb-item">Danh sách nhân viên</li>
-            <li class="breadcrumb-item"><a href="#">Thêm nhân viên</a></li>
-        </ul>
-    </div>
+
     <div class="row">
         <div class="col-md-12">
-
             <div class="tile">
+                <h3 class="tile-title">Tạo mới sản phẩm</h3>
 
-                <h3 class="tile-title">Thêm khách hàng mới</h3>
-                <div class="tile-body">
+                <form class="row" action="/admin/customer/add" th:object="${att}" method="post"
+                      enctype="multipart/form-data" >
+                    <!--                    <div class="form-group col-md-3">-->
+                    <!--                        <label class="control-label">mã kh </label>-->
+                    <!--                        <input class="form-control" type="text">-->
+                    <!--                    </div>-->
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Tên khách hàng</label>
+                        <input class="form-control" type="text" required th:field="*{name}" >
 
-                    <form class="row" action="/admin/customer/add" method="post" th:object="${att}" enctype="multipart/form-data">
-                        <div class="form-group col-md-4">
-                            <label class="control-label">ID khách hàng</label>
-                            <input class="form-control" type="text">
+                    </div>
+                    <div class="form-group  col-md-4">
+                        <label class="control-label">Số điện thoại</label>
+                        <input class="form-control" type="text" required th:field="*{phoneNumber}">
+                    </div>
+                    <div class="form-group col-md-4 ">
+                        <label class="control-label">Email</label>
+                        <input class="form-control" type="text" required th:field="*{email}">
+                    </div>
+
+
+                    <div class="form-group  col-md-4">
+                        <label class="control-label">Giới tính</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:value="1" th:field="*{gender}" checked/>
+                            <label class="form-check-label">Nam</label>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label class="control-label">Họ tên</label>
-                            <input class="form-control" type="text" required th:field="*{username}">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" th:value="0" th:field="*{gender}"/>
+                            <label class="form-check-label">Nữ</label>
                         </div>
-                        <div class="form-group col-md-4">
-                            <label class="control-label">Tên</label>
-                            <input class="form-control" type="text" required th:field="*{name}">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="control-label">Email</label>
-                            <input class="form-control" type="text" required th:field="*{email}">
-                        </div>
-                        <div class="form-group  col-md-4">
-                            <label class="control-label">Số điện thoại</label>
-                            <input class="form-control" type="number" required th:field="*{phoneNumber}">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label class="control-label">Mật khẩu</label>
-                            <input class="form-control" type="password" th:field="*{password}">
-                        </div>
-                        <div class="form-group  col-md-3">
-                            <label class="control-label">Gioi tính</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" th:value="1" th:field="*{gender}" checked/>
-                                <label class="form-check-label">Nam</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" th:value="0" th:field="*{gender}"/>
-                                <label class="form-check-label">Nữ</label>
-                            </div>
-                        </div>
+                    </div>
 
 
-                        <div class="form-group col-md-3">
-                            <label class="control-label">Ảnh</label>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Tỉnh/Thành phố</label>
+                        <input class="form-control" type="text" required th:field="*{province}">
+                        <!--                                            <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm" th:field="*{province}">-->
+                        <!--                                                <option value="Name" selected>Chọn tỉnh thành</option>-->
+                        <!--                                            </select>-->
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Quận/Huyện</label>
+                        <input class="form-control" type="text" required th:field="*{district}">
+                        <!--                                            <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm" th:field="*{district}">-->
+                        <!--                                                <option value="" selected>Chọn quận huyện</option>-->
+                        <!--                                            </select>-->
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Phường/Xã </label>
+                        <input class="form-control" type="text" required th:field="*{ward}">
+                        <!--                                            <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm" th:field="*{ward}">-->
+                        <!--                                                <option value="" selected>Chọn phường xã</option>-->
+                        <!--                                            </select>-->
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Đường</label>
+                        <input class="form-control" type="text" required th:field="*{street}">
+                    </div>
 
-<!--                            <label  class="control-label">Chọn ảnh</label>-->
-                            <input class="form-control" name="file" type="file" required>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Ảnh</label>
+
+                        <!--                            <label  class="control-label">Chọn ảnh</label>-->
+                        <input class="form-control" name="file" type="file" required>
 
 
-
-                        </div>
-
+                    </div>
 
 
+                    <div class="col">
 
 
-                        <button class="btn btn-save" type="submit" style="height: 40px;margin-top: 30px">Lưu lại</button>
-                        <a class="btn btn-cancel" href="/doc/table-data-table.html" style="height: 40px;margin-left: 10px;margin-top: 30px">Hủy bỏ</a>
-                    </form>
-                </div>
+                        <button class="btn btn-save mr-2 submit-button " type="submit" >Lưu lại</button>
+                        <a class="btn btn-cancel ml-2" href="/admin/product">Hủy bỏ</a>
+                    </div>
+
+                </form>
             </div>
         </div>
+    </div>
+
 
 </main>
 
-
-<!--
-MODAL
--->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-
-            <div class="modal-body">
-                <div class="row">
-                    <div class="form-group  col-md-12">
-              <span class="thong-tin-thanh-toan">
-                <h5>Tạo chức vụ mới</h5>
-              </span>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Nhập tên chức vụ mới</label>
-                        <input class="form-control" type="text" required>
-                    </div>
-                </div>
-                <BR>
-                <button class="btn btn-save" type="button">Lưu lại</button>
-                <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                <BR>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-<!--
-MODAL
--->
+<!--<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>-->
+<!--<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>-->
 
 
-<!-- Essential javascripts for application to work-->
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/main.js"></script>
-<!-- The javascript plugin to display page loading on top-->
-<script src="js/plugins/pace.min.js"></script>
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/popper.min.js"></script>
+<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/main1.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/assets/js/plugins/pace.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
+<script src="/assets/vendor/select2/select2.js"></script>
+<script src="/assets/vendor/select2/select2.min.js.js"></script>
 
+
+
+
+<!--===============================================================================================-->
+<script type="text/javascript">
+    //Thời Gian
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+    }
+</script>
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const imageContainer = document.getElementById('imageContainer');
+
+    fileInput.addEventListener('change', () => {
+        // Kiểm tra và giới hạn số lượng tệp được chọn
+        if (fileInput.files.length > 5) {
+            alert('Chỉ được chọn tối đa 5 ảnh.');
+            fileInput.value = ''; // Xóa chọn tệp
+            return;
+        }
+
+        // Xóa các ảnh hiện có
+        while (imageContainer.firstChild) {
+            imageContainer.removeChild(imageContainer.firstChild);
+        }
+
+        const files = fileInput.files;
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const imagePreview = document.createElement('div');
+            imagePreview.className = 'imagePreview';
+
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            img.style.maxWidth = '200px';
+            img.style.maxHeight = '200px';
+
+            const deleteButton = document.createElement('button');
+            deleteButton.innerHTML = 'x';
+            deleteButton.className = 'deleteButton';
+            deleteButton.addEventListener('click', () => {
+                imageContainer.removeChild(imagePreview);
+            });
+
+            imagePreview.appendChild(img);
+            imagePreview.appendChild(deleteButton);
+
+            imageContainer.appendChild(imagePreview);
+        }
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.js-example-tags').select2({
+            tags: false
+        });
+    });
+</script>
+<script>
+    // Lấy tham chiếu đến thông báo Bootstrap
+    var myAlert = document.getElementById("myAlert");
+
+    // Tự đóng thông báo sau 5 giây
+    setTimeout(function () {
+        myAlert.style.display = "none";
+    }, 5000); // 5000 ms = 5 giây
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".delete-link").on("click", function (event) {
+            event.preventDefault();
+            var deleteLink = $(this).attr("href");
+
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.value) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    window.location.href = deleteLink;
+                }
+            });
+        });
+    });
+</script>
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        // Bắt sự kiện click trên nút Submit-->
+<!--        $(".submit-button").on("click", function (event) {-->
+<!--            event.preventDefault();-->
+<!--            const form = document.getElementById("myForm");-->
+
+<!--            Swal.fire({-->
+<!--                title: "Xác nhận",-->
+<!--                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",-->
+<!--                icon: "warning",-->
+<!--                showCancelButton: true,-->
+<!--                confirmButtonText: "Chắc chắn",-->
+<!--                cancelButtonText: "À mà thôi",-->
+<!--            }).then((result) => {-->
+<!--                if (result.value) {-->
+<!--                    // Nếu người dùng xác nhận, gửi biểu mẫu-->
+<!--                    form.submit();-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 
 </html>

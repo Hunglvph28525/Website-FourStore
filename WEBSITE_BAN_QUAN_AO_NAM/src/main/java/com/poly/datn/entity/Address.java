@@ -31,16 +31,16 @@ public class Address {
     private User user;
 
     @Column(name = "province",columnDefinition = ("nvarchar(255)"))
-    private String province;
+    private String province;//tỉnh/thành phố
 
     @Column(name = "district",columnDefinition = ("nvarchar(255)"))
-    private String district;
+    private String district;//huyện
 
     @Column(name = "ward",columnDefinition = ("nvarchar(255)"))
-    private String ward;
+    private String ward;//xã/phường
 
     @Column(name = "street",columnDefinition = ("nvarchar(255)"))
-    private String street;
+    private String street;//đường/số nhà/ngõ
 
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
