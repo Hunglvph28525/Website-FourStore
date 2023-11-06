@@ -107,26 +107,26 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Tạo mới sản phẩm</h3>
+                <h3 class="tile-title">Tạo mới khách hàng</h3>
 
                 <form class="row" action="/admin/customer/add" th:object="${att}" method="post"
-                      enctype="multipart/form-data" >
+                      enctype="multipart/form-data" id="myForm" >
                     <!--                    <div class="form-group col-md-3">-->
                     <!--                        <label class="control-label">mã kh </label>-->
                     <!--                        <input class="form-control" type="text">-->
                     <!--                    </div>-->
                     <div class="form-group col-md-4">
                         <label class="control-label">Tên khách hàng</label>
-                        <input class="form-control" type="text" required th:field="*{name}" >
+                        <input class="form-control" type="text" required th:field="*{name}" id="tenKH">
 
                     </div>
                     <div class="form-group  col-md-4">
                         <label class="control-label">Số điện thoại</label>
-                        <input class="form-control" type="text" required th:field="*{phoneNumber}">
+                        <input class="form-control" type="text" required th:field="*{phoneNumber}" id="sdt">
                     </div>
                     <div class="form-group col-md-4 ">
                         <label class="control-label">Email</label>
-                        <input class="form-control" type="text" required th:field="*{email}">
+                        <input class="form-control" type="text" required th:field="*{email}" id="email">
                     </div>
 
 
@@ -145,28 +145,28 @@
 
                     <div class="form-group col-md-4">
                         <label class="control-label">Tỉnh/Thành phố</label>
-                        <input class="form-control" type="text" required th:field="*{province}">
+                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">
                         <!--                                            <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm" th:field="*{province}">-->
                         <!--                                                <option value="Name" selected>Chọn tỉnh thành</option>-->
                         <!--                                            </select>-->
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Quận/Huyện</label>
-                        <input class="form-control" type="text" required th:field="*{district}">
+                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">
                         <!--                                            <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm" th:field="*{district}">-->
                         <!--                                                <option value="" selected>Chọn quận huyện</option>-->
                         <!--                                            </select>-->
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Phường/Xã </label>
-                        <input class="form-control" type="text" required th:field="*{ward}">
+                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">
                         <!--                                            <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm" th:field="*{ward}">-->
                         <!--                                                <option value="" selected>Chọn phường xã</option>-->
                         <!--                                            </select>-->
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Đường</label>
-                        <input class="form-control" type="text" required th:field="*{street}">
+                        <input class="form-control" type="text" required th:field="*{street}" id="duong">
                     </div>
 
                     <div class="form-group col-md-4">
@@ -212,6 +212,109 @@
 <script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
 <script src="/assets/vendor/select2/select2.js"></script>
 <script src="/assets/vendor/select2/select2.min.js.js"></script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $(".submit-button").on("click", function (event) {
+            event.preventDefault();
+            var tenKH = document.getElementById("tenKH").value;
+            var sdt = document.getElementById("sdt").value;
+            var email = document.getElementById("email").value;
+            var thanhPho = document.getElementById("thanhPho").value;
+            var quanHuyen =document.getElementById("quanHuyen").value;
+            var phuongXa = document.getElementById("phuongXa").value;
+            var duong = document.getElementById("duong").value;
+            // var now = new Date();
+
+            if (tenKH.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập tên khách hàng."
+                });
+                return;
+            }
+
+            if (sdt.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập số điện thoại khách hàng."
+                });
+                return;
+            }
+
+
+            if (email.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập email khách hàng."
+                });
+                return;
+            }
+
+            if (thanhPho.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập thành phố ."
+                });
+                return;
+            }
+            if (quanHuyen.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập quận/huyện."
+                });
+                return;
+            }
+
+
+            if (phuongXa.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập phường/xã."
+                });
+                return;
+            }
+
+
+            if (duong.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập đường/ngõ/xóm."
+                });
+                return;
+            }
+
+
+
+
+
+
+            // Hiển thị hộp thoại xác nhận
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    document.getElementById("myForm").submit();
+                }
+            });
+        });
+    });
+</script>
 
 
 
