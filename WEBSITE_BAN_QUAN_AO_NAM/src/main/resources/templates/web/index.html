@@ -313,7 +313,7 @@
                         <div class="brand_active owl-carousel">
                             <div class="col-lg-2" th:each="x : ${brands}">
                                 <div class="single_brand" >
-                                    <a  th:href="@{'/brand/'+ ${x.name}}"><img th:src="@{${x.logo}}" alt=""></a>
+                                    <a  th:href="@{'/brand/'+ ${x.name}}"><b><span th:text="${x.name}"></span></b></a>
                                 </div>
                             </div>
                         </div>

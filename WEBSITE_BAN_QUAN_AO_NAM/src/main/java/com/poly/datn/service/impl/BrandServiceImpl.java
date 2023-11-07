@@ -14,24 +14,28 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class BrandServiceImpl implements BrandService {
+ public class BrandServiceImpl implements BrandService {
     @Autowired
     BrandRepository brandRepository;
     @Autowired
     private ImageService imageService;
 
     @Override
-    public List<Brand> getAll() {
-        return brandRepository.findAll();
+    public Brand detail(Long id) {
+        return brandRepository.getReferenceById(id);
     }
 
     @Override
-    public MessageUtil save(String name, MultipartFile file) throws IOException {
-        if (brandRepository.existsByName(name)){
+    public List<Brand> getAll() {
+        return brandRepository.getAll();
+    }
+
+    @Override
+    public MessageUtil save(Brand brand) {
+        if (brandRepository.existsByName(brand.getName())){
             return MessageUtil.builder().status(0).message("Thêm thất bại vì tên thương hiệu đã có !").type("bg-danger").build();
         }else {
-            Map<?, ?> map = imageService.upload(file, "other");
-            brandRepository.save(Brand.builder().name(name).logo(map.get("url").toString()).build());
+            brandRepository.save(brand);
             return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").build();
         }
 

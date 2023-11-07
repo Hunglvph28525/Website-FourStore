@@ -36,9 +36,6 @@ public class Brand {
     @Column(name = "type_name",columnDefinition = ("nvarchar(255)"))
     private String name;
 
-    @Column(name = "logo")
-    private String logo;
-
     @Column(name = "status",columnDefinition = ("nvarchar(255)"))
     private String status;
 }

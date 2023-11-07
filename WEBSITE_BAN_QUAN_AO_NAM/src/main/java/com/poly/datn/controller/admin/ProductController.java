@@ -2,12 +2,14 @@ package com.poly.datn.controller.admin;
 
 
 import com.poly.datn.dto.ProductRequest;
+import com.poly.datn.entity.Brand;
 import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Color;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.entity.Size;
 import com.poly.datn.entity.TypeProduct;
+import com.poly.datn.entity.User;
 import com.poly.datn.service.BrandService;
 import com.poly.datn.service.CategoryService;
 import com.poly.datn.service.ColorService;
@@ -177,8 +179,8 @@ public class ProductController {
     }
 
     @PostMapping("/product/add-brand")
-    public String addBrand(@RequestParam("name") String name, @RequestParam("file") MultipartFile file, RedirectAttributes attributes) throws IOException {
-        MessageUtil message = brandService.save(name, file);
+    public String addBrand(@RequestParam("name")String name, RedirectAttributes attributes) {
+        MessageUtil message = brandService.save(Brand.builder().name(name).build());
         attributes.addFlashAttribute("message", message);
         return "redirect:/admin/product/new";
     }
@@ -194,5 +196,9 @@ public class ProductController {
     @ModelAttribute("product")
     public Object initNewProduct(){
         return new ProductRequest();
+    }
+    @ModelAttribute("object")
+    public Object initNewBrand(){
+        return new Brand();
     }
 }

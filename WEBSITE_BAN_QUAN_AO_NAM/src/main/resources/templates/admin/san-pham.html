@@ -104,7 +104,7 @@
                             <td th:text="${arr.index + 1}"></td>
                             <td th:text="${x.maSp}"></td>
                             <td th:text="${x.name}"></td>
-                            <td><img th:src="@{${x.brand.logo}}" alt="ảnh san pham" width="80px;"></td>
+                            <td th:text="${x.brand.name}"></td>
                             <td><img th:src="@{${x.image}}" alt="ảnh san pham" width="100px;"></td>
                             <td th:text="${x.quantity}"></td>
                             <td><span class="badge " th:classappend="${x.quantity == 0 ? 'bg-danger' : 'bg-success'}"

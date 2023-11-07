@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.List;
 
 public interface BrandService {
+
+    Brand detail(Long id);
+
     List<Brand> getAll();
 
-    MessageUtil save(String name, MultipartFile file) throws IOException;
+    MessageUtil save(Brand brand );
 }

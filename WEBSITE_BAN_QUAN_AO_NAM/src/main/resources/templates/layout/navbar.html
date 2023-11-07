@@ -18,7 +18,8 @@
 <!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" th:src="@{${user.avatar}}" width="50px" alt="User Image">
+    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" th:src="@{${user.avatar}}" width="50px"
+                                        alt="User Image">
         <div>
             <p class="app-sidebar__user-name"><b th:text="${user.name}"></b></p>
             <p class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
@@ -28,19 +29,41 @@
     <ul class="app-menu">
         <li><a class="app-menu__item haha" href="/admin/sale"><i class='app-menu__icon bx bx-cart-alt'></i>
             <span class="app-menu__label">POS Bán Hàng</span></a></li>
-        <li><a class="app-menu__item active" href="/admin/dashboard"><i class='app-menu__icon bx bx-tachometer'></i><span
+        <li><a class="app-menu__item active" href="/admin/dashboard"><i
+                class='app-menu__icon bx bx-tachometer'></i><span
                 class="app-menu__label">Bảng điều khiển</span></a></li>
         <li><a class="app-menu__item " href="/admin/customer"><i class='app-menu__icon bx bx-id-card'></i> <span
                 class="app-menu__label">Quản lý khách hàng</span></a></li>
-        <li><a class="app-menu__item" href="/admin/product"><i
-                class='app-menu__icon bx bx-archive'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
+        <li>
+            <a class="app-menu__item" href="#" data-toggle="collapse" data-target="#collapseTwo"
+               aria-expanded="true" aria-controls="collapseTwo">
+                <i class="app-menu__icon bx bx-archive"></i>
+                <span class="app-menu__label">Quản lý sản phẩm</span>
+            </a>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <ul>
+                        <li class="py-1"><a href="/admin/product"><b>Sản phẩm</b></a></li>
+                        <li class="py-1"><a href="/admin/category"><b>Danh mục</b></a></li>
+                        <li class="py-1"><a href="/admin/type"><b>Loại sản phẩm</b></a></li>
+                        <li class="py-1"><a href="/admin/size"><b>Kích cỡ</b></a></li>
+                        <li class="py-1"><a href="/admin/color"><b>Màu sắc</b></a></li>
+                        <li class="py-1"><a href="/admin/brand"><b>Thương hiệu</b></a></li>
+
+                    </ul>
+                </div>
+            </div>
         </li>
         <li><a class="app-menu__item" href="/admin/invoice"><i class='app-menu__icon bx bx-task'></i><span
                 class="app-menu__label">Quản lý đơn hàng</span></a></li>
         <li><a class="app-menu__item" href="/admin/thong-ke">
-            <i class='app-menu__icon bx bx-pie-chart-alt-2'></i><span class="app-menu__label">Báo cáo doanh thu</span></a>
+            <i class='app-menu__icon bx bx-pie-chart-alt-2'></i><span
+                class="app-menu__label">Báo cáo doanh thu</span></a>
         </li>
-        <li><a class="app-menu__item" href="/admin/promotion"><i class='app-menu__icon bx bx-purchase-tag-alt '></i><span class="app-menu__label">Phiếu giảm giá</span></a></li>
+        <li><a class="app-menu__item" href="/admin/promotion"><i
+                class='app-menu__icon bx bx-purchase-tag-alt '></i><span
+                class="app-menu__label">Phiếu giảm giá</span></a></li>
+
     </ul>
 </aside>
 </body>

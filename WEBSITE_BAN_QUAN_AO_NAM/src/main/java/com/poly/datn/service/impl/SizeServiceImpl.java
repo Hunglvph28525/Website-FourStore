@@ -28,9 +28,9 @@ public class SizeServiceImpl implements SizeService {
 
     @Override
     public MessageUtil save(Size size) {
-        if (sizeRepository.existsByName(size.getName())){
+        if (sizeRepository.existsByName(size.getName())) {
             return MessageUtil.builder().status(0).message("Thêm thất bại vì kích cỡ đã có !").type("bg-danger").build();
-        }else {
+        } else {
             sizeRepository.save(size);
             return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").build();
         }

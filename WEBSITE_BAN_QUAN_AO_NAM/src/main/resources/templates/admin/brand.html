@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main1.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <!--    date ranger pick-->
+
+    <style>
+        th, td {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body onload="time()" class="app sidebar-mini rtl">
+<div th:replace="~{layout/navbar :: navbar}"></div>
+<!--main-->
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách thương hiệu</b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-7">
+                            <h6>Danh sách</h6>
+                        </div>
+                    </div>
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên</th>
+                            <th>Chức năng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="x,arr : ${list}">
+                            <td th:text="${arr.index+1}"></td>
+                            <td th:text="${x.name}"></td>
+                            <td>
+                                <a class=" btn btn-primary btn edit bg-warning"
+                                   th:href="@{'/admin/brand/'+${x.id}}"
+                                   title="Sửa"><i class="fas fa-edit"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-5">
+                            <h6>Thông tin</h6>
+                        </div>
+                    </div>
+                    <form id="myForm" class="row" enctype="multipart/form-data" th:action="@{/admin/brand/save}" th:object="${object}"
+                          method="post">
+                        <div class="form-group col-md-12">
+                            <label class="control-label">ID</label>
+                            <input id="id" class="form-control" type="text" readonly th:field="*{id}">
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label class="control-label">Tên</label>
+                            <input id="name" class="form-control" type="text" required th:field="*{name}">
+                        </div>
+
+                        <div class="row ml-3">
+                            <button class="btn btn-save mr-2 submit-btn" type="submit">Lưu lại</button>
+                            <a class="btn mr-2 btn-cancel" href="/admin/brand">Xóa</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="font-size: 13px">
+        <p><b>Copyright
+            <script type="text/javascript">
+                document.write(new Date().getFullYear());
+            </script>
+            Phần mềm quản lý bán hàng | SD-66
+        </b></p>
+    </div>
+</main>
+<div th:if="${message.status != null}">
+    <div id="myAlert" class="alert alert-dismissible fade show position-fixed"
+         style="top: 120px; right: 30px;width: 400px; height: 50px" th:classappend="${message.type}">
+        <p th:text="${message.message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/popper.min.js"></script>
+<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/main.js"></script>
+<!--===============================================================================================-->
+<script src="assets/js/plugins/pace.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
+
+<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
+
+<!--===============================================================================================-->
+<script type="text/javascript">
+    //Thời Gian
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+    }
+</script>
+<!--time-->
+<script>
+    $('#sampleTable').DataTable();
+
+    var myAlert = document.getElementById("myAlert");
+    // Tự đóng thông báo sau 5 giây
+    setTimeout(function () {
+        myAlert.style.display = "none";
+    }, 5000); // 5000 ms = 5 giây
+</script>
+thong bao
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $(".submit-btn").on("click", function (event) {
+            event.preventDefault();
+
+            var name = document.getElementById("name").value;
+
+            if (name.trim() === "") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Vui lòng nhập tên kích cỡ."
+                });
+                return;
+            }
+            // Hiển thị hộp thoại xác nhận
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    document.getElementById("myForm").submit();
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+
+</html>

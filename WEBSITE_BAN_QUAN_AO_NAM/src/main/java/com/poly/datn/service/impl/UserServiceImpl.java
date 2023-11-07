@@ -146,42 +146,30 @@ public class UserServiceImpl implements UserService {
         }
         String matKhau = "abcd" + mk;
         User uer = userRequest.user();
-
         uer.setPassword(passwordEncoder.encode(matKhau));
-
         String s1 = uer.getEmail();
         String[] parts = s1.split("@");
         String part1 = parts[0];
         uer.setUsername(part1);
         uer.setStatus("onKH");
         uer.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
-
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(uer.getEmail());
         mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
-
         mailMessage.setText("Tên đăng nhập:"+part1 + "\nMật khẩu đăng nhập:"  + matKhau);
         javaMailSender.send(mailMessage);
-
-
         Map<?, ?> uploadResult = null;
         try {
             uploadResult = imageService.upload(file, "avatar");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        uploadResult.get("url");
         String avatar = uploadResult.get("url").toString();
         uer.setAvatar(avatar);
-
         User u = userRepository.save(uer);
-
         Address address = userRequest.address();
         address.setUser(u);
-
         Address a = addressRepository.save(address);
-
-
         return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(uer).build();
 
 

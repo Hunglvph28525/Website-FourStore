@@ -16,8 +16,13 @@ public class ColorServiceImpl implements ColorService {
 
 
     @Override
+    public Color detail(Integer id) {
+        return colorRepository.getReferenceById(id);
+    }
+
+    @Override
     public List<Color> getAll() {
-        return colorRepository.findAll();
+        return colorRepository.getAll();
     }
 
     @Override
@@ -30,5 +35,6 @@ public class ColorServiceImpl implements ColorService {
         }
 
     }
+
 
 }

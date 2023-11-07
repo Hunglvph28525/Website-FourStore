@@ -12,4 +12,7 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
 
     Boolean existsByName(String name);
 
+    @Query("select c from Category c order by c.id desc ")
+    List<Category> getAll();
+
 }

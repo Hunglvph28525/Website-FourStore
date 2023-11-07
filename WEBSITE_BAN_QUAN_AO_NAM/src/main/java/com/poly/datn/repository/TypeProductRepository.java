@@ -10,4 +10,7 @@ import java.util.List;
 @Repository
 public interface TypeProductRepository extends JpaRepository<TypeProduct, Long> {
     Boolean existsByName(String name);
+
+    @Query("select c from Brand c order by c.id desc ")
+    List<TypeProduct> getAll();
 }
