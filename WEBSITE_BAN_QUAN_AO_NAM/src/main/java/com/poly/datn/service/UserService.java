@@ -3,6 +3,7 @@ package com.poly.datn.service;
 import com.poly.datn.dto.ProductRequest;
 import com.poly.datn.dto.UserDto;
 import com.poly.datn.dto.UserRequest;
+import com.poly.datn.entity.Address;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.User;
 import com.poly.datn.request.UserSignUpRequest;
@@ -40,7 +41,7 @@ public interface UserService extends Converter<UserSignUpRequest,User>
 
     MessageUtil add(UserRequest userRequest, MultipartFile file);
 
-
+    List<Address> findByIdDiaChi(Long cid);
 
 }
 

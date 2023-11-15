@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     AddressRepository addressRepository;
 
+
+
     @Override
     public List<User> getAll() {
         return userRepository.findAll();
@@ -169,11 +171,17 @@ public class UserServiceImpl implements UserService {
         User u = userRepository.save(uer);
         Address address = userRequest.address();
         address.setUser(u);
+        address.setStatus("on");
         Address a = addressRepository.save(address);
         return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(uer).build();
 
 
 
+    }
+
+    @Override
+    public List<Address> findByIdDiaChi(Long cid) {
+        return addressRepository.findByIdKhachHang(cid);
     }
 
 

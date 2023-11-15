@@ -145,24 +145,24 @@
 
                     <div class="form-group col-md-4">
                         <label class="control-label">Tỉnh/Thành phố</label>
-                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">
-                        <!--                                            <select class="form-select form-select-sm mb-3" id="city" aria-label=".form-select-sm" th:field="*{province}">-->
-                        <!--                                                <option value="Name" selected>Chọn tỉnh thành</option>-->
-                        <!--                                            </select>-->
+<!--                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">-->
+                                                                    <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}">
+                                                                        <option value="Name" selected>Chọn tỉnh thành</option>
+                                                                    </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Quận/Huyện</label>
-                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">
-                        <!--                                            <select class="form-select form-select-sm mb-3" id="district" aria-label=".form-select-sm" th:field="*{district}">-->
-                        <!--                                                <option value="" selected>Chọn quận huyện</option>-->
-                        <!--                                            </select>-->
+<!--                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">-->
+                                                                    <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}">
+                                                                        <option value="" selected>Chọn quận huyện</option>
+                                                                    </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Phường/Xã </label>
-                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">
-                        <!--                                            <select class="form-select form-select-sm" id="ward" aria-label=".form-select-sm" th:field="*{ward}">-->
-                        <!--                                                <option value="" selected>Chọn phường xã</option>-->
-                        <!--                                            </select>-->
+<!--                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">-->
+                                                                    <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}">
+                                                                        <option value="" selected>Chọn phường xã</option>
+                                                                    </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Đường</label>
@@ -194,6 +194,9 @@
 
 </main>
 
+
+
+
 <!--<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>-->
 <!--<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>-->
 
@@ -215,234 +218,211 @@
 
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        $(".submit-button").on("click", function (event) {
-            event.preventDefault();
-            var tenKH = document.getElementById("tenKH").value;
-            var sdt = document.getElementById("sdt").value;
-            var email = document.getElementById("email").value;
-            var thanhPho = document.getElementById("thanhPho").value;
-            var quanHuyen =document.getElementById("quanHuyen").value;
-            var phuongXa = document.getElementById("phuongXa").value;
-            var duong = document.getElementById("duong").value;
-            // var now = new Date();
-
-            if (tenKH.trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Vui lòng nhập tên khách hàng."
-                });
-                return;
-            }
-
-            if (sdt.trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Vui lòng nhập số điện thoại khách hàng."
-                });
-                return;
-            }
-
-
-            if (email.trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Vui lòng nhập email khách hàng."
-                });
-                return;
-            }
-
-            if (thanhPho.trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Vui lòng nhập thành phố ."
-                });
-                return;
-            }
-            if (quanHuyen.trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Vui lòng nhập quận/huyện."
-                });
-                return;
-            }
-
-
-            if (phuongXa.trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Vui lòng nhập phường/xã."
-                });
-                return;
-            }
-
-
-            if (duong.trim() === "") {
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi",
-                    text: "Vui lòng nhập đường/ngõ/xóm."
-                });
-                return;
-            }
-
-            // Hiển thị hộp thoại xác nhận
-            Swal.fire({
-                title: "Xác nhận",
-                text: "Bạn đã chắc chắn chưa, không hối hận chứ?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Chắc chắn",
-                cancelButtonText: "À mà thôi",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
-                    document.getElementById("myForm").submit();
-                }
-            });
-        });
-    });
-</script>
-
-
-
-
-<!--===============================================================================================-->
-<script type="text/javascript">
-    //Thời Gian
-    function time() {
-        var today = new Date();
-        var weekday = new Array(7);
-        weekday[0] = "Chủ Nhật";
-        weekday[1] = "Thứ Hai";
-        weekday[2] = "Thứ Ba";
-        weekday[3] = "Thứ Tư";
-        weekday[4] = "Thứ Năm";
-        weekday[5] = "Thứ Sáu";
-        weekday[6] = "Thứ Bảy";
-        var day = weekday[today.getDay()];
-        var dd = today.getDate();
-        var mm = today.getMonth() + 1;
-        var yyyy = today.getFullYear();
-        var h = today.getHours();
-        var m = today.getMinutes();
-        var s = today.getSeconds();
-        m = checkTime(m);
-        s = checkTime(s);
-        nowTime = h + " giờ " + m + " phút " + s + " giây";
-        if (dd < 10) {
-            dd = '0' + dd
-        }
-        if (mm < 10) {
-            mm = '0' + mm
-        }
-        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
-        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
-            '</span>';
-        document.getElementById("clock").innerHTML = tmp;
-        clocktime = setTimeout("time()", "1000", "Javascript");
-
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i;
-            }
-            return i;
-        }
-    }
-</script>
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const imageContainer = document.getElementById('imageContainer');
-
-    fileInput.addEventListener('change', () => {
-        // Kiểm tra và giới hạn số lượng tệp được chọn
-        if (fileInput.files.length > 5) {
-            alert('Chỉ được chọn tối đa 5 ảnh.');
-            fileInput.value = ''; // Xóa chọn tệp
-            return;
-        }
-
-        // Xóa các ảnh hiện có
-        while (imageContainer.firstChild) {
-            imageContainer.removeChild(imageContainer.firstChild);
-        }
-
-        const files = fileInput.files;
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const imagePreview = document.createElement('div');
-            imagePreview.className = 'imagePreview';
-
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            img.style.maxWidth = '200px';
-            img.style.maxHeight = '200px';
-
-            const deleteButton = document.createElement('button');
-            deleteButton.innerHTML = 'x';
-            deleteButton.className = 'deleteButton';
-            deleteButton.addEventListener('click', () => {
-                imageContainer.removeChild(imagePreview);
-            });
-
-            imagePreview.appendChild(img);
-            imagePreview.appendChild(deleteButton);
-
-            imageContainer.appendChild(imagePreview);
-        }
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $('.js-example-tags').select2({
-            tags: false
-        });
-    });
-</script>
-<script>
-    // Lấy tham chiếu đến thông báo Bootstrap
-    var myAlert = document.getElementById("myAlert");
-
-    // Tự đóng thông báo sau 5 giây
-    setTimeout(function () {
-        myAlert.style.display = "none";
-    }, 5000); // 5000 ms = 5 giây
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $(".delete-link").on("click", function (event) {
-            event.preventDefault();
-            var deleteLink = $(this).attr("href");
-
-            Swal.fire({
-                title: "Xác nhận",
-                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Chắc chắn",
-                cancelButtonText: "À mà thôi",
-            }).then((result) => {
-                if (result.value) {
-                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
-                    window.location.href = deleteLink;
-                }
-            });
-        });
-    });
-</script>
 <!--<script>-->
-<!--    $(document).ready(function () {-->
-<!--        // Bắt sự kiện click trên nút Submit-->
+<!--    document.addEventListener("DOMContentLoaded", function () {-->
 <!--        $(".submit-button").on("click", function (event) {-->
 <!--            event.preventDefault();-->
-<!--            const form = document.getElementById("myForm");-->
+<!--            var tenKH = document.getElementById("tenKH").value;-->
+<!--            var sdt = document.getElementById("sdt").value;-->
+<!--            var email = document.getElementById("email").value;-->
+<!--            var thanhPho = document.getElementById("thanhPho").value;-->
+<!--            var quanHuyen =document.getElementById("quanHuyen").value;-->
+<!--            var phuongXa = document.getElementById("phuongXa").value;-->
+<!--            var duong = document.getElementById("duong").value;-->
+<!--            // var now = new Date();-->
+
+<!--            if (tenKH.trim() === "") {-->
+<!--                Swal.fire({-->
+<!--                    icon: "error",-->
+<!--                    title: "Lỗi",-->
+<!--                    text: "Vui lòng nhập tên khách hàng."-->
+<!--                });-->
+<!--                return;-->
+<!--            }-->
+
+<!--            if (sdt.trim() === "") {-->
+<!--                Swal.fire({-->
+<!--                    icon: "error",-->
+<!--                    title: "Lỗi",-->
+<!--                    text: "Vui lòng nhập số điện thoại khách hàng."-->
+<!--                });-->
+<!--                return;-->
+<!--            }-->
+
+
+<!--            if (email.trim() === "") {-->
+<!--                Swal.fire({-->
+<!--                    icon: "error",-->
+<!--                    title: "Lỗi",-->
+<!--                    text: "Vui lòng nhập email khách hàng."-->
+<!--                });-->
+<!--                return;-->
+<!--            }-->
+
+<!--            if (thanhPho.trim() === "") {-->
+<!--                Swal.fire({-->
+<!--                    icon: "error",-->
+<!--                    title: "Lỗi",-->
+<!--                    text: "Vui lòng nhập thành phố ."-->
+<!--                });-->
+<!--                return;-->
+<!--            }-->
+<!--            if (quanHuyen.trim() === "") {-->
+<!--                Swal.fire({-->
+<!--                    icon: "error",-->
+<!--                    title: "Lỗi",-->
+<!--                    text: "Vui lòng nhập quận/huyện."-->
+<!--                });-->
+<!--                return;-->
+<!--            }-->
+
+
+<!--            if (phuongXa.trim() === "") {-->
+<!--                Swal.fire({-->
+<!--                    icon: "error",-->
+<!--                    title: "Lỗi",-->
+<!--                    text: "Vui lòng nhập phường/xã."-->
+<!--                });-->
+<!--                return;-->
+<!--            }-->
+
+
+<!--            if (duong.trim() === "") {-->
+<!--                Swal.fire({-->
+<!--                    icon: "error",-->
+<!--                    title: "Lỗi",-->
+<!--                    text: "Vui lòng nhập đường/ngõ/xóm."-->
+<!--                });-->
+<!--                return;-->
+<!--            }-->
+
+<!--            // Hiển thị hộp thoại xác nhận-->
+<!--            Swal.fire({-->
+<!--                title: "Xác nhận",-->
+<!--                text: "Bạn đã chắc chắn chưa, không hối hận chứ?",-->
+<!--                icon: "warning",-->
+<!--                showCancelButton: true,-->
+<!--                confirmButtonText: "Chắc chắn",-->
+<!--                cancelButtonText: "À mà thôi",-->
+<!--            }).then((result) => {-->
+<!--                if (result.isConfirmed) {-->
+<!--                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa-->
+<!--                    document.getElementById("myForm").submit();-->
+<!--                }-->
+<!--            });-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+
+
+
+<!--&lt;!&ndash;===============================================================================================&ndash;&gt;-->
+<!--<script type="text/javascript">-->
+<!--    //Thời Gian-->
+<!--    function time() {-->
+<!--        var today = new Date();-->
+<!--        var weekday = new Array(7);-->
+<!--        weekday[0] = "Chủ Nhật";-->
+<!--        weekday[1] = "Thứ Hai";-->
+<!--        weekday[2] = "Thứ Ba";-->
+<!--        weekday[3] = "Thứ Tư";-->
+<!--        weekday[4] = "Thứ Năm";-->
+<!--        weekday[5] = "Thứ Sáu";-->
+<!--        weekday[6] = "Thứ Bảy";-->
+<!--        var day = weekday[today.getDay()];-->
+<!--        var dd = today.getDate();-->
+<!--        var mm = today.getMonth() + 1;-->
+<!--        var yyyy = today.getFullYear();-->
+<!--        var h = today.getHours();-->
+<!--        var m = today.getMinutes();-->
+<!--        var s = today.getSeconds();-->
+<!--        m = checkTime(m);-->
+<!--        s = checkTime(s);-->
+<!--        nowTime = h + " giờ " + m + " phút " + s + " giây";-->
+<!--        if (dd < 10) {-->
+<!--            dd = '0' + dd-->
+<!--        }-->
+<!--        if (mm < 10) {-->
+<!--            mm = '0' + mm-->
+<!--        }-->
+<!--        today = day + ', ' + dd + '/' + mm + '/' + yyyy;-->
+<!--        tmp = '<span class="date"> ' + today + ' - ' + nowTime +-->
+<!--            '</span>';-->
+<!--        document.getElementById("clock").innerHTML = tmp;-->
+<!--        clocktime = setTimeout("time()", "1000", "Javascript");-->
+
+<!--        function checkTime(i) {-->
+<!--            if (i < 10) {-->
+<!--                i = "0" + i;-->
+<!--            }-->
+<!--            return i;-->
+<!--        }-->
+<!--    }-->
+<!--</script>-->
+<!--<script>-->
+<!--    const fileInput = document.getElementById('fileInput');-->
+<!--    const imageContainer = document.getElementById('imageContainer');-->
+
+<!--    fileInput.addEventListener('change', () => {-->
+<!--        // Kiểm tra và giới hạn số lượng tệp được chọn-->
+<!--        if (fileInput.files.length > 5) {-->
+<!--            alert('Chỉ được chọn tối đa 5 ảnh.');-->
+<!--            fileInput.value = ''; // Xóa chọn tệp-->
+<!--            return;-->
+<!--        }-->
+
+<!--        // Xóa các ảnh hiện có-->
+<!--        while (imageContainer.firstChild) {-->
+<!--            imageContainer.removeChild(imageContainer.firstChild);-->
+<!--        }-->
+
+<!--        const files = fileInput.files;-->
+<!--        for (let i = 0; i < files.length; i++) {-->
+<!--            const file = files[i];-->
+<!--            const imagePreview = document.createElement('div');-->
+<!--            imagePreview.className = 'imagePreview';-->
+
+<!--            const img = document.createElement('img');-->
+<!--            img.src = URL.createObjectURL(file);-->
+<!--            img.style.maxWidth = '200px';-->
+<!--            img.style.maxHeight = '200px';-->
+
+<!--            const deleteButton = document.createElement('button');-->
+<!--            deleteButton.innerHTML = 'x';-->
+<!--            deleteButton.className = 'deleteButton';-->
+<!--            deleteButton.addEventListener('click', () => {-->
+<!--                imageContainer.removeChild(imagePreview);-->
+<!--            });-->
+
+<!--            imagePreview.appendChild(img);-->
+<!--            imagePreview.appendChild(deleteButton);-->
+
+<!--            imageContainer.appendChild(imagePreview);-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('.js-example-tags').select2({-->
+<!--            tags: false-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+<!--<script>-->
+<!--    // Lấy tham chiếu đến thông báo Bootstrap-->
+<!--    var myAlert = document.getElementById("myAlert");-->
+
+<!--    // Tự đóng thông báo sau 5 giây-->
+<!--    setTimeout(function () {-->
+<!--        myAlert.style.display = "none";-->
+<!--    }, 5000); // 5000 ms = 5 giây-->
+<!--</script>-->
+<!--<script type="text/javascript">-->
+<!--    $(document).ready(function () {-->
+<!--        $(".delete-link").on("click", function (event) {-->
+<!--            event.preventDefault();-->
+<!--            var deleteLink = $(this).attr("href");-->
 
 <!--            Swal.fire({-->
 <!--                title: "Xác nhận",-->
@@ -453,15 +433,67 @@
 <!--                cancelButtonText: "À mà thôi",-->
 <!--            }).then((result) => {-->
 <!--                if (result.value) {-->
-<!--                    // Nếu người dùng xác nhận, gửi biểu mẫu-->
-<!--                    form.submit();-->
+<!--                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa-->
+<!--                    window.location.href = deleteLink;-->
 <!--                }-->
 <!--            });-->
 <!--        });-->
 <!--    });-->
 <!--</script>-->
-<!-- Include SweetAlert2 -->
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script>
+    var citis = document.getElementById("city");
+    var districts = document.getElementById("district");
+    var wards = document.getElementById("ward");
+    var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        method: "GET",
+        responseType: "application/json",
+    };
+    var promise = axios(Parameter);
+    promise.then(function (result) {
+        renderCity(result.data);
+    });
+
+    function renderCity(data) {
+        for (const x of data) {
+            citis.options[citis.options.length] = new Option(x.Name, x.Name);
+        }
+        citis.onchange = function () {
+            district.length = 1;
+            ward.length = 1;
+            if(this.value != ""){
+                const result = data.filter(n => n.Name === this.value);
+
+                for (const k of result[0].Districts) {
+                    district.options[district.options.length] = new Option(k.Name, k.Name);
+                }
+            }
+        };
+        district.onchange = function () {
+            ward.length = 1;
+            const dataCity = data.filter((n) => n.Name === citis.value);
+            if (this.value != "") {
+                const dataWards = dataCity[0].Districts.filter(n => n.Name === this.value)[0].Wards;
+
+                for (const w of dataWards) {
+                    wards.options[wards.options.length] = new Option(w.Name, w.Name);
+                }
+            }
+        };
+    }
+</script>
+
+
+
+
+
 </body>
 
 </html>
