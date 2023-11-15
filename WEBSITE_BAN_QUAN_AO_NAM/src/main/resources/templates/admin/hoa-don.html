@@ -18,6 +18,42 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 
+    <style>
+        /* Style cho tabs */
+        .tab {
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        /* Link tabs */
+        .tab a {
+            float: left;
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        /* Change màu nền khi hover */
+        .tab a:hover {
+            background-color: #ddd;
+        }
+
+        /* Màu nền khi được chọn */
+        .tab a.active {
+            background-color: #ccc;
+        }
+
+        /* Style nội dung của mỗi tab */
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+    </style>
 </head>
 
 <body onload="time()" class="app sidebar-mini rtl">
@@ -41,146 +77,307 @@
                                     class="fas fa-plus"></i>
                                 Tạo mới đơn hàng</a>
                         </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm nhap-tu-file" type="button" title="Nhập"
-                               onclick="myFunction(this)"><i
-                                    class="fas fa-file-upload"></i> Tải từ file</a>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm print-file" type="button" title="In"
-                               onclick="myApp.printTable()"><i
-                                    class="fas fa-print"></i> In dữ liệu</a>
-                        </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm print-file js-textareacopybtn" type="button"
-                               title="Sao chép"><i
-                                    class="fas fa-copy"></i> Sao chép</a>
-                        </div>
-
-                        <div class="col-sm-2">
-                            <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất
-                                Excel</a>
-                        </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"
-                               onclick="myFunction(this)"><i
-                                    class="fas fa-file-pdf"></i> Xuất PDF</a>
-                        </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm" type="button" title="Xóa" onclick="myFunction(this)"><i
-                                    class="fas fa-trash-alt"></i> Xóa tất cả </a>
-                        </div>
                     </div>
-                    <table class="table table-hover table-bordered" id="sampleTable">
-                        <thead>
-                        <tr>
-                            <th width="10"><input type="checkbox" id="all"></th>
-                            <th>ID đơn hàng</th>
-                            <th>Khách hàng</th>
-                            <th>Đơn hàng</th>
-                            <th>Số lượng</th>
-                            <th>Tổng tiền</th>
-                            <th>Tình trạng</th>
-                            <th>Tính năng</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>MD0837</td>
-                            <td>Triệu Thanh Phú</td>
-                            <td>Ghế làm việc Zuno, Bàn ăn gỗ Theresa</td>
-                            <td>2</td>
-                            <td>9.400.000 đ</td>
-                            <td><span class="badge bg-success">Hoàn thành</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i
-                                        class="fas fa-trash-alt"></i></button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                        class="fa fa-edit"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>MĐ8265</td>
-                            <td>Nguyễn Thị Ngọc Cẩm</td>
-                            <td>Ghế ăn gỗ Lucy màu trắng</td>
-                            <td>1</td>
-                            <td>3.800.000 đ</td>
-                            <td><span class="badge bg-success">Hoàn thành</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i
-                                        class="fas fa-trash-alt"></i></button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                        class="fa fa-edit"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>MT9835</td>
-                            <td>Đặng Hoàng Phúc</td>
-                            <td>Giường ngủ Jimmy, Bàn ăn mở rộng cao cấp Dolas, Ghế làm việc Zuno</td>
-                            <td>3</td>
-                            <td>40.650.000 đ</td>
-                            <td><span class="badge bg-success">Hoàn thành</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i
-                                        class="fas fa-trash-alt"></i></button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                        class="fa fa-edit"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>ER3835</td>
-                            <td>Nguyễn Thị Mỹ Yến</td>
-                            <td>Bàn ăn mở rộng Gepa</td>
-                            <td>1</td>
-                            <td>16.770.000 đ</td>
-                            <td><span class="badge bg-info">Chờ thanh toán</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i
-                                        class="fas fa-trash-alt"></i></button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                        class="fa fa-edit"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>AL3947</td>
-                            <td>Phạm Thị Ngọc</td>
-                            <td>Bàn ăn Vitali mặt đá, Ghế ăn gỗ Lucy màu trắng</td>
-                            <td>2</td>
-                            <td>19.770.000 đ</td>
-                            <td><span class="badge bg-warning">Đang giao hàng</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i
-                                        class="fas fa-trash-alt"></i></button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                        class="fa fa-edit"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>QY8723</td>
-                            <td>Ngô Thái An</td>
-                            <td>Giường ngủ Kara 1.6x2m</td>
-                            <td>1</td>
-                            <td>14.500.000 đ</td>
-                            <td><span class="badge bg-danger">Đã hủy</span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i
-                                        class="fas fa-trash-alt"></i></button>
-                                <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                        class="fa fa-edit"></i></button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="javascript:void(0);" onclick="openTab(event, 'all')">Tất
+                                Cả</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);"
+                               onclick="openTab(event, 'pendingConfirmation')">Chờ Xác Nhận</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" onclick="openTab(event, 'pendingDelivery')">Chờ
+                                Giao</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" onclick="openTab(event, 'delivering')">Đang
+                                Giao</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" onclick="openTab(event, 'completed')">Hoàn
+                                Thành</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" onclick="openTab(event, 'cancelled')">Hủy</a>
+                        </li>
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="javascript:void(0);" onclick="openTab(event, 'pendingPayment')">Chờ-->
+<!--                                Thanh Toán</a>-->
+<!--                        </li>-->
+                    </ul>
+
+                    <div id="all" class="tabcontent">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Tình trạng</th>
+                                <th>Trạng thái</th>
+                                <th>Tính năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,ass : ${all}">
+                                <td th:text="${ass.index+1}"></td>
+                                <td th:text="${x.codeBill}"></td>
+                                <td th:text="${x.user.name}"></td>
+                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
+                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                <td th:text="${x.grandTotal} + 'đ'"></td>
+                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                </td>
+                                <td><span class="badge"
+                                          th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
+                                          th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
+                                </td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm edit" th:href="@{'/admin/invoice/' + ${x.codeBill}}" title="Sửa"><i
+                                            class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="pendingConfirmation" class="tabcontent">
+                        <table class="table table-hover table-bordered" id="sampleTable6">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Tình trạng</th>
+                                <th>Trạng thái</th>
+                                <th>Tính năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,ass : ${choxacnhan}">
+                                <td th:text="${ass.index+1}"></td>
+                                <td th:text="${x.codeBill}"></td>
+                                <td th:text="${x.user.name}"></td>
+                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
+                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                <td th:text="${x.grandTotal} + 'đ'"></td>
+                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                </td>
+                                <td><span class="badge"
+                                          th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
+                                          th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
+                                            class="fa fa-edit"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="pendingDelivery" class="tabcontent">
+                        <table class="table table-hover table-bordered" id="sampleTable5">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Tình trạng</th>
+                                <th>Trạng thái</th>
+                                <th>Tính năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,ass : ${chogiao}">
+                                <td th:text="${ass.index+1}"></td>
+                                <td th:text="${x.codeBill}"></td>
+                                <td th:text="${x.user.name}"></td>
+                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
+                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                <td th:text="${x.grandTotal} + 'đ'"></td>
+                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                </td>
+                                <td><span class="badge"
+                                          th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
+                                          th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
+                                            class="fa fa-edit"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="delivering" class="tabcontent">
+                        <table class="table table-hover table-bordered" id="sampleTable4">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Tình trạng</th>
+                                <th>Trạng thái</th>
+                                <th>Tính năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,ass : ${danggiao}">
+                                <td th:text="${ass.index+1}"></td>
+                                <td th:text="${x.codeBill}"></td>
+                                <td th:text="${x.user.name}"></td>
+                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
+                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                <td th:text="${x.grandTotal} + 'đ'"></td>
+                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                </td>
+                                <td><span class="badge"
+                                          th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
+                                          th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
+                                            class="fa fa-edit"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="completed" class="tabcontent">
+                        <table class="table table-hover table-bordered" id="sampleTable3">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Tình trạng</th>
+                                <th>Trạng thái</th>
+                                <th>Tính năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,ass : ${hoanthanh}">
+                                <td th:text="${ass.index+1}"></td>
+                                <td th:text="${x.codeBill}"></td>
+                                <td th:text="${x.user.name}"></td>
+                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
+                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                <td th:text="${x.grandTotal} + 'đ'"></td>
+                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                </td>
+                                <td><span class="badge"
+                                          th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
+                                          th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
+                                            class="fa fa-edit"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="cancelled" class="tabcontent">
+                        <table class="table table-hover table-bordered" id="sampleTable2">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Tình trạng</th>
+                                <th>Trạng thái</th>
+                                <th>Tính năng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,ass : ${huy}">
+                                <td th:text="${ass.index+1}"></td>
+                                <td th:text="${x.codeBill}"></td>
+                                <td th:text="${x.user.name}"></td>
+                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
+                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                <td th:text="${x.grandTotal} + ' đ'"></td>
+                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentInfo == '1'? 'Đã thanh toán': 'Chưa thanh toán'}"></span>
+                                </td>
+                                <td><span class="badge"
+                                          th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
+                                          th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
+                                            class="fa fa-edit"></i></button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+<!--                    <div id="pendingPayment" class="tabcontent">-->
+<!--                        <table class="table table-hover table-bordered" id="sampleTable1">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>STT</th>-->
+<!--                                <th>Mã đơn hàng</th>-->
+<!--                                <th>Khách hàng</th>-->
+<!--                                <th>Đơn hàng</th>-->
+<!--                                <th>Tổng tiền</th>-->
+<!--                                <th>Tình trạng</th>-->
+<!--                                <th>Trạng thái</th>-->
+<!--                                <th>Tính năng</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr th:each="x,ass : ${chothanhtoan}">-->
+<!--                                <td th:text="${ass.index+1}"></td>-->
+<!--                                <td th:text="${x.codeBill}"></td>-->
+<!--                                <td th:text="${x.user.name}"></td>-->
+<!--                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"-->
+<!--                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>-->
+<!--                                <td th:text="${x.grandTotal} + 'đ'"></td>-->
+<!--                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"-->
+<!--                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>-->
+<!--                                </td>-->
+<!--                                <td><span class="badge"-->
+<!--                                          th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"-->
+<!--                                          th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>-->
+<!--                                </td>-->
+<!--                                <td>-->
+<!--                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i-->
+<!--                                            class="fa fa-edit"></i></button>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </main>
 <!-- Essential javascripts for application to work-->
@@ -194,49 +391,20 @@
 <!-- Page specific javascripts-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 <!-- Data table plugin-->
-<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript">$('#sampleTable').DataTable();</script>
+<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+    $('#sampleTable').DataTable();
+    $('#sampleTable1').DataTable();
+    $('#sampleTable2').DataTable();
+    $('#sampleTable3').DataTable();
+    $('#sampleTable4').DataTable();
+    $('#sampleTable5').DataTable();
+    $('#sampleTable6').DataTable();
+</script>
 <script>
-    function deleteRow(r) {
-        var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("myTable").deleteRow(i);
-    }
+    // oTable = $('#sampleTable').dataTable();
 
-    jQuery(function () {
-        jQuery(".trash").click(function () {
-            swal({
-                title: "Cảnh báo",
-
-                text: "Bạn có chắc chắn là muốn xóa đơn hàng này?",
-                buttons: ["Hủy bỏ", "Đồng ý"],
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        swal("Đã xóa thành công.!", {});
-                    }
-                });
-        });
-    });
-    oTable = $('#sampleTable').dataTable();
-    $('#all').click(function (e) {
-        $('#sampleTable tbody :checkbox').prop('checked', $(this).is(':checked'));
-        e.stopImmediatePropagation();
-    });
-
-    //EXCEL
-    // $(document).ready(function () {
-    //   $('#').DataTable({
-
-    //     dom: 'Bfrtip',
-    //     "buttons": [
-    //       'excel'
-    //     ]
-    //   });
-    // });
-
-
-    //Thời Gian
     function time() {
         var today = new Date();
         var weekday = new Array(7);
@@ -277,38 +445,25 @@
         }
     }
 
-    //In dữ liệu
-    var myApp = new function () {
-        this.printTable = function () {
-            var tab = document.getElementById('sampleTable');
-            var win = window.open('', '', 'height=700,width=700');
-            win.document.write(tab.outerHTML);
-            win.document.close();
-            win.print();
+</script>
+<script>
+    // Thiết lập tab mặc định là "Tất Cả" khi trang được tải
+    document.getElementById("all").style.display = "block";
+    document.querySelector(".nav-tabs a[href='#all']").classList.add("active");
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
         }
+        tablinks = document.getElementsByClassName("nav-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.classList.add("active");
     }
-    //     //Sao chép dữ liệu
-    //     var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
-
-    // copyTextareaBtn.addEventListener('click', function(event) {
-    //   var copyTextarea = document.querySelector('.js-copytextarea');
-    //   copyTextarea.focus();
-    //   copyTextarea.select();
-
-    //   try {
-    //     var successful = document.execCommand('copy');
-    //     var msg = successful ? 'successful' : 'unsuccessful';
-    //     console.log('Copying text command was ' + msg);
-    //   } catch (err) {
-    //     console.log('Oops, unable to copy');
-    //   }
-    // });
-
-
-    //Modal
-    $("#show-emp").on("click", function () {
-        $("#ModalUP").modal({backdrop: false, keyboard: false})
-    });
 </script>
 </body>
 

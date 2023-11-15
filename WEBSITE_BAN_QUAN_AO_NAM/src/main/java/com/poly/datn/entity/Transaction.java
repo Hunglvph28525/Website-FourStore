@@ -12,13 +12,17 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Setter
+@Getter
 @Builder
 @Entity
 @Table(name = "Transactions")
@@ -26,21 +30,22 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long Id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Id_invoice", referencedColumnName = "code_bill")
     private Invoice invoice;
 
-    @Column(name = "note",columnDefinition = ("nvarchar(max)"))
+    @Column(name = "note", columnDefinition = ("nvarchar(max)"))
     private String note;
 
-    @Column(name = "edit_date")
-    private Date editDate;
+    @Column( name = "user_edit",columnDefinition = ("nvarchar(200)"))
+    private String name;
 
-    @Column(name = "status",columnDefinition = ("nvarchar(255)"))
+    @Column(name = "status", columnDefinition = ("nvarchar(255)"))
     private String status;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'-'HH:mm")
     @Column(name = "create_date")
-    private Date createDate;
+    private LocalDateTime createDate;
 }

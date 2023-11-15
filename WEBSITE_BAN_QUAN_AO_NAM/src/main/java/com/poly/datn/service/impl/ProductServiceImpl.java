@@ -39,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getAll(String status, Long category, Long type, Long brand) {
-        if (status.equals("0") && category == null && type == null && brand == null) {
+        if (status.equals("0") && category == 0 && type == 0 && brand == 0) {
             return productRepository.getAll();
         } else {
             return productRepository.locProduct(status, category, type, brand);
@@ -94,11 +94,9 @@ public class ProductServiceImpl implements ProductService {
     public MessageUtil add(ProductRequest req) {
         if (productRepository.existsByProductName(req.getName())) {
             return MessageUtil.builder().status(0).message("Thêm thất bại vì đã có sản phẩm này !").type("bg-danger").object(req).build();
-        } else if (productRepository.existsByMaSp(req.getMaSp()))
-        {
+        } else if (productRepository.existsByMaSp(req.getMaSp())) {
             return MessageUtil.builder().status(0).message("Thêm thất bại vì đã có mã sản phẩm này !").type("bg-danger").object(req).build();
-        }
-        else {
+        } else {
             Product product = req.product();
             product.setCreateDate(Date.valueOf(LocalDate.now()));
             product.setStatus("on");

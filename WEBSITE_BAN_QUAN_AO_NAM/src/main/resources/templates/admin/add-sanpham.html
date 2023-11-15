@@ -141,39 +141,39 @@
                         <input class="form-control" type="text" th:field="*{maSp}" placeholder="nhập mã hoặc tự sinh">
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Tên sản phẩm</label>
+                        <label class="control-label">Tên sản phẩm <sup style="color: red">(*)</sup></label>
                         <input class="form-control" type="text" required th:field="*{name}">
                     </div>
                     <div class="form-group col-md-4 ">
-                        <label for="exampleSelect2" class="control-label">Loại sản phẩm</label>
+                        <label for="exampleSelect2" class="control-label">Loại sản phẩm<sup style="color: red">(*)</sup></label>
                         <select class="form-control" id="exampleSelect2" required th:field="*{typeProduct}">
                             <option th:each="x : ${types}" th:value="${x.id}" th:text="${x.name}"></option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Họa tiết</label>
+                        <label class="control-label">Họa tiết<sup style="color: red">(*)</sup></label>
                         <input class="form-control" type="text" required th:field="*{pattern}">
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Kiểu dáng</label>
+                        <label class="control-label">Kiểu dáng<sup style="color: red">(*)</sup></label>
                         <input class="form-control" type="text" required th:field="*{style}">
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Chất liệu</label>
+                        <label class="control-label">Chất liệu<sup style="color: red">(*)</sup></label>
                         <input class="form-control" type="text" required th:field="*{fabric}">
                     </div>
                     <div class="form-group col-md-3">
-                        <label class="control-label">Hướng dẫn giặt</label>
+                        <label class="control-label">Hướng dẫn giặt<sup style="color: red">(*)</sup></label>
                         <input class="form-control" type="text" required th:field="*{manual}">
                     </div>
                     <div class="form-group col-md-3 ">
-                        <label for="exampleSelect1" class="control-label">Thương hiệu</label>
+                        <label for="exampleSelect1" class="control-label">Thương hiệu<sup style="color: red">(*)</sup></label>
                         <select class="form-control" id="exampleSelect1" th:field="*{brand}" required>
                             <option th:each="x : ${brands}" th:value="${x.id}" th:text="${x.name}"></option>
                         </select>
                     </div>
                     <div class="form-group col-md-3">
-                        <label class="control-label">Màu sắc</label>
+                        <label class="control-label">Màu sắc<sup style="color: red">(*)</sup></label>
                         <select class="js-example-tags form-control" multiple data-live-search="false" required
                                 th:field="*{colors}">
                             <option th:each="x : ${colors}" th:value="${x.id}"
@@ -181,14 +181,14 @@
                         </select>
                     </div>
                     <div class="form-group col-md-3">
-                        <label class="control-label">Kích cỡ</label>
+                        <label class="control-label">Kích cỡ<sup style="color: red">(*)</sup></label>
                         <select class="js-example-tags form-control" multiple data-live-search="false" required
                                 th:field="*{sizes}">
                             <option th:each="x : ${sizes}" th:value="${x.id}" th:text="${x.name}"></option>
                         </select>
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="control-label">Ảnh sản phẩm</label>
+                        <label class="control-label">Ảnh sản phẩm<sup style="color: red">(*)</sup></label>
                         <div id="imageContainer">
                             <!-- Ảnh sẽ được hiển thị ở đây -->
                         </div>

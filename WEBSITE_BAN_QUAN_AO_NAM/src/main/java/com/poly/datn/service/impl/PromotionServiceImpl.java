@@ -61,7 +61,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public void jobUpdate() {
-        List<Promotion> list = promotionRepository.findAll();
+        List<Promotion> list = promotionRepository.getAllJop();
         list.stream().forEach(x -> {
             if (LocalDateTime.now().isBefore(x.getStartDate())) {
                 x.setStatus("0"); // Chưa diễn ra

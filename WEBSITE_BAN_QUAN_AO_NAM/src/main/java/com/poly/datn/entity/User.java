@@ -16,7 +16,9 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,7 +28,8 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Setter
+@Getter
 @Builder
 @Entity
 @Table(name = "Users")
@@ -35,7 +38,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long Id;
+    private Long id;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Address> addresses;

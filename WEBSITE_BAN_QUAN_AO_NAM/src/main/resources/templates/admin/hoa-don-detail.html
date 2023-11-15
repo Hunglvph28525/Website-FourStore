@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main1.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <style>
+        .hori-timeline .events {
+            border-top: 3px solid #e9ecef;
+        }
+
+        .hori-timeline .events .event-list {
+            display: block;
+            position: relative;
+            text-align: center;
+            padding-top: 70px;
+            margin-right: 0;
+        }
+
+        .hori-timeline .events .event-list:before {
+            content: "";
+            position: absolute;
+            height: 36px;
+            border-right: 2px dashed #dee2e6;
+            top: 0;
+        }
+
+        .hori-timeline .events .event-list .event-date {
+            position: absolute;
+            top: 38px;
+            left: 0;
+            right: 0;
+            width: 150px;
+            margin: 0 auto;
+            border-radius: 6px;
+            padding: 2px 2px;
+        }
+
+        @media (min-width: 1140px) {
+            .hori-timeline .events .event-list {
+                display: inline-block;
+                width: 24%;
+                padding-top: 45px;
+            }
+
+            .hori-timeline .events .event-list .event-date {
+                top: 20px;
+            }
+        }
+
+        .ui-w-40 {
+            width: 100px !important;
+            height: auto;
+        }
+
+    </style>
+</head>
+
+<body onload="time()" class="app sidebar-mini rtl">
+<!-- Navbar-->
+<div th:replace="~{layout/navbar :: navbar}"></div>
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="/admin/invoice"><b>Danh sách đơn hàng</b></a></li>
+            <li class="breadcrumb-item active"><a href="#"><b th:text="${'Hóa đơn #'+codeBill}"></b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-5">Trạng thái đơn hàng</h5>
+                            <div class="hori-timeline" dir="ltr">
+                                <ul class="list-inline events">
+                                    <li class="list-inline-item event-list" th:each="x : ${transaction}">
+                                        <div class="px-4">
+                                            <div class="event-date bg-info"><p th:text="${#temporals.format(x.createDate, 'HH:mm - dd/MM/yyyy')}"></p></div>
+                                            <h5 class="font-size-16 mt-4"
+                                                th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></h5>
+                                            <p class="text-muted" th:text="${'Ghi chú: '+ x.note}"></p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-save ml-3">Cập nhật</button>
+                        <!--                    modal input ghi chú-->
+                        <button class="btn btn-cancel ml-3">Hủy</button>
+                        <!--                   info moldal thông tin-->
+                        <button class="btn btn-info" style="float: right; margin-right: 30px">Chi tiết</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <h5>Thông tin đơn hàng</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <p th:text="${'Mã đơn hàng : ' + detail.codeBill}"></p>
+                            <p th:text="${'Loại đơn hàng : ' + detail.type}"></p>
+                            <p th:text="${'Trạng thái : ' + (detail.status == '0' ? 'Chờ thanh toán' : (detail.status == '1' ? 'Chờ xác nhận' : (detail.status == '2' ? 'Chờ giao' : (detail.status == '3' ? 'Đang giao hàng' : (detail.status == '4' ? 'Hoàn thành' : 'Đã hủy')))))}"></p>
+                        </div>
+                        <div class="col">
+                            <p th:text="${'Họ và tên : ' + detail.customer}"></p>
+                            <p th:text="${'Số điện thoại : ' + detail.sdt}"></p>
+                            <p th:text="${'Địa chỉ : ' + detail.address}"></p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <h5>Trạng thái thanh toán</h5>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <p th:text="${'Phương thức thanh toán : '+ detail.paymentMethod}"></p>
+                        </div>
+                        <div class="col">
+                            <p th:text="${'Ngày thanh toán : '+ detail.paymentDate}"></p>
+
+                        </div>
+                        <div class="col">
+                            <p th:text="${'Trạng thái : '+ detail.paymentInfo}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered m-0">
+                            <thead>
+                            <tr>
+                                <!-- Set columns width -->
+                                <th class="text-center py-3 px-4" style="width: 100px;">STT</th>
+                                <th class="text-center py-3 px-4" style="min-width: 300px;">Thông tin sản phẩm
+                                </th>
+                                <th class="text-right py-3 px-4" style="width: 130px;">Số lượng</th>
+                                <th class="text-center py-3 px-4" style="width: 150px;">Đơn giá</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr  th:each="x,i : ${detail.product}">
+                                <td class="align-middle p-4" th:text="${i.index+1}"></td>
+                                <td class="p-4">
+                                    <div class="media align-items-center">
+                                        <img th:src="@{${x.img}}"
+                                             class="d-block ui-w-40 ui-bordered mr-4" alt="">
+                                        <div class="media-body">
+                                            <a href="#" class="d-block text-dark font-weight-bold"
+                                               style="font-size: large" th:text="${x.name}"></a>
+                                            <span class="text-muted" th:text="${'Color: '+ x.color}"></span>
+                                            <span class="text-muted" th:text="${'Size: ' + x.size}"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-right font-weight-semibold align-middle p-4" th:text="${x.quantity}"></td>
+                                <td class="align-middle p-4" th:text="${x.price + ' đ'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="margin-left: 80% ; margin-top: 20px">
+                        <div class="row mt-2 text-right">
+                            <label class="font-weight-normal col">Tổng tiền hàng : </label>
+                            <div class="text-large text-start col"><strong th:text="${detail.total}"></strong></div>
+                        </div>
+                        <div class="row mt-2 text-right">
+                            <label class="font-weight-normal col">Giảm giá : </label>
+                            <div class="text-large text-start col"><strong th:text="${detail.giaGiam +' đ'}"></strong>
+                            </div>
+                        </div>
+                        <div class="row mt-2 text-right">
+                            <label class="font-weight-normal col">Phí vận chuyển : </label>
+                            <div class="text-large col"><strong th:text="${detail.shippingCost+' đ'}"></strong></div>
+                        </div>
+                        <div class="row mt-2 text-right">
+                            <label class="font-weight-normal text-start col">Thành tiền : </label>
+                            <div class="text-large text-start col"><strong
+                                    th:text="${detail.grandTotal +' đ'}"></strong></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- Essential javascripts for application to work-->
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script src="/assets/js/popper.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/assets/js/main.js"></script>
+<!-- The javascript plugin to display page loading on top-->
+<script src="/assets/js/plugins/pace.min.js"></script>
+<!-- Page specific javascripts-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<!-- Data table plugin-->
+<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+    $('#sampleTable').DataTable();
+</script>
+<script>
+    // oTable = $('#sampleTable').dataTable();
+
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+    }
+
+</script>
+<script>
+    // Thiết lập tab mặc định là "Tất Cả" khi trang được tải
+    document.getElementById("all").style.display = "block";
+    document.querySelector(".nav-tabs a[href='#all']").classList.add("active");
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("nav-link");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.classList.add("active");
+    }
+</script>
+</body>
+
+</html>

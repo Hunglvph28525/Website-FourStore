@@ -191,7 +191,7 @@
                             <td th:text="${x.product.productName}"></td>
                             <td th:text="${x.color.name}"></td>
                             <td th:text="${x.size.name}"></td>
-                            <td><input class="form-control" type="number" required min="0" max="200000" name="quantity"
+                            <td><input class="form-control" type="number" required min="0" max="20000" name="quantity"
                                        th:value="${x.quantity}"/></td>
                             <td><input class="form-control" type="number" required name="price" min="10000" max="1000000000"
                                        th:value="${x.price}"/></td>
@@ -496,29 +496,6 @@ MODAL
             imageContainer.appendChild(imagePreview);
         }
     });
-</script>
-<script>
-    function validateForm() {
-        // Lấy các trường dữ liệu từ form
-        var maSp = document.getElementById("maSp").value;
-        var name = document.getElementById("name").value;
-        var price = document.getElementById("price").value;
-        var files = document.getElementById("fileInput").files;
-
-        // Kiểm tra điều kiện và hiển thị thông báo lỗi nếu cần
-        if (maSp === '' || name === '' || price === '') {
-            alert('Vui lòng điền đầy đủ thông tin sản phẩm.');
-            return false; // Ngăn form được gửi đi
-        }
-
-        if (!files || files.length === 0) {
-            alert('Vui lòng chọn ít nhất một ảnh.');
-            return false; // Ngăn form được gửi đi
-        }
-
-        // Nếu điều kiện đúng, bạn có thể tiến hành submit form
-        return true;
-    }
 </script>
 <script type="text/javascript">
 

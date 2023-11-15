@@ -1,0 +1,16 @@
+0 = chờ thanh toán bg-warning
+1 = chờ xác nhận  bg-info
+2 = chờ giao bg-info
+3 = Đang giao bg-info
+4 = Hoàn thành -bg-success
+-1 = hủy  bg-danger
+
+++++++++++
+Trạng thái thanh toán
+1 --đã thanh toán
+0 -- chưa thanh toán
+
++++++++++++++
+Loại đơn hàng
+0 = online
+1 = tại quầy

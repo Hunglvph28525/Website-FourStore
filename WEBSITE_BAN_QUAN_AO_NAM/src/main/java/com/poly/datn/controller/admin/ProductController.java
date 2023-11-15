@@ -61,9 +61,9 @@ public class ProductController {
 
     @GetMapping("/product")
     public String hienThi(Model model, @RequestParam(value = "status", defaultValue = "0") String status,
-                          @RequestParam(value = "category", required = false) Long category,
-                          @RequestParam(value = "type", required = false) Long type,
-                          @RequestParam(value = "brand", required = false) Long brand) {
+                          @RequestParam(value = "category", defaultValue = "0") Long category,
+                          @RequestParam(value = "type", defaultValue = "0") Long type,
+                          @RequestParam(value = "brand", defaultValue = "0") Long brand) {
         model.addAttribute("products", productService.getAll(status, category, type, brand));
         model.addAttribute("brands", brandService.getAll());
         model.addAttribute("types", typeProductService.getAll());

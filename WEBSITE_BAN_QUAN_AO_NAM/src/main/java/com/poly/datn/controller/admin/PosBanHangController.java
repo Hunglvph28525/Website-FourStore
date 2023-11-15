@@ -4,6 +4,7 @@ import com.poly.datn.util.UserUltil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -11,7 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PosBanHangController {
     @GetMapping("/sale")
     public String sale(Model model){
-        model.addAttribute("user", UserUltil.getUser());
+
         return "admin/banhang";
+    }
+
+    @ModelAttribute("user")
+    public Object initUser(){
+        return UserUltil.getUser();
     }
 }

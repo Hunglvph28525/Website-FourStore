@@ -3,6 +3,7 @@ package com.poly.datn.entity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class Promotion {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "promotion", fetch = FetchType.LAZY)
     private List<Invoice> invoices;
 
     @Column(name = "discount_name", columnDefinition = ("nvarchar(255)"))
