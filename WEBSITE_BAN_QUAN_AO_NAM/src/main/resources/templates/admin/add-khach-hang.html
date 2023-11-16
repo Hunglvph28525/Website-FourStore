@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -110,28 +108,33 @@
                 <h3 class="tile-title">Tạo mới khách hàng</h3>
 
                 <form class="row" action="/admin/customer/add" th:object="${att}" method="post"
-                      enctype="multipart/form-data" id="myForm" >
+                      enctype="multipart/form-data" id="myForm">
                     <!--                    <div class="form-group col-md-3">-->
                     <!--                        <label class="control-label">mã kh </label>-->
                     <!--                        <input class="form-control" type="text">-->
                     <!--                    </div>-->
                     <div class="form-group col-md-4">
-                        <label class="control-label">Tên khách hàng</label>
-                        <input class="form-control" type="text" required th:field="*{name}" id="tenKH">
+                        <label class="control-label">Tên khách hàng <label style="color:red;">*</label></label>
+                        <input class="form-control" type="text" th:field="*{name}" id="tenKH">
+                        <p id="errorTenKH" style="color: red;"></p>
+
 
                     </div>
                     <div class="form-group  col-md-4">
-                        <label class="control-label">Số điện thoại</label>
-                        <input class="form-control" type="text" required th:field="*{phoneNumber}" id="sdt">
+                        <label class="control-label">Số điện thoại <label style="color:red;">*</label></label>
+                        <input class="form-control" type="text" th:field="*{phoneNumber}" id="sdtKH">
+                        <p id="errorSDT" style="color: red;"></p>
                     </div>
+
                     <div class="form-group col-md-4 ">
-                        <label class="control-label">Email</label>
-                        <input class="form-control" type="text" required th:field="*{email}" id="email">
+                        <label class="control-label">Email <label style="color:red;">*</label></label>
+                        <input class="form-control" type="text"  th:field="*{email}" id="emailKH">
+                        <p id="errorEmail" style="color: red;"></p>
                     </div>
 
 
                     <div class="form-group  col-md-4">
-                        <label class="control-label">Giới tính</label>
+                        <label class="control-label">Giới tính <label style="color:red;">*</label></label>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" th:value="1" th:field="*{gender}" checked/>
                             <label class="form-check-label">Nam</label>
@@ -144,45 +147,48 @@
 
 
                     <div class="form-group col-md-4">
-                        <label class="control-label">Tỉnh/Thành phố</label>
-<!--                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">-->
-                                                                    <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}">
-                                                                        <option value="Name" selected>Chọn tỉnh thành</option>
-                                                                    </select>
+                        <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
+                        <!--                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">-->
+                        <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}">
+                            <option value="Name" selected>Chọn tỉnh thành</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Quận/Huyện</label>
-<!--                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">-->
-                                                                    <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}">
-                                                                        <option value="" selected>Chọn quận huyện</option>
-                                                                    </select>
+                        <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
+                        <!--                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">-->
+                        <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}">
+                            <option value="" selected>Chọn quận huyện</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Phường/Xã </label>
-<!--                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">-->
-                                                                    <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}">
-                                                                        <option value="" selected>Chọn phường xã</option>
-                                                                    </select>
+                        <label class="control-label">Phường/Xã <label style="color:red;">*</label> </label>
+                        <!--                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">-->
+                        <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}">
+                            <option value="" selected>Chọn phường xã</option>
+                        </select>
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Đường</label>
-                        <input class="form-control" type="text" required th:field="*{street}" id="duong">
+                        <label class="control-label">Đường <label style="color:red;">*</label></label>
+                        <input class="form-control" type="text"  th:field="*{street}" id="streetKH">
+                        <p id="errorStreetKH" style="color: red;"></p>
                     </div>
 
                     <div class="form-group col-md-4">
-                        <label class="control-label">Ảnh</label>
+                        <label class="control-label">Ảnh <label style="color:red;">*</label></label>
 
                         <!--                            <label  class="control-label">Chọn ảnh</label>-->
-                        <input class="form-control" name="file" type="file" required>
+                        <input class="form-control" name="file" type="file" >
 
 
                     </div>
 
+                    <p id="errorMessage" hidden></p>
 
                     <div class="col">
 
 
-                        <button class="btn btn-save mr-2 submit-button " type="submit" >Lưu lại</button>
+                        <button class="btn btn-save mr-2 submit-button " type="submit" >Lưu lại
+                        </button>
                         <a class="btn btn-cancel ml-2" href="/admin/product">Hủy bỏ</a>
                     </div>
 
@@ -194,7 +200,69 @@
 
 </main>
 
+<!--<script>-->
+<!--    function myFunction() {-->
+<!--        // Get the value of the input field with id="numb"-->
+<!--        let x = document.getElementById("tenKH").value;-->
+<!--        let y = document.getElementById("sdtKH").value;-->
+<!--        let a = document.getElementById("emailKH").value;-->
+<!--        let b = document.getElementById("streetKH").value;-->
 
+
+<!--        // If x is Not a Number or less than one or greater than 10-->
+<!--        let tenKH;-->
+<!--        let sdtKH;-->
+<!--        let emailKH;-->
+<!--        let streetKH;-->
+
+<!--        if (x == "") {-->
+<!--            tenKH = "Vui lòng nhập tên ";-->
+
+<!--        }-->
+<!--        if (x != "") {-->
+<!--            tenKH = "";-->
+<!--        }-->
+
+<!--        if (y == "") {-->
+<!--            sdtKH = "Vui lòng nhập số điện thoại";-->
+
+<!--        }-->
+<!--        if (y != "") {-->
+<!--            sdtKH = "";-->
+<!--        }-->
+
+<!--        if (a == "") {-->
+<!--            emailKH = "Vui lòng nhập email";-->
+
+<!--        }-->
+<!--        if (a != "") {-->
+<!--            emailKH = "";-->
+<!--        }-->
+
+<!--        if (b == "") {-->
+<!--            streetKH = "Vui lòng nhập tên đường/ngõ/xóm";-->
+
+<!--        } if (b != "") {-->
+<!--            streetKH = "";-->
+<!--        }-->
+<!--        document.getElementById("errorTenKH").innerHTML = tenKH;-->
+<!--        document.getElementById("errorSDT").innerHTML = sdtKH;-->
+<!--        document.getElementById("errorEmail").innerHTML = emailKH;-->
+<!--        document.getElementById("errorStreetKH").innerHTML = streetKH;-->
+
+
+
+<!--    }-->
+
+
+
+
+
+
+
+
+
+<!--</script>-->
 
 
 <!--<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>-->
@@ -217,104 +285,91 @@
 <script src="/assets/vendor/select2/select2.min.js.js"></script>
 
 
-
-<!--<script>-->
-<!--    document.addEventListener("DOMContentLoaded", function () {-->
-<!--        $(".submit-button").on("click", function (event) {-->
-<!--            event.preventDefault();-->
-<!--            var tenKH = document.getElementById("tenKH").value;-->
-<!--            var sdt = document.getElementById("sdt").value;-->
-<!--            var email = document.getElementById("email").value;-->
-<!--            var thanhPho = document.getElementById("thanhPho").value;-->
-<!--            var quanHuyen =document.getElementById("quanHuyen").value;-->
-<!--            var phuongXa = document.getElementById("phuongXa").value;-->
-<!--            var duong = document.getElementById("duong").value;-->
-<!--            // var now = new Date();-->
-
-<!--            if (tenKH.trim() === "") {-->
-<!--                Swal.fire({-->
-<!--                    icon: "error",-->
-<!--                    title: "Lỗi",-->
-<!--                    text: "Vui lòng nhập tên khách hàng."-->
-<!--                });-->
-<!--                return;-->
-<!--            }-->
-
-<!--            if (sdt.trim() === "") {-->
-<!--                Swal.fire({-->
-<!--                    icon: "error",-->
-<!--                    title: "Lỗi",-->
-<!--                    text: "Vui lòng nhập số điện thoại khách hàng."-->
-<!--                });-->
-<!--                return;-->
-<!--            }-->
+<script>
 
 
-<!--            if (email.trim() === "") {-->
-<!--                Swal.fire({-->
-<!--                    icon: "error",-->
-<!--                    title: "Lỗi",-->
-<!--                    text: "Vui lòng nhập email khách hàng."-->
-<!--                });-->
-<!--                return;-->
-<!--            }-->
-
-<!--            if (thanhPho.trim() === "") {-->
-<!--                Swal.fire({-->
-<!--                    icon: "error",-->
-<!--                    title: "Lỗi",-->
-<!--                    text: "Vui lòng nhập thành phố ."-->
-<!--                });-->
-<!--                return;-->
-<!--            }-->
-<!--            if (quanHuyen.trim() === "") {-->
-<!--                Swal.fire({-->
-<!--                    icon: "error",-->
-<!--                    title: "Lỗi",-->
-<!--                    text: "Vui lòng nhập quận/huyện."-->
-<!--                });-->
-<!--                return;-->
-<!--            }-->
-
-
-<!--            if (phuongXa.trim() === "") {-->
-<!--                Swal.fire({-->
-<!--                    icon: "error",-->
-<!--                    title: "Lỗi",-->
-<!--                    text: "Vui lòng nhập phường/xã."-->
-<!--                });-->
-<!--                return;-->
-<!--            }-->
-
-
-<!--            if (duong.trim() === "") {-->
-<!--                Swal.fire({-->
-<!--                    icon: "error",-->
-<!--                    title: "Lỗi",-->
-<!--                    text: "Vui lòng nhập đường/ngõ/xóm."-->
-<!--                });-->
-<!--                return;-->
-<!--            }-->
-
-<!--            // Hiển thị hộp thoại xác nhận-->
-<!--            Swal.fire({-->
-<!--                title: "Xác nhận",-->
-<!--                text: "Bạn đã chắc chắn chưa, không hối hận chứ?",-->
-<!--                icon: "warning",-->
-<!--                showCancelButton: true,-->
-<!--                confirmButtonText: "Chắc chắn",-->
-<!--                cancelButtonText: "À mà thôi",-->
-<!--            }).then((result) => {-->
-<!--                if (result.isConfirmed) {-->
-<!--                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa-->
-<!--                    document.getElementById("myForm").submit();-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-
-
+//        document.addEventListener("DOMContentLoaded", function () {
+//            $(".submit-button").on("click", function (event) {
+//                event.preventDefault();
+//        var tenKH = document.getElementById("tenKH").value;
+//        var sdt = document.getElementById("sdtKH").value;
+//        var email = document.getElementById("emailKH").value;
+//        var thanhPho = document.getElementById("thanhPho").value;
+//        var quanHuyen =document.getElementById("quanHuyen").value;
+//        var phuongXa = document.getElementById("phuongXa").value;
+//        var duong = document.getElementById("streetKH").value;
+//        var now = new Date();
+//
+//        if (tenKH.trim() === "") {
+//            Swal.fire({
+//                icon: "error",
+//                title: "Lỗi",
+//                text: "Vui lòng nhập tên khách hàng."
+//            });
+//            return;
+//        }
+//
+//        if (sdt.trim() === "") {
+//            Swal.fire({
+//                icon: "error",
+//                title: "Lỗi",
+//                text: "Vui lòng nhập số điện thoại khách hàng."
+//            });
+//            return;
+//        }
+//
+//
+//        if (email.trim() === "") {
+//            Swal.fire({
+//                icon: "error",
+//                title: "Lỗi",
+//                text: "Vui lòng nhập email khách hàng."
+//            });
+//            return;
+//        }
+//
+//        if (thanhPho.trim() === "") {
+//            Swal.fire({
+//                icon: "error",
+//                title: "Lỗi",
+//                text: "Vui lòng nhập thành phố ."
+//            });
+//            return;
+//        }
+//        if (quanHuyen.trim() === "") {
+//            Swal.fire({
+//                icon: "error",
+//                title: "Lỗi",
+//                text: "Vui lòng nhập quận/huyện."
+//            });
+//            return;
+//        }
+//
+//
+//        if (phuongXa.trim() === "") {
+//            Swal.fire({
+//                icon: "error",
+//                title: "Lỗi",
+//                text: "Vui lòng nhập phường/xã."
+//            });
+//            return;
+//        }
+//
+//
+//        if (duong.trim() === "") {
+//            Swal.fire({
+//                icon: "error",
+//                title: "Lỗi",
+//                text: "Vui lòng nhập đường/ngõ/xóm."
+//            });
+//            return;
+//        }
+//
+//
+//
+//        });
+//    });
+</script>
 
 
 <!--&lt;!&ndash;===============================================================================================&ndash;&gt;-->
@@ -442,7 +497,6 @@
 <!--</script>-->
 
 
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
@@ -468,7 +522,7 @@
         citis.onchange = function () {
             district.length = 1;
             ward.length = 1;
-            if(this.value != ""){
+            if (this.value != "") {
                 const result = data.filter(n => n.Name === this.value);
 
                 for (const k of result[0].Districts) {
@@ -489,9 +543,6 @@
         };
     }
 </script>
-
-
-
 
 
 </body>

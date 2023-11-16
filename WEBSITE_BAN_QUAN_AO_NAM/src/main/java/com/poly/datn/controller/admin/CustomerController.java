@@ -114,7 +114,7 @@ public class CustomerController {
 
 
     @PostMapping("/customer/add")
-    public String add(@Valid @ModelAttribute("att") UserRequest user, BindingResult result, @RequestParam("file") MultipartFile file, RedirectAttributes attributes) throws IOException {
+    public String add(@Valid @ModelAttribute("att") UserRequest user, BindingResult result, @RequestParam("file") MultipartFile file, RedirectAttributes attributes,Model model) throws IOException {
         if (result.hasErrors()) {
             return "admin/khachhang";
         }
