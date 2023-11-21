@@ -1,5 +1,6 @@
 package com.poly.datn.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,10 +35,12 @@ public class TypeProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_category", referencedColumnName = "id")
     private Category category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "typeProduct",cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<>();
 

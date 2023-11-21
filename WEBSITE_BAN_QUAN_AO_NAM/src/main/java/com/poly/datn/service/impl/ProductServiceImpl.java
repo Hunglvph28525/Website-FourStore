@@ -1,5 +1,6 @@
 package com.poly.datn.service.impl;
 
+import com.poly.datn.dto.ColorSizeVertion;
 import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.ProductRequest;
 import com.poly.datn.entity.Color;
@@ -20,10 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -86,6 +90,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDto getDetailtoCart(Long id) {
+        Product product = productRepository.getReferenceById(id);
+        ProductDto productDto = new ProductDto(product);
+        List<ColorSizeVertion> vertions = new ArrayList<>();
+        product.getProductDetails().stream().forEach(x ->
+                vertions.add(new ColorSizeVertion(x)));
+        Set<Color> uniqueColors = new HashSet<>();
+        Set<Size> uniqueSizes = new HashSet<>();
+
+        for (ColorSizeVertion vertion : vertions) {
+            Color color = vertion.getColor();
+            if (color != null) {
+                uniqueColors.add(color);
+            }
+            Size size = vertion.getSize();
+            if (size != null) {
+                uniqueSizes.add(size);
+            }
+        }
+        List<Color> colors = new ArrayList<>(uniqueColors);
+        List<Size> sizes = new ArrayList<>(uniqueSizes);
+        productDto.setColors(colors);
+        productDto.setSizes(sizes);
+        productDto.setVertions(vertions);
+        return productDto;
+    }
+
+    @Override
     public ProductRequest getProduct(Long id) {
         return new ProductRequest(productRepository.getReferenceById(id));
     }
@@ -137,6 +169,7 @@ public class ProductServiceImpl implements ProductService {
     public Product detail(Long id) {
         return productRepository.getReferenceById(id);
     }
+
 
     private String generateProductCode(String categoryName, String productName) {
         // Loại bỏ các ký tự không mong muốn và chuyển thành chữ thường

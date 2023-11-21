@@ -1,4 +1,5 @@
 package com.poly.datn.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,12 +33,13 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "color", cascade = CascadeType.ALL)
     private Set<ProductDetail> productDetails = new HashSet<>();
 
     @Column(name = "color_name",columnDefinition = ("nvarchar(255)"))
     private String name;
 
-    @Column(name = "status",columnDefinition = ("nvarchar(255)"))
-    private String status;
+//    @Column(name = "status",columnDefinition = ("nvarchar(255)"))
+//    private String status;
 }

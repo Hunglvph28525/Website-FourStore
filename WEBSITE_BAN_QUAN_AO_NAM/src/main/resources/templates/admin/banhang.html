@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Quản trị Admin</title>
@@ -17,27 +17,59 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <style>
+        .nav-tabs .nav-item {
+            position: relative;
+            width: 120px;
+        }
 
+        .close-btn {
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 8px;
+            color: #3f474c;
+        }
+
+        .close-btn :hover {
+            color: red;
+        }
+
+        /* Style for the alert */
+        #alertMessage {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        @media (min-width: 1140px) {
+            .hori-timeline .events .event-list {
+                display: inline-block;
+                width: 24%;
+                padding-top: 45px;
+            }
+
+            .hori-timeline .events .event-list .event-date {
+                top: 20px;
+            }
+        }
+
+        .ui-w-40 {
+            width: 100px !important;
+            height: auto;
+        }
+    </style>
 </head>
 
 
 <body onload="time()" class="app sidebar-mini rtl">
 <!-- Navbar-->
-<header class="app-header">
-    <!-- Sidebar toggle button-->
-    <!-- Navbar Right Menu-->
-    <ul class="app-nav">
-
-
-        <!-- User Menu-->
-        <li><a class="app-nav__item" href="/admin/dashboard"><i class='bx bx-log-out bx-rotate-180'></i> </a>
-
-        </li>
-    </ul>
-</header>
+<div th:replace="~{layout/navbar :: navbar}"></div>
 <!-- Sidebar menu-->
 
-<main class="app app-ban-hang">
+<main class="app-content">
     <div class="row">
         <div class="col-md-12">
             <div class="app-title">
@@ -49,235 +81,219 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Phần mềm bán hàng</h3>
-                <input type="text" id="myInput" onkeyup="myFunction()"
-                       placeholder="Nhập mã sản phẩm hoặc tên sản phẩm để tìm kiếm...">
-                <div class="du--lieu-san-pham">
-                    <table class="table table-hover table-bordered">
-                        <thead>
-                        <tr>
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+                            <a class="btn btn-add btn-sm" href="/admin/sale/create-invoice" title="Thêm"><i
+                                    class="fas fa-plus"></i>
+                                Tạo mới đơn hàng</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="nav nav-tabs" id="myTabs">
+                            <li class="nav-item" th:each="x : ${invoice}">
+                                <a class="nav-link" th:id="${'tab' + x.codeBill + '-tab'}"
+                                   th:data-toggle="tab" th:href="${'#tab' + x.codeBill}" th:text="${x.codeBill}"></a>
+                                <span class="close-btn"><a th:href="@{'/admin/invoice/delete/'+${x.codeBill}}"><i
+                                        class="fas fa-times"></i></a></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content mt-2" style="min-height: 300px">
+                        <div class="tab-pane fade" th:id="${'tab' + tab.codeBill}" th:each="tab,i : ${invoice}">
+                            <div>
+                                <button class="btn btn-info"
+                                        style="float: right; margin-right: 30px; margin-bottom: 30px"
+                                        data-toggle="modal" th:data-target="${'#modal' + tab.codeBill}">Thêm sản phẩm
+                                </button>
+                                <button class="btn btn-warning"
+                                        style="float: right; margin-right: 30px; margin-bottom: 30px">QR code
+                                </button>
+                            </div>
+                            <div class="table-responsive" style="text-align: center">
+                                <div th:if="${tab.product == null or tab.product.size() == 0}">
+                                    <img width="350px" style="display: inline-block" src="/img/no-cart.png">
+                                    <p style="font-size: 18px; font-family: Roboto;margin-top: 10px; color: #000000">Giỏ
+                                        hàng của bạn đang trống</p>
+                                </div>
+                                <div th:if="${tab.product != null && tab.product.size() > 0}">
+                                    <table class="table table-hover table-bordered" th:id="${'sampleTable'+i.index}">
+                                        <thead>
+                                        <tr>
+                                            <!-- Set columns width -->
+                                            <th class="text-center py-3 px-4" style="width: 100px;">STT</th>
+                                            <th class="text-center py-3 px-4" style="min-width: 300px;">Thông tin sản
+                                                phẩm
+                                            </th>
+                                            <th class="text-right py-3 px-4" style="width: 130px;">Số lượng</th>
+                                            <th class="text-center py-3 px-4" style="width: 150px;">Đơn giá</th>
+                                            <th class="text-center py-3 px-4" style="width: 80px;">Hành động</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="a,n : ${tab.product}">
+                                            <td class="align-middle p-4" th:text="${n.index+1}"></td>
+                                            <td class="p-4">
+                                                <div class="media align-items-center">
+                                                    <img th:src="@{${a.img}}"
+                                                         class="d-block ui-w-40 ui-bordered mr-4" alt="">
+                                                    <div class="media-body">
+                                                        <a href="#" class="d-block text-dark font-weight-bold"
+                                                           style="font-size: large" th:text="${a.name}"></a>
+                                                        <span class="text-muted" th:text="${'Color: '+ a.color}"></span>
+                                                        <span class="text-muted" th:text="${'Size: ' + a.size}"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-right font-weight-semibold align-middle p-4"><input
+                                                    type="number" min="1"></td>
+                                            <td class="align-middle p-4" th:text="${a.price + ' đ'}"></td>
+                                            <td style="text-align: center">
+                                                <a class="btn bg-danger" , style="margin-top: 42px"><i
+                                                        class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row element-button">
+                                <div class="col-sm-12 py-2 d-flex align-items-center">
+                                    <p style="font-size: 25px" class="mb-0"><strong>Thông tin</strong></p>
+                                    <button class="btn btn-actv" style="margin-left: 80%">Chọn khách hàng</button>
+                                </div>
+                            </div>
+                            <div class="row py-2" style="min-height: 500px">
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <p>Khách hàng : <strong th:text="${tab.customer}"></strong></p>
 
-                            <th class="so--luong">Mã hàng</th>
-                            <th class="so--luong">Tên sản phẩm</th>
-                            <th class="so--luong">Ảnh</th>
-                            <th class="so--luong" width="10">Số lượng</th>
-                            <th class="so--luong">Giá bán</th>
-                            <th class="so--luong text-center" style="text-align: center; vertical-align: middle;"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
+                                </div>
+                                <div class="col-md-6">
+                                </div>
+                            </div>
+                            <div class="modal fade"
+                                 th:id="'modal'+${tab.codeBill}"
+                                 tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle"
+                                 data-backdrop="static"
+                                 data-keyboard="false">
+                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <h5 class="py-3" align="center">Danh sách sản phẩm</h5>
+                                        <div class="modal-body">
+                                            <table class="table table-hover table-bordered"
+                                                   th:id="${'product'+ i.index}">
+                                                <thead>
+                                                <tr>
+                                                    <th style="text-align: center">STT</th>
+                                                    <th>Ảnh</th>
+                                                    <th style="text-align: center">Mã sản phẩm</th>
+                                                    <th style="text-align: center">Tên sản phẩm</th>
+                                                    <th style="text-align: center">Chức năng</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="x,arr : ${products}">
+                                                    <td style="text-align: center" th:text="${arr.index + 1}"></td>
+                                                    <td><img th:src="@{${x.image}}"
+                                                             class="d-block ui-w-40 ui-bordered mr-4" alt=""></td>
+                                                    <td style="text-align: center" th:text="${x.maSp}"></td>
+                                                    <td style="text-align: center" th:text="${x.name}"></td>
+                                                    <td style="text-align: center">
+                                                        <!-- data-toggle="modal" data-target="#modal_box"-->
+                                                        <button th:attr="onclick='showProductModal(\'' + ${x.id} + '\', \'' + ${tab.codeBill} + '\')'"
+                                                                class="btn btn-secondary">chọn
 
-                            <td>71309005</td>
-                            <td>Bàn ăn gỗ Theresa</td>
-                            <td><img src="/img-sanpham/reno.jpg" alt="" width="50px;"></td>
-                            <td><input class="so--luong1" type="number" value="2"></td>
-                            <td >5.600.000 </td>
-
-                            <td style="text-align: center; vertical-align: middle;">
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td>62304003</td>
-                            <td>Bàn ăn Vitali mặt đá</td>
-                            <td><img src="/img-sanpham/matda.jpg" alt="" width="50px;"></td>
-                            <td><input class="so--luong1" type="number" value="3"></td>
-                            <td>33.235.000 </td>
-
-                            <td style="text-align: center; vertical-align: middle;">
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td>71304032</td>
-                            <td>Bàn ăn mở rộng Gepa </td>
-                            <td><img src="/img-sanpham/ghethera.jpg" alt="" width="50px;"></td>
-                            <td><input class="so--luong1" type="number" width="30" value="1"></td>
-                            <td>16.770.000 </td>
-
-                            <td style="text-align: center; vertical-align: middle;">
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-
-                            <td>71338008</td>
-                            <td>Bàn ăn mở rộng cao cấp Dolas</td>
-                            <td><img src="/img-sanpham/zuno.jpg" alt="" width="50px;"></td>
-                            <td><input class="so--luong1" type="number" width="30" value="5"></td>
-                            <td>22.650.000 </td>
-                            <td style="text-align: center; vertical-align: middle;">
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="alert">
-
-                    <i class="fas fa-exclamation-triangle"></i> Gõ mã hoặc tên sản phẩm vào thanh tìm kiếm để thêm hàng vào đơn hàng
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="tile">
-                <h3 class="tile-title">Thông tin thanh toán</h3>
-                <div class="row">
-                    <div class="form-group  col-md-10">
-                        <label class="control-label">Họ tên khách hàng</label>
-                        <input class="form-control" type="text" placeholder="Tìm kiếm khách hàng">
-                    </div>
-                    <div class="form-group  col-md-2">
-                        <label style="text-align: center;" class="control-label">Tạo mới</label>
-                        <button class="btn btn-primary btn-them" data-toggle="modal" data-target="#exampleModalCenter"><i class="fas fa-user-plus"></i>
-                        </button>
-                    </div>
-                    <div class="form-group  col-md-12">
-                        <label class="control-label">Nhân viên bán hàng</label>
-                        <select class="form-control" id="exampleSelect1">
-                            <option>--- Chọn nhân viên bán hàng ---</option>
-                            <option>Võ Trường</option>
-                            <option>Nhật Kim Anh</option>
-                            <option>Đào Thanh Tuấn</option>
-                            <option>Phạm Phong Phú</option>
-                        </select>
-                    </div>
-                    <div class="form-group  col-md-12">
-                        <label class="control-label">Ghi chú đơn hàng</label>
-                        <textarea class="form-control" rows="4" placeholder="Ghi chú thêm đơn hàng"></textarea>
-                    </div>
-
-                </div>
-                <div class="row">
-
-                    <div class="form-group  col-md-12">
-                        <label class="control-label">Hình thức thanh toán</label>
-                        <select class="form-control" id="exampleSelect2" required>
-                            <option>Thanh toán chuyển khoản</option>
-                            <option>Trả tiền mặt tại quầy</option>
-                        </select>
-                    </div>
-                    <div class="form-group  col-md-6">
-                        <label class="control-label">Tạm tính tiền hàng: </label>
-                        <p class="control-all-money-tamtinh">= 129.397.213 VNĐ</p>
-                    </div>
-                    <div class="form-group  col-md-6">
-                        <label class="control-label">Giảm giá (F7): </label>
-                        <input class="form-control" type="number" value="0">
-                    </div>
-                    <div class="form-group  col-md-6">
-                        <label class="control-label">Tổng cộng thanh toán: </label>
-                        <p class="control-all-money-total">= 129.397.213 VNĐ</p>
-                    </div>
-                    <div class="form-group  col-md-6">
-                        <label class="control-label">Khách hàng đưa tiền (F8): </label>
-                        <input class="form-control" type="number" value="290000">
-                    </div>
-                    <div class="form-group  col-md-12">
-                        <label class="control-label">Khách hàng còn nợ: </label>
-                        <p class="control-all-money"> - 129.397.213 VNĐ</p>
-                    </div>
-                    <div class="tile-footer col-md-12">
-                        <button class="btn btn-primary luu-san-pham" type="button"> Lưu đơn hàng (F9)</button>
-                        <button class="btn btn-primary luu-va-in" type="button">Lưu và in hóa đơn (F10)</button>
-
-                        <a class="btn btn-secondary luu-va-in" href="index.html">Quay về</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
 </main>
+<div th:if="${message.status != null}">
+    <div id="myAlert" class="alert alert-dismissible fade show position-fixed"
+         style="top: 120px; right: 30px;width: 400px; height: 50px" th:classappend="${message.type}">
+        <p th:text="${message.message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
 
-<!--
-MODAL
--->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Product Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="form-group  col-md-12">
-          <span class="thong-tin-thanh-toan">
-            <h5>Tạo mới khách hàng</h5>
-          </span>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Họ và tên</label>
-                        <input class="form-control" type="text" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Địa chỉ</label>
-                        <input class="form-control" type="text" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Email</label>
-                        <input class="form-control" type="text" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Ngày sinh</label>
-                        <input class="form-control" type="date" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label">Số điện thoại</label>
-                        <input class="form-control" type="number" required>
-                    </div>
-                </div>
-                <BR>
-                <button class="btn btn-save" type="button">Lưu lại</button>
-                <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                <BR>
+                <!-- Content of the modal will be populated by the showProductModal function -->
+                <p id="productName"></p>
+                <p>Price: <span id="selectedPrice"></span></p>
+                <p>Quantity: <span id="selectedQuantity"></span></p>
+                <label for="colorSelect">Color:</label>
+                <select class="form-control" id="colorSelect"></select>
+                <label for="sizeSelect">Size:</label>
+                <select class="form-control" id="sizeSelect"></select>
+                <label for="quantityInput">Quantity:</label>
+                <input type="number" class="form-control" id="quantityInput" placeholder="Enter quantity">
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addToCartBtn">Add to Cart</button>
             </div>
         </div>
     </div>
 </div>
-<!--
-MODAL
--->
-
-
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close">X</span>
-        </div>
-
-
-    </div>
-
-</div>
-<!-- Essential javascripts for application to work-->
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <script src="/assets/js/popper.min.js"></script>
 <script src="/assets/js/bootstrap.min.js"></script>
-<script src="/assets/js/main.js"></script>
+<script src="/assets/js/main1.js"></script>
 <!-- The java/assets/script plugin to display page loading on top-->
 <script src="/assets/js/plugins/pace.min.js"></script>
 <!-- Page specific javascripts-->
 <!-- Data table plugin-->
-<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
-<script type="text/javascript">$('#sampleTable').DataTable();</script>
+<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
 <script>
-    function deleteRow(r) {
-        var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("myTable").deleteRow(i);
-    }
+    $('#product0').DataTable();
+    $('#product1').DataTable();
+    $('#product2').DataTable();
+    $('#product3').DataTable();
+    $('#product4').DataTable();
+
+    var myAlert = document.getElementById("myAlert");
+    // Tự đóng thông báo sau 5 giây
+    setTimeout(function () {
+        myAlert.style.display = "none";
+    }, 5000); // 5000 ms = 5 giây
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Chọn tab đầu tiên và kích hoạt sự kiện chuyển đến tab đó
+        $('#myTabs a:first').tab('show');
+    });
+
     //Thời Gian
     function time() {
         var today = new Date();
@@ -320,10 +336,6 @@ MODAL
     }
 </script>
 <script>
-    function deleteRow(r) {
-        var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("myTable").deleteRow(i);
-    }
     jQuery(function () {
         jQuery(".trash").click(function () {
             swal({
@@ -333,30 +345,174 @@ MODAL
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        swal("Đã xóa thành công.!", {
-                        });
+                        swal("Đã xóa thành công.!", {});
                     }
                 });
         });
     });
 </script>
+
 <script>
-    // Modal popup
-    var modal = document.getElementById("myModal");
-    var btn = document.getElementById("myBtn");
-    var span = document.getElementsByClassName("close")[0];
-    btn.onclick = function () {
-        modal.style.display = "block";
+    function showProductModal(productId, codeBill) {
+        console.log(productId);
+        console.log(codeBill);
+
+        $.ajax({
+            url: '/admin/api/product/' + productId,
+            type: 'GET',
+            success: function (data) {
+                // Hiển thị thông tin sản phẩm trong modal
+                $('#productName').text(data.name);
+                $('#productPrice').text(data.vertions[0].price + ' đ'); // Giả sử giá giảm giá của phiên bản đầu tiên
+                $('#productQuantity').text(data.vertions[0].quantity);
+
+                // Hiển thị danh sách màu và size trong dropdowns
+                populateDropdown('colorSelect', data.colors);
+                populateDropdown('sizeSelect', data.sizes);
+
+                // Thiết lập sự kiện khi thay đổi màu và size
+                $('#colorSelect').change(function () {
+                    updateSizesDropdown(data);
+                    updatePriceAndQuantity(data);
+                });
+
+                $('#sizeSelect').change(function () {
+                    updatePriceAndQuantity(data);
+                });
+
+                $('#addToCartBtn').off('click');
+                $('#addToCartBtn').on('click', function () {
+                    var selectedColor = $('#colorSelect').val();
+                    var selectedSize = $('#sizeSelect').val();
+                    var selectedQuantity = $('#quantityInput').val();
+
+                    // Truyền data vào hàm addToCart
+                    addToCart(data, selectedColor, selectedSize, selectedQuantity, codeBill);
+                });
+
+                // Hiển thị modal và chọn phiên bản đầu tiên có sẵn
+                $('#productModal').modal('show');
+                autoSelectFirstAvailableVersion(data);
+            },
+            error: function () {
+                alert('Đã có lỗi xảy ra khi lấy thông tin sản phẩm.');
+            }
+        });
     }
-    span.onclick = function () {
-        modal.style.display = "none";
-    }
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+
+    // Hàm cập nhật giá và số lượng dựa trên màu và size được chọn
+    function updatePriceAndQuantity(data) {
+        var selectedColor = $('#colorSelect').val();
+        var selectedSize = $('#sizeSelect').val();
+
+        // Tìm phiên bản tương ứng với màu và size đã chọn
+        var selectedVersion = data.vertions.find(function (version) {
+            return version.color.id == selectedColor && version.size.id == selectedSize;
+        });
+
+        // Hiển thị giá và số lượng
+        if (selectedVersion) {
+            $('#selectedPrice').text(selectedVersion.price + ' đ');
+            $('#selectedQuantity').text(selectedVersion.quantity == 0 ? 'Hết hàng' : selectedVersion.quantity);
+        } else {
+            // Nếu không có phiên bản, hiển thị giá và số lượng mặc định hoặc ẩn
+            $('#selectedPrice').text('');
+            $('#selectedQuantity').text('');
         }
     }
+
+    // Hàm chọn phiên bản đầu tiên có sẵn
+    function autoSelectFirstAvailableVersion(data) {
+        var firstAvailableVersion = data.vertions.find(function (version) {
+            return version.quantity > 0; // Chọn phiên bản có số lượng tồn kho > 0
+        });
+
+        if (firstAvailableVersion) {
+            $('#colorSelect').val(firstAvailableVersion.color.id).change();
+            $('#sizeSelect').val(firstAvailableVersion.size.id).change();
+        }
+    }
+
+    // Hàm cập nhật dropdown size dựa trên màu đã chọn
+    function updateSizesDropdown(data) {
+        var selectedColor = $('#colorSelect').val();
+
+        // Lọc danh sách phiên bản theo màu đã chọn
+        var versionsByColor = data.vertions.filter(function (version) {
+            return version.color.id == selectedColor;
+        });
+
+        // Lấy danh sách size từ phiên bản đã lọc
+        var sizes = versionsByColor.map(function (version) {
+            return version.size;
+        });
+
+        // Xóa và cập nhật dropdown size
+        populateDropdown('sizeSelect', sizes);
+    }
+
+    // Hàm điền dữ liệu vào dropdown
+    function populateDropdown(dropdownId, data) {
+        var dropdown = $('#' + dropdownId);
+        dropdown.empty();
+        $.each(data, function (index, item) {
+            dropdown.append($('<option></option>').attr('value', item.id).text(item.name));
+        });
+    }
+
+    // Hàm thêm sản phẩm vào giỏ hàng
+    function addToCart(data, selectedColor, selectedSize, selectedQuantity, codeBill) {
+        // Tìm phiên bản tương ứng với màu và size đã chọn
+        var selectedVersion = data.vertions.find(function (version) {
+            return version.color.id == selectedColor && version.size.id == selectedSize;
+        });
+
+        // Kiểm tra số lượng tồn kho của phiên bản được chọn
+        if (selectedVersion && selectedVersion.quantity > 0) {
+            // Kiểm tra số lượng tồn kho khi thêm vào giỏ hàng
+            if (selectedQuantity > selectedVersion.quantity) {
+                // Hiển thị thông báo hoặc thực hiện các hành động khác nếu số lượng tồn kho không đủ.
+                alert('Số lượng tồn kho không đủ.');
+                return;
+            }
+
+            // Tạo đối tượng chứa thông tin sản phẩm để gửi đến server
+            var cartItem = {
+                productId: data.id,
+                colorId: selectedColor,
+                sizeId: selectedSize,
+                quantity: selectedQuantity,
+                codeBill: codeBill
+            };
+
+            // Gửi dữ liệu đến server thông qua Ajax
+            $.ajax({
+                url: '/admin/api/sale/add-to-cart',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(cartItem),
+                success: function (response) {
+                    // Xử lý kết quả từ server nếu cần
+                    console.log(response);
+                },
+                error: function () {
+                    alert('Đã có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+                }
+            });
+
+            // Đóng modal sau khi thêm vào giỏ hàng
+            $('#productModal').modal('hide');
+
+            // Log thông tin cartItem cho mục đích kiểm tra
+            console.log(cartItem);
+        } else {
+            // Hiển thị thông báo hoặc thực hiện các hành động khác nếu sản phẩm hết hàng
+            alert('Sản phẩm đã hết hàng hoặc số lượng tồn kho không đủ.');
+        }
+    }
+
 </script>
+
 </body>
 
 </html>

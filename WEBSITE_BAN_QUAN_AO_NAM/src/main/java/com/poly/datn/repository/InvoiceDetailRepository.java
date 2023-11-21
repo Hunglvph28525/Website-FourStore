@@ -13,4 +13,8 @@ import java.util.List;
 public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, InvoiceId> {
     @Query("select new com.poly.datn.dto.InvoiceDetailDto(c) from InvoiceDetail c where c.invoiceId.invoice.codeBill =:codeBill")
     List<InvoiceDetailDto> getAllInvoi(String codeBill);
+
+    @Query("select c from InvoiceDetail c where c.invoiceId.invoice.codeBill =:codeBill")
+    List<InvoiceDetail> getByCodeBill(String codeBill);
+
 }

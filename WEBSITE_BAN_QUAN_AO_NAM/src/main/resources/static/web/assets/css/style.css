@@ -1210,8 +1210,8 @@
 	animation-delay: 0.9s;
 }
 .active .slider_content a {
-    -webkit-animation-delay: 1.5;
-    animation-delay: 1.5;
+    -webkit-animation-delay: 1.5s;
+    animation-delay: 1.5s;
 }
 /*slider content css end*/
 .banner_area.banner_two {
@@ -1517,7 +1517,7 @@
 	border-top: 1px solid #dbdbdb;
 	border-bottom: 1px solid #dbdbdb;
 	font-size: 16px;
-	line-height: ;
+	line-height: 1px;
 }
 .list_title {
 	margin-bottom: 5px;
@@ -3018,7 +3018,7 @@
 	color: #555;
 	font-size: 15px;
 	line-height: 24px;
-	margin-bottom: 15p;
+	margin-bottom: 15px;
 }
 .view__work a {
 	color: #555;

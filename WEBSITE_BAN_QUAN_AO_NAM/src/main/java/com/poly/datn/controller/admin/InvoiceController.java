@@ -4,6 +4,7 @@ import com.poly.datn.entity.Invoice;
 import com.poly.datn.entity.Transaction;
 import com.poly.datn.service.InvoiceService;
 import com.poly.datn.service.TransactionService;
+import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -45,7 +47,12 @@ public class InvoiceController {
         model.addAttribute("transaction", transactionService.getAll(ma));
         return "admin/hoa-don-detail";
     }
-
+    @GetMapping("/invoice/delete/{code}")
+    public String delete(@PathVariable("code")String codeBill , RedirectAttributes attributes){
+        MessageUtil messageUtil = invoiceService.delete(codeBill);
+        attributes.addFlashAttribute("message",messageUtil);
+        return "redirect:/admin/sale";
+    }
 
     @ModelAttribute("user")
     public Object initUser() {

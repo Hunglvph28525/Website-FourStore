@@ -1,9 +1,9 @@
 package com.poly.datn.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.poly.datn.entity.Brand;
 import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Color;
-import com.poly.datn.entity.Description;
 import com.poly.datn.entity.Image;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.ProductDetail;
@@ -13,42 +13,52 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Builder
 public class ProductDto {
-
     private Long id;
     private String maSp;
     private String name;
     private String image;
+    @JsonIgnore
     private Integer quantity;
+    @JsonIgnore
     private String status;
+    @JsonIgnore
     private String fabric;
+    @JsonIgnore
     private String descriptionProduct;
+    @JsonIgnore
     private String manual;
+    @JsonIgnore
     private String style;
+    @JsonIgnore
     private String pattern;
+    @JsonIgnore
     private Category category;
+    @JsonIgnore
     private Brand brand;
+    @JsonIgnore
     private TypeProduct typeProduct;
+    @JsonIgnore
     private List<Image> images;
+    @JsonIgnore
     private String qrCode;
 
 
+    private List<ColorSizeVertion> vertions;
+    private List<Color> colors;
+    private List<Size> sizes;
+
     public ProductDto(Product x) {
         Optional<Image> img = (Optional<Image>) x.getImages().stream().findFirst();
-        Image image = img.orElse(new Image(new Product(),"https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg",""));
+        Image image = img.orElse(new Image(new Product(), "https://phutungnhapkhauchinhhang.com/wp-content/uploads/2020/06/default-thumbnail.jpg", ""));
         this.id = x.getId();
         this.maSp = x.getMaSp();
         this.name = x.getProductName();

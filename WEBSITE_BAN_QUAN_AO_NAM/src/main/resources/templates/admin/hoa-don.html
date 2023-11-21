@@ -73,7 +73,7 @@
                     <div class="row element-button">
                         <div class="col-sm-2">
 
-                            <a class="btn btn-add btn-sm" href="form-add-don-hang.html" title="Thêm"><i
+                            <a class="btn btn-add btn-sm" href="/admin/sale" title="Thêm"><i
                                     class="fas fa-plus"></i>
                                 Tạo mới đơn hàng</a>
                         </div>
@@ -176,8 +176,8 @@
                                           th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                            class="fa fa-edit"></i></button>
+                                    <a class="btn btn-primary btn-sm edit" th:href="@{'/admin/invoice/' + ${x.codeBill}}" title="Sửa"><i
+                                            class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                             </tbody>
@@ -214,8 +214,8 @@
                                           th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                            class="fa fa-edit"></i></button>
+                                    <a class="btn btn-primary btn-sm edit" th:href="@{'/admin/invoice/' + ${x.codeBill}}" title="Sửa"><i
+                                            class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                             </tbody>
@@ -252,8 +252,8 @@
                                           th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                            class="fa fa-edit"></i></button>
+                                    <a class="btn btn-primary btn-sm edit" th:href="@{'/admin/invoice/' + ${x.codeBill}}" title="Sửa"><i
+                                        class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                             </tbody>
@@ -290,8 +290,8 @@
                                           th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                            class="fa fa-edit"></i></button>
+                                    <a class="btn btn-primary btn-sm edit" th:href="@{'/admin/invoice/' + ${x.codeBill}}" title="Sửa"><i
+                                            class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                             </tbody>
@@ -328,8 +328,8 @@
                                           th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></span>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm edit" type="button" title="Sửa"><i
-                                            class="fa fa-edit"></i></button>
+                                    <a class="btn btn-primary btn-sm edit" th:href="@{'/admin/invoice/' + ${x.codeBill}}" title="Sửa"><i
+                                            class="fa fa-edit"></i></a>
                                 </td>
                             </tr>
                             </tbody>

@@ -22,13 +22,13 @@ public class WebController {
 
     @GetMapping()
     public String homeLocal(Model model){
-        model.addAttribute("topProducts", productService.getAll("0",null,null,null));
+        model.addAttribute("topProducts", productService.getAll("0",0L,0L,0L));
         model.addAttribute("brands", brandService.getAll());
         return "web/index";
     }
     @GetMapping("/home")
     public String home(Model model){
-        model.addAttribute("topProducts", productService.getAll("0",null,null,null));
+        model.addAttribute("topProducts", productService.getAll("0",0L,0L,0L));
         model.addAttribute("brands", brandService.getAll());
         return "web/index";
     }

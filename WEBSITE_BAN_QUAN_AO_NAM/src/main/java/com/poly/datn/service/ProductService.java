@@ -24,4 +24,6 @@ public interface ProductService {
 
     MessageUtil save(Long id);
 
+    ProductDto getDetailtoCart(Long id);
+
 }

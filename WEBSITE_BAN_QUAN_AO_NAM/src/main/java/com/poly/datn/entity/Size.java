@@ -1,4 +1,5 @@
 package com.poly.datn.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,12 +30,13 @@ public class Size {
     @Column(name = "id")
     private Integer id;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "size")
     private Set<ProductDetail> productDetail = new HashSet<>();
 
     @Column(name = "name",columnDefinition = ("nvarchar(50)"))
     private String name;
 
-    @Column(name = "status",columnDefinition = ("nvarchar(255)"))
-    private String status;
+//    @Column(name = "status",columnDefinition = ("nvarchar(255)"))
+//    private String status;
 }
