@@ -29,6 +29,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("select new com.poly.datn.dto.UserDto(c) from User c where c.status = :status   order by c.Id desc ")
     List<UserDto> tkStatus(String status);
 
+
+    @Query("select new com.poly.datn.dto.UserDto(c) from User c where c.status = 'onNV' or c.status='offNV' order by c.Id DESC ")
+    List<UserDto> getAllStaff();
+
 }
 
 

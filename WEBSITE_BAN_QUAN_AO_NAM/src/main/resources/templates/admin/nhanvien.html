@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Quản trị Admin</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Main CSS-->
+    <link rel="stylesheet" type="text/css" href="/assets/css/main1.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+    <!-- or -->
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <!-- Font-icon css-->
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</head>
+<body onload="time()" class="app sidebar-mini rtl">
+<div th:replace="~{layout/navbar :: navbar}"></div>
+<main class="app-content">
+    <div class="app-title">
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item active"><a href="#"><b>Danh sách nhân viên</b></a></li>
+        </ul>
+        <div id="clock"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+<!--            <div class="tile">-->
+<!--                <div class="tile-body">-->
+<!--                    <div class="row ml-3">-->
+<!--                        <p class="breadcrumb-item active"><b>Lọc sản phẩm</b></p>-->
+<!--                    </div>-->
+<!--                    <form class="row ml-5" method="get">-->
+
+
+<!--                        <div class="form-group col ">-->
+<!--                            <label for="exampleSelect" class="control-label">Trạng thái</label>-->
+<!--                            <select class="form-control" id="exampleSelect" name="status">-->
+<!--                                <option value="0">&#45;&#45;Chọn trạng thái&#45;&#45;</option>-->
+<!--                                <option value="onKH">Hoạt dộng</option>-->
+<!--                                <option value="offKH">Không hoạt động</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+
+<!--                        <div class="form-group col" style="margin-top: 33px">-->
+<!--                            <button type="submit" class="btn btn-save btn btn-primary ">Lọc</button>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-body">
+                    <div class="row element-button">
+                        <div class="col-sm-2">
+
+                            <a class="btn btn-add btn-sm" href="/admin/view-add/staff" title="Thêm"><i
+                                    class="fas fa-plus"></i>
+                                Tạo mới nhân viên</a>
+
+
+                        </div>
+                    </div>
+                    <table class="table table-hover table-bordered" id="sampleTable">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã nhân viên</th>
+                            <th>Ảnh</th>
+                            <th>Tên nhân viên</th>
+                            <th>Email</th>
+                            <th>Điện thoại</th>
+
+                            <th>Giới tính</th>
+                            <th>Trạng thái</th>
+                            <th>Chức năng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="x,arr : ${listNV}">
+                            <td th:text="${arr.index + 1}"></td>
+                            <td th:text="${x.Id}"></td>
+                            <td><img th:src="@{${x.avatar}}" alt="ảnh san pham" width="100px;"></td>
+
+                            <td th:text="${x.name}"></td>
+
+                            <td th:text="${x.email}"></td>
+                            <td th:text="${x.phoneNumber}"></td>
+
+                            <td th:text="${x.gender} == true?'Nam':'Nữ'"></td>
+                            <td th:text="${x.status} == 'onNV'?'Hoạt động':'Không hoạt động'"></td>
+
+                            <td>
+                                <!--                                <a href="#" class="delete-link btn trash " th:classappend="${x.status == 'on'?'bg-danger':'bg-success'}" th:title="${x.status == 'on'?'tắt':'bật'}"-->
+                                <!--                                   th:href="@{'/admin/product/tat/'+${x.id}}"><i class="fas fa-power-off"></i>-->
+                                <!--                                </a>-->
+                                <a class=" btn btn-primary btn edit bg-warning"
+                                   th:href="@{/admin/staff/view-update/{id}(id=${x.id})}"
+                                   title="Sửa"><i class="fas fa-edit"></i></a>
+
+                                <!--                                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">-->
+
+                                <!--                                    <i class='far fa-envelope-open' style='font-size:24px'></i>-->
+
+                                <!--                                </a>-->
+
+
+
+                                <!--                                <a  th:href="@{|/admin/tk?cid=${x.id}|}"  data-toggle="modal" data-target="#myModal" >-->
+
+                                <!--                                </a>-->
+
+<!--                                <a class="btn btn-add btn-sm" th:href="@{/admin/tk/{id}(id=${x.id})}" ><i-->
+<!--                                        class="fas fa-folder-plus"></i></a>-->
+
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header" style="color: #0a0a0a">
+                    <h4 class="modal-title">Địa chỉ</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" th:each="p:${items}" >
+                    Modal body..
+
+                    <div class="panel-heading">
+                        <div class="panel-title" th:utext="${p.province}">
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="text-center" style="font-size: 13px">
+        <p><b>Copyright
+            <script type="text/javascript">
+                document.write(new Date().getFullYear());
+            </script>
+            Phần mềm quản lý bán hàng | SD-66
+        </b></p>
+    </div>
+</main>
+
+
+<!-- Essential javascripts for application to work-->
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<script src="/assets/js/popper.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/assets/js/main.js"></script>
+<!-- The javascript plugin to display page loading on top-->
+<script src="js/plugins/pace.min.js"></script>
+<!-- Page specific javascripts-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+<!-- Data table plugin-->
+<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    //Thời Gian
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+    }
+</script>
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script type="text/javascript">
+    $('#sampleTable').DataTable();
+    var myAlert = document.getElementById("myAlert");
+    // Tự đóng thông báo sau 5 giây
+    setTimeout(function () {
+        myAlert.style.display = "none";
+    }, 5000); // 5000 ms = 5 giây
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".delete-link").on("click", function (event) {
+            event.preventDefault();
+            var deleteLink = $(this).attr("href");
+
+            Swal.fire({
+                title: "Xác nhận",
+                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Chắc chắn",
+                cancelButtonText: "À mà thôi",
+            }).then((result) => {
+                if (result.value) {
+                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa
+                    window.location.href = deleteLink;
+                }
+            });
+        });
+    });
+</script>
+</body>
+
+</html>
+
+
+

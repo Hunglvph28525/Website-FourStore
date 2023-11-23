@@ -114,7 +114,7 @@ public class CustomerController {
 
 
     @PostMapping("/customer/add")
-    public String add(@Valid @ModelAttribute("att") UserRequest user, BindingResult result, @RequestParam("file") MultipartFile file, RedirectAttributes attributes,Model model) throws IOException {
+    public String add(@Valid @ModelAttribute("att") UserRequest user, BindingResult result, @RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) throws IOException {
         if (result.hasErrors()) {
             return "admin/khachhang";
         }
@@ -157,6 +157,38 @@ public class CustomerController {
         userService.add(user);
 
         return "redirect:/admin/customer";
+
+    }
+
+    // dia chi detail
+    @GetMapping("address/detail/{id}")
+    public String addressDetail(@PathVariable Long id, Model model) {
+        model.addAttribute("user", UserUltil.getUser());
+        Address address = userService.detailAddress(id);
+        System.out.println(address.getUser().getId());
+
+        model.addAttribute("att", address);
+        return "admin/update-diachi";
+    }
+
+    //update dia chi
+
+    @PostMapping("/address/update")
+    public String updateAddress(@ModelAttribute("att") Address address, BindingResult result) throws IOException {
+
+        if (result.hasErrors()) {
+            return "admin/update-diachi";
+        }
+
+        address.setStreet(address.getStreet());
+        address.setStatus(address.getStatus());
+        address.setWard(address.getWard());
+        address.setProvince(address.getProvince());
+        address.setUser(address.getUser());
+        address.setStatus("off");
+        addressService.add(address);
+//        return "redirect:/admin/customer";
+       return "redirect:/admin/tk/" + address.getUser().getId();
 
     }
 

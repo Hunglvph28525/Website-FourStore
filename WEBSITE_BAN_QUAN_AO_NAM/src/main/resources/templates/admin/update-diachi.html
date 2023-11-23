@@ -141,159 +141,103 @@
 
 <main class="app-content">
 
-    <div class="col-sm-2">
-        <a class="btn btn-add btn-sm" data-toggle="modal" data-target="#addthuonghieu"><i
-                class="fas fa-folder-plus"></i> Thêm địa chỉ</a>
-    </div>
+
 
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
                 <h3 class="tile-title">Địa chỉ khách hàng</h3>
+                <div class="container" role="document">
+                    <div class="row">
+
+                        <div class="col-sm-8">
+
+                            <!--                <form action="/admin/add/address"  method="post" th:object="${att}">-->
+
+                            <form th:action="@{/admin/address/update(id=${att.id})}" method="post" th:object="${att}">
+
+                                <!--                    <input type="text"  th:value="${idKH}" th:field="*{user}">-->
+
+                                <!--                    <p>Id: <span th:value="${id}" th:field="*{user}"></span></p>-->
+
+<!--
+ <input type="hidden" name="user" th:value="${user.Id}"/>-->
 
 
-                <!--                <table class="table table-hover table-bordered" id="sampleTable">-->
-                <!--                    <thead>-->
-                <!--                    <tr>-->
 
-                <!--                        <th>TP</th>-->
-                <!--                        <th>Huyen</th>-->
-                <!--                        <th>KH</th>-->
-
-                <!--                    </tr>-->
-                <!--                    </thead>-->
-                <!--                    <tbody>-->
-                <!--                    <tr th:each="x,arr : ${items}">-->
-
-                <!--                        <td th:text="${x.province}"></td>-->
-                <!--                        <td th:text="${x.district}"></td>-->
-                <!--&lt;!&ndash;                        <td th:text="${x.user.Id}"></td>&ndash;&gt;-->
+                                <div class="form-group col-lg-8">
+<!--                                    <label class="control-label">Usser <label style="color:red;">*</label></label>-->
+                                    <input class="form-control" th:field="*{user}" type="hidden" required>
+                                </div>
 
 
-                <!--                    </tr>-->
-                <!--                    </tbody>-->
-                <!--                </table>-->
+                                <!--                    <div class="form-group col-lg-12">-->
+                                <!--                        <label class="control-label">Tỉnh/Thành phố</label>-->
+                                <!--                        <input class="form-control" th:field="*{province}" type="text" required>-->
+                                <!--                    </div>-->
+
+                                <div class="form-group col-md-8">
+                                    <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
+                                    <!--                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">-->
+                                    <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}">
+                                        <option value="Name" selected>Chọn tỉnh thành</option>
+                                    </select>
+                                </div>
 
 
-                    <div class="card" th:each="x,arr : ${items}">
-                        <div class="card-body">
+                                <!--                    <div class="form-group col-lg-12">-->
+                                <!--                        <label class="control-label">Quận/Huyện</label>-->
+                                <!--                        <input class="form-control" th:field="*{district}" type="text" required>-->
+                                <!--                    </div>-->
 
-                            <div style="color:#0b93ff;" th:if="${x.status} == 'on'">Địa chỉ mặc định</div>
+                                <div class="form-group col-md-8">
+                                    <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
+                                    <!--                                                <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">-->
+                                    <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}">
+                                        <option value="" selected>Chọn quận huyện</option>
+                                    </select>
+                                </div>
 
-                            <div th:text="${x.user.name}"></div>
-                            <div th:text="${x.user.phoneNumber}"></div>
+
+                                <!--                    <div class="form-group col-lg-12">-->
+                                <!--                        <label class="control-label">Xã</label>-->
+                                <!--                        <input class="form-control" th:field="*{ward}" type="text" required>-->
+                                <!--                    </div>-->
+
+                                <div class="form-group col-md-8">
+                                    <label class="control-label">Phường/Xã <label style="color:red;">*</label></label>
+                                    <!--                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">-->
+                                    <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}">
+                                        <option value="" selected>Chọn phường xã</option>
+                                    </select>
+                                </div>
 
 
-                            Địa chỉ:
-                            <div th:text="${x.street} + ','+ ${x.ward} + ' '+',' + ${x.district} + ','+ ${x.province}"></div>
-                            <!--                       <div  th:text="${x.province}"></div>-->
-                            <!--                        <div th:text="${x.district}"></div>-->
-                            <!--                        th:action="@{/admin/customer/update(id=${att.Id})}" method="post" th:object="${att}"-->
-                            <div  style="color:#0b93ff;" th:if="${x.status} == 'off'">
-                                <a class=" btn btn-primary btn edit bg-warning"  th:href="@{/admin/address/detail/{id}(id=${x.id})}" >Cập nhật</a>
-                            </div>
+                                <div class="form-group col-lg-8">
+                                    <label class="control-label">Đường <label style="color:red;">*</label></label>
+                                    <input class="form-control" th:field="*{street}" type="text" required>
+                                </div>
 
+                                <BR>
+                                <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
+                                <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                <BR>
+                            </form>
+                            <div class="modal-footer"></div>
                         </div>
                     </div>
+                </div>
 
-<!--               -->
 
             </div>
         </div>
+    </div>
+
+
     </div>
 
 
 </main>
-
-<div class="modal" id="addthuonghieu" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-
-            <div class="modal-body">
-                <div class="form-group  col-lg-12">
-              <span class="thong-tin-thanh-toan">
-                <h5>Thêm mới địa chỉ </h5>
-              </span>
-                </div>
-                <!--                <form action="/admin/add/address"  method="post" th:object="${att}">-->
-
-                <form action="/admin/add/address" method="post" th:object="${att}">
-
-                    <!--                    <input type="text"  th:value="${idKH}" th:field="*{user}">-->
-
-                    <!--                    <p>Id: <span th:value="${id}" th:field="*{user}"></span></p>-->
-
-                    <input type="hidden" name="user" th:value="${user.Id}"/>
-
-
-<!--                    <div class="form-group col-lg-12">-->
-<!--                        <label class="control-label">Tỉnh/Thành phố</label>-->
-<!--                        <input class="form-control" th:field="*{province}" type="text" required>-->
-<!--                    </div>-->
-
-                    <div class="form-group col-md-8">
-                        <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
-                        <!--                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">-->
-                        <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}">
-                            <option value="Name" selected>Chọn tỉnh thành</option>
-                        </select>
-                    </div>
-
-
-
-<!--                    <div class="form-group col-lg-12">-->
-<!--                        <label class="control-label">Quận/Huyện</label>-->
-<!--                        <input class="form-control" th:field="*{district}" type="text" required>-->
-<!--                    </div>-->
-
-                    <div class="form-group col-md-8">
-                        <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
-                        <!--                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">-->
-                        <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}">
-                            <option value="" selected>Chọn quận huyện</option>
-                        </select>
-                    </div>
-
-
-<!--                    <div class="form-group col-lg-12">-->
-<!--                        <label class="control-label">Xã</label>-->
-<!--                        <input class="form-control" th:field="*{ward}" type="text" required>-->
-<!--                    </div>-->
-
-                    <div class="form-group col-md-8">
-                        <label class="control-label">Phường/Xã <label style="color:red;">*</label></label>
-                        <!--                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">-->
-                        <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}">
-                            <option value="" selected>Chọn phường xã</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group col-lg-8">
-                        <label class="control-label">Đường <label style="color:red;">*</label></label>
-                        <input class="form-control" th:field="*{street}" type="text" required>
-                    </div>
-
-                    <BR>
-                    <button class="btn btn-save ml-3" type="submit">Lưu lại</button>
-                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
-                    <BR>
-                </form>
-                <div class="modal-footer"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
@@ -318,7 +262,7 @@
         citis.onchange = function () {
             district.length = 1;
             ward.length = 1;
-            if(this.value != ""){
+            if (this.value != "") {
                 const result = data.filter(n => n.Name === this.value);
 
                 for (const k of result[0].Districts) {
@@ -339,13 +283,6 @@
         };
     }
 </script>
-
-
-
-
-
-
-
 
 
 <!--<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>-->
