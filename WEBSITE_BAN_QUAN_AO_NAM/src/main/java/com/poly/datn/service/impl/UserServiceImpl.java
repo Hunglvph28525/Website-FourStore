@@ -184,5 +184,77 @@ public class UserServiceImpl implements UserService {
         return addressRepository.findByIdKhachHang(cid);
     }
 
+    @Override
+    public List<UserDto> getAllStaff() {
+        return userRepository.getAllStaff();
+    }
+
+    @Override
+    public MessageUtil addStaff(UserRequest userRequest,MultipartFile file) {
+
+        Random random = new Random();
+        int number;
+        String mk = "";
+        for (int i = 0; i < 5; i++) {
+            number = random.nextInt(9);
+            mk += number;
+        }
+        String matKhau = "abcd" + mk;
+        User uer = userRequest.user();
+        uer.setPassword(passwordEncoder.encode(matKhau));
+        String s1 = uer.getEmail();
+        String[] parts = s1.split("@");
+        String part1 = parts[0];
+        uer.setUsername(part1);
+        uer.setStatus("onNV");
+        uer.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_NV")));
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(uer.getEmail());
+        mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
+        mailMessage.setText("Tên đăng nhập:"+part1 + "\nMật khẩu đăng nhập:"  + matKhau);
+        javaMailSender.send(mailMessage);
+        Map<?, ?> uploadResult = null;
+        try {
+            uploadResult = imageService.upload(file, "avatar");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String avatar = uploadResult.get("url").toString();
+        uer.setAvatar(avatar);
+        User u = userRepository.save(uer);
+        Address address = userRequest.address();
+        address.setUser(u);
+        address.setStatus("on");
+        Address a = addressRepository.save(address);
+        return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(uer).build();
+    }
+
+    @Override
+    public User detailStaff(Long id) {
+        return userRepository.getReferenceById(id);
+    }
+
+    @Override
+    public Address detailAddress(Long id) {
+        return addressRepository.getReferenceById(id);
+    }
+
+    @Override
+    public void updateAddress(Long idKH, Long idAddress) {
+
+
+
+
+    }
+
+
+//    @Override
+//    public List<UserDto> getAll(String status) {
+//        if (status.equals("0")) {
+//            return userRepository.getAll();
+//        } else {
+//            return userRepository.tkStatus(status);
+//        }
+//    }
 
 }

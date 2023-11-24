@@ -75,6 +75,9 @@ public class SercurityConfig {
                                 .build(),
                         Role.builder()
                                 .roleName("ROLE_ADMIN")
+                                .build(),
+                        Role.builder()
+                                .roleName("ROLE_NV")
                                 .build()
                 ));
             }

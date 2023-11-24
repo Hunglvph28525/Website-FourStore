@@ -32,8 +32,29 @@
         <li><a class="app-menu__item active" href="/admin/dashboard"><i
                 class='app-menu__icon bx bx-tachometer'></i><span
                 class="app-menu__label">Bảng điều khiển</span></a></li>
-        <li><a class="app-menu__item " href="/admin/customer"><i class='app-menu__icon bx bx-id-card'></i> <span
-                class="app-menu__label">Quản lý khách hàng</span></a></li>
+        <li>
+<!--            <a class="app-menu__item " href="/admin/customer">
+<i class='app-menu__icon bx bx-id-card'></i> <span-->
+<!--                class="app-menu__label">Quản lý tài khoản</span></a>-->
+
+
+            <a class="app-menu__item" href="#" data-toggle="collapse" data-target="#c"
+               aria-expanded="true" aria-controls="c">
+                <i class='app-menu__icon bx bx-id-card'></i>
+                <span class="app-menu__label">Quản lý tài khoản</span>
+            </a>
+
+            <div id="c" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <ul>
+                        <li class="py-1"><a href="/admin/staff"><b>Nhân viên</b></a></li>
+                        <li class="py-1"><a href="/admin/customer"><b>Khách hàng</b></a></li>
+
+
+                    </ul>
+                </div>
+            </div>
+        </li>
         <li>
             <a class="app-menu__item" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">

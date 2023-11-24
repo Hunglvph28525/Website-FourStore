@@ -43,6 +43,17 @@ public interface UserService extends Converter<UserSignUpRequest,User>
 
     List<Address> findByIdDiaChi(Long cid);
 
+
+    List<UserDto> getAllStaff();
+
+
+    MessageUtil addStaff(UserRequest userRequest,MultipartFile file);
+
+    User detailStaff(Long id);
+
+    Address detailAddress(Long id);
+
+    void updateAddress(Long idKH, Long idAddress);
 }
 
 

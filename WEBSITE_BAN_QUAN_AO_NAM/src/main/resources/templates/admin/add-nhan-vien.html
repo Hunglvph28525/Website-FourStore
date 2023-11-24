@@ -105,16 +105,16 @@
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
-                <h3 class="tile-title">Tạo mới khách hàng</h3>
+                <h3 class="tile-title">Tạo mới nhân viên</h3>
 
-                <form class="row" action="/admin/customer/add" th:object="${att}" method="post"
+                <form class="row" action="/admin/staff/add" th:object="${att}" method="post"
                       enctype="multipart/form-data" id="myForm">
                     <!--                    <div class="form-group col-md-3">-->
                     <!--                        <label class="control-label">mã kh </label>-->
                     <!--                        <input class="form-control" type="text">-->
                     <!--                    </div>-->
                     <div class="form-group col-md-4">
-                        <label class="control-label">Tên khách hàng <label style="color:red;">*</label></label>
+                        <label class="control-label">Tên nhân viên <label style="color:red;">*</label></label>
                         <input class="form-control" type="text" th:field="*{name}" id="tenKH">
                         <p id="errorTenKH" style="color: red;"></p>
 
@@ -288,87 +288,87 @@
 <script>
 
 
-//        document.addEventListener("DOMContentLoaded", function () {
-//            $(".submit-button").on("click", function (event) {
-//                event.preventDefault();
-//        var tenKH = document.getElementById("tenKH").value;
-//        var sdt = document.getElementById("sdtKH").value;
-//        var email = document.getElementById("emailKH").value;
-//        var thanhPho = document.getElementById("thanhPho").value;
-//        var quanHuyen =document.getElementById("quanHuyen").value;
-//        var phuongXa = document.getElementById("phuongXa").value;
-//        var duong = document.getElementById("streetKH").value;
-//        var now = new Date();
-//
-//        if (tenKH.trim() === "") {
-//            Swal.fire({
-//                icon: "error",
-//                title: "Lỗi",
-//                text: "Vui lòng nhập tên khách hàng."
-//            });
-//            return;
-//        }
-//
-//        if (sdt.trim() === "") {
-//            Swal.fire({
-//                icon: "error",
-//                title: "Lỗi",
-//                text: "Vui lòng nhập số điện thoại khách hàng."
-//            });
-//            return;
-//        }
-//
-//
-//        if (email.trim() === "") {
-//            Swal.fire({
-//                icon: "error",
-//                title: "Lỗi",
-//                text: "Vui lòng nhập email khách hàng."
-//            });
-//            return;
-//        }
-//
-//        if (thanhPho.trim() === "") {
-//            Swal.fire({
-//                icon: "error",
-//                title: "Lỗi",
-//                text: "Vui lòng nhập thành phố ."
-//            });
-//            return;
-//        }
-//        if (quanHuyen.trim() === "") {
-//            Swal.fire({
-//                icon: "error",
-//                title: "Lỗi",
-//                text: "Vui lòng nhập quận/huyện."
-//            });
-//            return;
-//        }
-//
-//
-//        if (phuongXa.trim() === "") {
-//            Swal.fire({
-//                icon: "error",
-//                title: "Lỗi",
-//                text: "Vui lòng nhập phường/xã."
-//            });
-//            return;
-//        }
-//
-//
-//        if (duong.trim() === "") {
-//            Swal.fire({
-//                icon: "error",
-//                title: "Lỗi",
-//                text: "Vui lòng nhập đường/ngõ/xóm."
-//            });
-//            return;
-//        }
-//
-//
-//
-//        });
-//    });
+    //        document.addEventListener("DOMContentLoaded", function () {
+    //            $(".submit-button").on("click", function (event) {
+    //                event.preventDefault();
+    //        var tenKH = document.getElementById("tenKH").value;
+    //        var sdt = document.getElementById("sdtKH").value;
+    //        var email = document.getElementById("emailKH").value;
+    //        var thanhPho = document.getElementById("thanhPho").value;
+    //        var quanHuyen =document.getElementById("quanHuyen").value;
+    //        var phuongXa = document.getElementById("phuongXa").value;
+    //        var duong = document.getElementById("streetKH").value;
+    //        var now = new Date();
+    //
+    //        if (tenKH.trim() === "") {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi",
+    //                text: "Vui lòng nhập tên khách hàng."
+    //            });
+    //            return;
+    //        }
+    //
+    //        if (sdt.trim() === "") {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi",
+    //                text: "Vui lòng nhập số điện thoại khách hàng."
+    //            });
+    //            return;
+    //        }
+    //
+    //
+    //        if (email.trim() === "") {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi",
+    //                text: "Vui lòng nhập email khách hàng."
+    //            });
+    //            return;
+    //        }
+    //
+    //        if (thanhPho.trim() === "") {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi",
+    //                text: "Vui lòng nhập thành phố ."
+    //            });
+    //            return;
+    //        }
+    //        if (quanHuyen.trim() === "") {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi",
+    //                text: "Vui lòng nhập quận/huyện."
+    //            });
+    //            return;
+    //        }
+    //
+    //
+    //        if (phuongXa.trim() === "") {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi",
+    //                text: "Vui lòng nhập phường/xã."
+    //            });
+    //            return;
+    //        }
+    //
+    //
+    //        if (duong.trim() === "") {
+    //            Swal.fire({
+    //                icon: "error",
+    //                title: "Lỗi",
+    //                text: "Vui lòng nhập đường/ngõ/xóm."
+    //            });
+    //            return;
+    //        }
+    //
+    //
+    //
+    //        });
+    //    });
 </script>
 
 

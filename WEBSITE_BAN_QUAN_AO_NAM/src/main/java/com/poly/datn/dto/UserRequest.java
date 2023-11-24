@@ -4,6 +4,7 @@ import com.poly.datn.entity.Address;
 import com.poly.datn.entity.Role;
 import com.poly.datn.entity.User;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class UserRequest {
     private String district;//huyện
     private String ward;//xã/phường
     private String street;//đường/số nhà/ngõ
-    @NotBlank(message = "Thieu ten")
+
     private String name;
     private Boolean gender;
     private String phoneNumber;
