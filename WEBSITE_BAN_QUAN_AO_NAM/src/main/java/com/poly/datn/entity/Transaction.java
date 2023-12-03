@@ -48,4 +48,6 @@ public class Transaction {
     @DateTimeFormat(pattern = "yyyy-MM-dd'-'HH:mm")
     @Column(name = "create_date")
     private LocalDateTime createDate;
+
+
 }

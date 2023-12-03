@@ -1,5 +1,6 @@
 package com.poly.datn.service.impl;
 
+import com.poly.datn.dto.ProductDetailDto;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.repository.ProductDetailRepository;
 import com.poly.datn.service.ProductDetailService;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductDetailServiceImpl implements ProductDetailService {
@@ -61,5 +64,18 @@ public class ProductDetailServiceImpl implements ProductDetailService {
             return MessageUtil.builder().status(0).message("Thất bại !").type("bg-danger").build();
         }
 
+    }
+
+    @Override
+    public List<ProductDetailDto> getAll() {
+        List<ProductDetail> list = productDetailRepository.findAll();
+        List<ProductDetailDto> filterList = list.stream()
+                .map(ProductDetailDto::new)
+                .filter(dto -> dto.getQuantity() > 0)
+                .collect(Collectors.toList());
+//        List<ProductDetailDto> dtoList = new ArrayList<>();
+//        list.stream().forEach(x -> dtoList.add(new ProductDetailDto(x)));
+//        List<ProductDetailDto> filterList = dtoList.stream().filter( x -> x.getQuantity() > 0).toList();
+        return filterList;
     }
 }

@@ -191,9 +191,9 @@
                             <td th:text="${x.product.productName}"></td>
                             <td th:text="${x.color.name}"></td>
                             <td th:text="${x.size.name}"></td>
-                            <td><input class="form-control" type="number" required min="0" max="20000" name="quantity"
+                            <td><input class="form-control" type="number" required min="0" max="2000" name="quantity" onkeyup="checkSl()"
                                        th:value="${x.quantity}"/></td>
-                            <td><input class="form-control" type="number" required name="price" min="10000" max="1000000000"
+                            <td><input class="form-control" type="number" required name="price" min="10000" max="10000000"onkeyup="checkGia()"
                                        th:value="${x.price}"/></td>
                             <td>
                                 <a class="btn btn-primary btn-sm trash delete-link"
@@ -550,7 +550,7 @@ MODAL
 
             Swal.fire({
                 title: "Xác nhận",
-                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",
+                text: "Bạn đã chắc chắn chưa ?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Chắc chắn",
@@ -574,6 +574,27 @@ MODAL
     setTimeout(function() {
         myAlert.style.display = "none";
     }, 5000); // 5000 ms = 5 giây
+</script>
+<script>
+    function checkSl() {
+        var sl = event.target;
+        console.log(sl);
+        if (sl.value > 1000 || sl.value < 1){
+            alert("số lượng từ 1-1000");
+            sl.value = 1;
+        }
+
+    }
+    function checkGia() {
+        var sl = event.target;
+        console.log(sl);
+        if (sl.value > 100000000 || sl.value < 10000){
+            alert("giá từ 10000-100000000");
+            sl.value = 10000;
+        }
+
+    }
+
 </script>
 
 </body>

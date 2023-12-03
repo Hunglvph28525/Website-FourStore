@@ -150,7 +150,7 @@
 
                         </div>
                         <div class="col">
-                            <p th:text="${'Trạng thái : '+ detail.paymentInfo}"></p>
+                            <p th:text="${'Trạng thái : '+ detail.paymentStatus}"></p>
                         </div>
                     </div>
                 </div>
@@ -197,7 +197,7 @@
                     <div style="margin-left: 80% ; margin-top: 20px">
                         <div class="row mt-2 text-right">
                             <label class="font-weight-normal col">Tổng tiền hàng : </label>
-                            <div class="text-large text-start col"><strong th:text="${detail.total}"></strong></div>
+                            <div class="text-large text-start col"><strong th:text="${detail.total + ' đ'}"></strong></div>
                         </div>
                         <div class="row mt-2 text-right">
                             <label class="font-weight-normal col">Giảm giá : </label>

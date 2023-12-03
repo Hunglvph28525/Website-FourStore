@@ -11,16 +11,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class AddToCartRequest {
-
+public class UpdateQuantityReq {
     private String codeBill;
-
-    private Long colorId;
-
     private Long productId;
-
-    private Integer quantity;
-
-    private Long sizeId;
+    private Integer newQuantity;
 
 }

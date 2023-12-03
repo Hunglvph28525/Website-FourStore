@@ -61,7 +61,6 @@ public class Invoice {
     @Column(name = "shipping_cost")// (Phí vận chuyển)
     private BigDecimal shippingCost;
 
-
     @Column(name = "total") // tổng tiền sản phẩm
     private BigDecimal total;
 
@@ -70,10 +69,6 @@ public class Invoice {
 
     @Column(name = "grand_total") // tổng tiền hóa đơn = tổng tiền sản phẩm + phí ship
     private BigDecimal grandTotal;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd'-'HH:mm")
-    @Column(name = "payment_date") // ngày thanh toán
-    private LocalDateTime paymentDate;
 
     @Column(name = "shipping_date") // ngày giao hàng
     private LocalDateTime shippingDate;
@@ -90,6 +85,19 @@ public class Invoice {
     @Column(name = "type", columnDefinition = ("nvarchar(255)"))
     private String type;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'-'HH:mm")
+    @Column(name = "payment_date") // ngày thanh toán
+    private LocalDateTime paymentDate;
+
     @Column(name = "payment_info", columnDefinition = ("nvarchar(255)"))
     private String paymentInfo;
+
+    @Column(name = "payment_status")
+    private String paymentStatus;
+
+    @Column(name = "user_pay")
+    private BigDecimal userPay;
+
+    @Column(name = "tien_thoi")
+    private BigDecimal tienThoi;
 }

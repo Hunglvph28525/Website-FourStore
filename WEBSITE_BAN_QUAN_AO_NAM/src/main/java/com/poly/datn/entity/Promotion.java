@@ -47,7 +47,6 @@ public class Promotion {
 
 
     @Max(10000)
-    @Min(1)
     @Column(name = "quantity")
     private Integer quantity;
 

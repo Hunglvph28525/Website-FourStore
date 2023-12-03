@@ -20,6 +20,7 @@ public class UserDto {
     private String password;
     private String avatar;
     private String status;
+    private User user;
 
     public UserDto(User user){
         this.Id = user.getId();
@@ -31,6 +32,7 @@ public class UserDto {
         this.password = user.getPassword();
         this.avatar = user.getAvatar();
         this.status = user.getStatus();
+        this.user = user;
     }
 
 }

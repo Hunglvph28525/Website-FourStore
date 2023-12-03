@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService extends Converter<UserSignUpRequest,User>
-        , UserDetailsService{
+public interface UserService extends Converter<UserSignUpRequest, User>
+        , UserDetailsService {
     List<User> getAll();
 
     void add(User user);
@@ -28,10 +28,9 @@ public interface UserService extends Converter<UserSignUpRequest,User>
 
     Optional<User> getByUserName(String userName);
 
-
+    User addUserToBill(User user);
 
     boolean isEmailExists(String email);
-
 
     Optional<User> changePassword(UserForgotPasswordRequest userForgotPasswordRequest);
 
@@ -47,7 +46,7 @@ public interface UserService extends Converter<UserSignUpRequest,User>
     List<UserDto> getAllStaff();
 
 
-    MessageUtil addStaff(UserRequest userRequest,MultipartFile file);
+    MessageUtil addStaff(UserRequest userRequest, MultipartFile file);
 
     User detailStaff(Long id);
 

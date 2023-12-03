@@ -2,6 +2,7 @@ package com.poly.datn.repository;
 
 import com.poly.datn.dto.InvoiceDetailDto;
 import com.poly.datn.entity.InvoiceDetail;
+import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.entity.composite.InvoiceId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,8 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, In
     @Query("select c from InvoiceDetail c where c.invoiceId.invoice.codeBill =:codeBill")
     List<InvoiceDetail> getByCodeBill(String codeBill);
 
+    @Query("select c from InvoiceDetail c where c.invoiceId.invoice.codeBill =:codeBill")
+    List<ProductDetail> getAllByInvoice(String codeBill);
+
+    boolean existsByInvoiceId(InvoiceId id);
 }

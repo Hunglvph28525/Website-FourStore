@@ -23,4 +23,6 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
     List<Promotion> getAllJop();
 
     Boolean existsByGiftCodeOrDiscountName(String giftCode, String name);
+
+    Promotion getByGiftCode(String pgg);
 }

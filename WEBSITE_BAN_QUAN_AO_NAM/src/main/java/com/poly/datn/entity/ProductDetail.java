@@ -49,10 +49,8 @@ public class ProductDetail {
     private Size size;
 
     @Column(name = "quantity")
-    @Min(0)
     private Integer quantity;
 
-    @Min(1)
     @Column(name = "price")
     private BigDecimal price;
 

@@ -1,5 +1,6 @@
 package com.poly.datn.service;
 
+import com.poly.datn.dto.ProductDetailDto;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.util.MessageUtil;
 import org.springframework.data.domain.Page;
@@ -18,5 +19,7 @@ public interface ProductDetailService {
     MessageUtil delete(Long id);
 
     MessageUtil update(List<Long> ids, List<Integer> quantitys, List<BigDecimal> prices);
+
+    List<ProductDetailDto> getAll();
 
 }

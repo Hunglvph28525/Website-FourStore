@@ -31,12 +31,15 @@ public class InvoiceDto {
     @DateTimeFormat(pattern = "HH:mm' - 'dd/MM/yyyy")
     private LocalDateTime paymentDate;
     private String paymentInfo;
+    private String paymentStatus;
     private List<InvoiceDetailDto> product;
-    private BigDecimal total;
-    private BigDecimal giaGiam;
-    private BigDecimal shippingCost;
-    private BigDecimal grandTotal;
+    private Integer total;
+    private Integer giaGiam;
+    private Integer shippingCost;
+    private Integer grandTotal;
     private User user;
+    private Long tongSp;
+    private String pgg;
 
 
     public InvoiceDto(Invoice x) {
@@ -48,12 +51,14 @@ public class InvoiceDto {
         this.address = address(x.getShippingAddress());
         this.paymentMethod = x.getPaymentMethod() ==null ?"-" : x.getPaymentMethod().getMethodName();
         this.paymentDate = x.getPaymentDate();
-        this.paymentInfo = x.getPaymentInfo() ==null? "-" : x.getPaymentInfo().equals("1") ? "Đã thanh toán":"Chưa thanh toán";
-        this.total = x.getTotal();
-        this.giaGiam = x.getGiaGiam();
-        this.shippingCost = x.getShippingCost();
-        this.grandTotal = x.getGrandTotal();
-        this.user = x.getUser();
+        this.paymentStatus = x.getPaymentStatus() == null ? "-" : x.getPaymentStatus().equals("1") ? "Đã thanh toán":"Chưa thanh toán";
+        this.paymentInfo = x.getPaymentInfo();
+        this.total = x.getTotal().intValue();
+        this.giaGiam = x.getGiaGiam().intValue();
+        this.shippingCost = x.getShippingCost().intValue();
+        this.grandTotal = x.getGrandTotal().intValue();
+        this.pgg = x.getPromotion() == null? null : x.getPromotion().getGiftCode();
+        this.user = x.getUser() == null ? new User(): x.getUser();
     }
 
     private String address(ShippingAddress x) {

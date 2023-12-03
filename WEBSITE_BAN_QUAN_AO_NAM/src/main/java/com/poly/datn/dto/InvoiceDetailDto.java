@@ -25,6 +25,7 @@ public class InvoiceDetailDto {
     private String size;
     private Integer quantity;
     private Integer price;
+    private Integer total;
     private String img;
     private ProductDetail productDetail;
 
@@ -36,7 +37,8 @@ public class InvoiceDetailDto {
         this.color = x.getInvoiceId().getProductDetail().getColor().getName();
         this.size = x.getInvoiceId().getProductDetail().getSize().getName();
         this.quantity = x.getQuantity();
-        this.price = x.getQuantity() * x.getInvoiceId().getProductDetail().getPrice().intValue();
+        this.price = x.getInvoiceId().getProductDetail().getPrice().intValue();
+        this.total = x.getQuantity() * x.getInvoiceId().getProductDetail().getPrice().intValue();
         this.img = image.getUrl();
         this.productDetail = x.getInvoiceId().getProductDetail();
     }

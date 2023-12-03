@@ -88,7 +88,7 @@
                             <th>Thời gian</th>
                             <th>Giá trị giảm</th>
                             <th>Số lượng</th>
-                            <th>Cho đơn tối thiểu</th>
+                            <th>Điều kiện</th>
                             <th>Trạng thái</th>
                             <th>Chức năng</th>
                         </tr>
@@ -101,7 +101,7 @@
                             <td><span class="badge bg-info" th:text="${x.time}"></span></td>
                             <td th:text="${x.discount + '%'}"></td>
                             <td th:text="${x.quantity}"></td>
-                            <td th:text="${x.minValue1 + 'đ'}"></td>
+                            <td th:text="${'Đơn tối thiểu ' + x.minValue1 + 'đ'}"></td>
                             <td><span class="badge"
                                       th:classappend="${x.status == '1' ? 'bg-success' : (x.status == '2' ? 'bg-danger' : 'bg-warning')}"
                                       th:text="${x.status == '1' ? 'Đang diễn ra' : (x.status == '2' ? 'Đã kết thúc' : 'Chưa diễn ra')}"></span>

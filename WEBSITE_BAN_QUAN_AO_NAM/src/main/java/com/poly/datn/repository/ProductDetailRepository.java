@@ -15,4 +15,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail,Lon
     ProductDetail getById(Long id);
 
     boolean existsById(Long id);
+
+    @Query("select c from ProductDetail c where c.product.id = :productId and c.color.id =:colorId and c.size.id =:sizeId")
+    ProductDetail getProduct(Long productId, Long colorId, Long sizeId);
 }

@@ -37,19 +37,14 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserService userService;
 
-
-
     @Autowired
     private ImageService imageService;
-
 
     @Autowired
     JavaMailSender javaMailSender;
 
     @Autowired
     AddressRepository addressRepository;
-
-
 
     @Override
     public List<User> getAll() {
@@ -76,6 +71,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getByUserName(String userName) {
         return userRepository.getByUser(userName);
+    }
+
+    @Override
+    public User addUserToBill(User user) {
+        String matKhau = "abcd" + generateCodeBill(5);
+        user.setPassword(passwordEncoder.encode(matKhau));
+        String s1 = user.getEmail();
+        String[] parts = s1.split("@");
+        String part1 = parts[0];
+        user.setUsername(part1);
+        user.setStatus("onKH");
+        user.setAvatar("https://res.cloudinary.com/dg8hhxkah/image/upload/v1698080470/avartar/vedidtoxs2wn2khvtekq.jpg");
+        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(user.getEmail());
+        mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
+        mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
+        javaMailSender.send(mailMessage);
+        return userRepository.save(user);
     }
 
 
@@ -133,7 +147,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MessageUtil add(UserRequest userRequest, MultipartFile file)  {
+    public MessageUtil add(UserRequest userRequest, MultipartFile file) {
 
 //        if (userRequest.getName() == null || userRequest.getName().isEmpty()) {
 //            throw new IllegalArgumentException("Name cannot be empty");
@@ -158,7 +172,7 @@ public class UserServiceImpl implements UserService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(uer.getEmail());
         mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
-        mailMessage.setText("Tên đăng nhập:"+part1 + "\nMật khẩu đăng nhập:"  + matKhau);
+        mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
         javaMailSender.send(mailMessage);
         Map<?, ?> uploadResult = null;
         try {
@@ -176,7 +190,6 @@ public class UserServiceImpl implements UserService {
         return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(uer).build();
 
 
-
     }
 
     @Override
@@ -190,7 +203,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MessageUtil addStaff(UserRequest userRequest,MultipartFile file) {
+    public MessageUtil addStaff(UserRequest userRequest, MultipartFile file) {
 
         Random random = new Random();
         int number;
@@ -211,7 +224,7 @@ public class UserServiceImpl implements UserService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(uer.getEmail());
         mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
-        mailMessage.setText("Tên đăng nhập:"+part1 + "\nMật khẩu đăng nhập:"  + matKhau);
+        mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
         javaMailSender.send(mailMessage);
         Map<?, ?> uploadResult = null;
         try {
@@ -243,8 +256,17 @@ public class UserServiceImpl implements UserService {
     public void updateAddress(Long idKH, Long idAddress) {
 
 
+    }
 
-
+    private String generateCodeBill(int x) {
+        String characters = "0123456789";
+        Random random = new Random();
+        StringBuilder randomString = new StringBuilder();
+        for (int i = 0; i < x; i++) {
+            int index = random.nextInt(characters.length());
+            randomString.append(characters.charAt(index));
+        }
+        return randomString.toString();
     }
 
 
