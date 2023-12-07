@@ -21,6 +21,7 @@ public class UserDto {
     private String avatar;
     private String status;
     private User user;
+    private  String cccd;
 
     public UserDto(User user){
         this.Id = user.getId();
@@ -33,6 +34,7 @@ public class UserDto {
         this.avatar = user.getAvatar();
         this.status = user.getStatus();
         this.user = user;
+        this.cccd = user.getCccd();
     }
 
 }

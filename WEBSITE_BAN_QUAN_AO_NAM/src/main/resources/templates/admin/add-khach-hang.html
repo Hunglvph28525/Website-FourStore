@@ -94,6 +94,19 @@
             color: #fff;
         }
 
+
+
+        .form-group.error input {
+            border-color: #ff3860;
+        }
+
+        .form-group .error {
+            color: #ff3860;
+            font-size: 15px;
+            height: 13px;
+        }
+
+
     </style>
 
 </head>
@@ -104,32 +117,32 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="tile">
-                <h3 class="tile-title">Tạo mới khách hàng</h3>
+                        <div class="tile">
+                            <h3 class="tile-title">Tạo mới khách hàng</h3>
 
-                <form class="row" action="/admin/customer/add" th:object="${att}" method="post"
-                      enctype="multipart/form-data" id="myForm">
-                    <!--                    <div class="form-group col-md-3">-->
-                    <!--                        <label class="control-label">mã kh </label>-->
-                    <!--                        <input class="form-control" type="text">-->
-                    <!--                    </div>-->
-                    <div class="form-group col-md-4">
-                        <label class="control-label">Tên khách hàng <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text" th:field="*{name}" id="tenKH">
-                        <p id="errorTenKH" style="color: red;"></p>
+                            <form class="row" action="/admin/customer/add" th:object="${att}" method="post"
+                                  enctype="multipart/form-data" id="form">
+                                <!--                    <div class="form-group col-md-3">-->
+                                <!--                        <label class="control-label">mã kh </label>-->
+                                <!--                        <input class="form-control" type="text">-->
+                                <!--                    </div>-->
+                                <div class="form-group col-md-4">
+                                    <label class="control-label">Tên khách hàng <label style="color:red;">*</label></label>
+                                    <input class="form-control" type="text" th:field="*{name}" id="username">
+                                    <div class="error"></div>
 
 
-                    </div>
-                    <div class="form-group  col-md-4">
-                        <label class="control-label">Số điện thoại <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text" th:field="*{phoneNumber}" id="sdtKH">
-                        <p id="errorSDT" style="color: red;"></p>
-                    </div>
+                                </div>
+                                <div class="form-group  col-md-4">
+                                    <label class="control-label">Số điện thoại <label style="color:red;">*</label></label>
+                                    <input class="form-control" type="text" th:field="*{phoneNumber}" id="sdt">
+                                    <div class="error"></div>
+                                </div>
 
-                    <div class="form-group col-md-4 ">
+                                <div class="form-group col-md-4 ">
                         <label class="control-label">Email <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text"  th:field="*{email}" id="emailKH">
-                        <p id="errorEmail" style="color: red;"></p>
+                        <input class="form-control" type="text"  th:field="*{email}" id="email">
+                                    <div class="error"></div>
                     </div>
 
 
@@ -149,28 +162,28 @@
                     <div class="form-group col-md-4">
                         <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
                         <!--                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">-->
-                        <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}">
+                        <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}" required>
                             <option value="Name" selected>Chọn tỉnh thành</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
                         <!--                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">-->
-                        <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}">
+                        <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}" required>
                             <option value="" selected>Chọn quận huyện</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Phường/Xã <label style="color:red;">*</label> </label>
                         <!--                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">-->
-                        <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}">
+                        <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}" required>
                             <option value="" selected>Chọn phường xã</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Đường <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text"  th:field="*{street}" id="streetKH">
-                        <p id="errorStreetKH" style="color: red;"></p>
+                        <label class="control-label">Địa chỉ cụ thể <label style="color:red;">*</label></label>
+                        <input class="form-control" type="text"  th:field="*{street}" id="duong">
+                        <div class="error"></div>
                     </div>
 
                     <div class="form-group col-md-4">
@@ -200,73 +213,112 @@
 
 </main>
 
-<!--<script>-->
-<!--    function myFunction() {-->
-<!--        // Get the value of the input field with id="numb"-->
-<!--        let x = document.getElementById("tenKH").value;-->
-<!--        let y = document.getElementById("sdtKH").value;-->
-<!--        let a = document.getElementById("emailKH").value;-->
-<!--        let b = document.getElementById("streetKH").value;-->
 
 
-<!--        // If x is Not a Number or less than one or greater than 10-->
-<!--        let tenKH;-->
-<!--        let sdtKH;-->
-<!--        let emailKH;-->
-<!--        let streetKH;-->
-
-<!--        if (x == "") {-->
-<!--            tenKH = "Vui lòng nhập tên ";-->
-
-<!--        }-->
-<!--        if (x != "") {-->
-<!--            tenKH = "";-->
-<!--        }-->
-
-<!--        if (y == "") {-->
-<!--            sdtKH = "Vui lòng nhập số điện thoại";-->
-
-<!--        }-->
-<!--        if (y != "") {-->
-<!--            sdtKH = "";-->
-<!--        }-->
-
-<!--        if (a == "") {-->
-<!--            emailKH = "Vui lòng nhập email";-->
-
-<!--        }-->
-<!--        if (a != "") {-->
-<!--            emailKH = "";-->
-<!--        }-->
-
-<!--        if (b == "") {-->
-<!--            streetKH = "Vui lòng nhập tên đường/ngõ/xóm";-->
-
-<!--        } if (b != "") {-->
-<!--            streetKH = "";-->
-<!--        }-->
-<!--        document.getElementById("errorTenKH").innerHTML = tenKH;-->
-<!--        document.getElementById("errorSDT").innerHTML = sdtKH;-->
-<!--        document.getElementById("errorEmail").innerHTML = emailKH;-->
-<!--        document.getElementById("errorStreetKH").innerHTML = streetKH;-->
+<script>
 
 
+        const form = document.getElementById('form');
+        const username = document.getElementById('username');
+        const sdt = document.getElementById('sdt');
+        const email = document.getElementById('email');
+        const duong = document.getElementById('duong');
 
-<!--    }-->
+
+        form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        validateInputs();
+    });
+
+        const setError = (element, message) => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+
+        errorDisplay.innerText = message;
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success')
+    }
+
+        const setSuccess = element => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+
+        errorDisplay.innerText = '';
+        inputControl.classList.add('success');
+        inputControl.classList.remove('error');
+    };
 
 
+        const isValidEmail = email => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
 
 
+        const validateInputs = () => {
+        const usernameValue = username.value.trim();
+        const sdtValue = sdt.value.trim();
+        const emailValue = email.value.trim();
+        const duongValue = duong.value.trim();
+
+
+        if (usernameValue === '') {
+        setError(username, 'Tên không được để trống');
+    } else {
+        setSuccess(username);
+    }
 
 
 
 
 
-<!--</script>-->
+        if (sdtValue === '') {
+        setError(sdt, 'SDT không được để trống');
+    } else {
+        setSuccess(sdt);
+    }
 
 
-<!--<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>-->
-<!--<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>-->
+        if (emailValue === '') {
+        setError(email, 'Email không được để trống');
+    }else if(!isValidEmail(emailValue)){
+        setError(email, 'Email không đúng định dạng');
+    } else {
+        setSuccess(email);
+    }
+
+
+        if (duongValue === '') {
+        setError(duong, 'Địa chỉ cụ thể không được để trống');
+    } else {
+        setSuccess(duong);
+    }
+
+        if (usernameValue !==  '' && sdtValue !== '' && emailValue !== '' && duongValue !== '' && isValidEmail(emailValue) ) {
+        form.submit();
+    }
+
+
+
+
+
+
+
+    };
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
 
 
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
