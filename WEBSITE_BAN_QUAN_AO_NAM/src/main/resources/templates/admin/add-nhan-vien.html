@@ -94,6 +94,22 @@
             color: #fff;
         }
 
+
+
+
+
+
+        .form-group.error input {
+            border-color: #ff3860;
+        }
+
+        .form-group .error {
+            color: #ff3860;
+            font-size: 15px;
+            height: 13px;
+        }
+
+
     </style>
 
 </head>
@@ -108,28 +124,35 @@
                 <h3 class="tile-title">Tạo mới nhân viên</h3>
 
                 <form class="row" action="/admin/staff/add" th:object="${att}" method="post"
-                      enctype="multipart/form-data" id="myForm">
+                      enctype="multipart/form-data" id="form">
                     <!--                    <div class="form-group col-md-3">-->
                     <!--                        <label class="control-label">mã kh </label>-->
                     <!--                        <input class="form-control" type="text">-->
                     <!--                    </div>-->
                     <div class="form-group col-md-4">
                         <label class="control-label">Tên nhân viên <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text" th:field="*{name}" id="tenKH">
-                        <p id="errorTenKH" style="color: red;"></p>
+                        <input class="form-control" type="text" th:field="*{name}" id="username">
+                        <div class="error"></div>
 
 
                     </div>
+
+                    <div class="form-group  col-md-4">
+                        <label class="control-label">CCCD <label style="color:red;">*</label></label>
+                        <input class="form-control" type="text" th:field="*{cccd}" id="cccd">
+                        <div class="error"></div>
+                    </div>
+
                     <div class="form-group  col-md-4">
                         <label class="control-label">Số điện thoại <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text" th:field="*{phoneNumber}" id="sdtKH">
-                        <p id="errorSDT" style="color: red;"></p>
+                        <input class="form-control" type="text" th:field="*{phoneNumber}" id="sdt">
+                        <div class="error"></div>
                     </div>
 
                     <div class="form-group col-md-4 ">
                         <label class="control-label">Email <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text"  th:field="*{email}" id="emailKH">
-                        <p id="errorEmail" style="color: red;"></p>
+                        <input class="form-control" type="text" th:field="*{email}" id="email">
+                        <div class="error"></div>
                     </div>
 
 
@@ -149,46 +172,52 @@
                     <div class="form-group col-md-4">
                         <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
                         <!--                        <input class="form-control" type="text" required th:field="*{province}" id="thanhPho">-->
-                        <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}">
+                        <select class="form-control " id="city" aria-label=".form-select-sm" th:field="*{province}"
+                                required>
                             <option value="Name" selected>Chọn tỉnh thành</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
                         <!--                        <input class="form-control" type="text" required th:field="*{district}" id="quanHuyen">-->
-                        <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}">
+                        <select class="form-control " id="district" aria-label=".form-select-sm" th:field="*{district}"
+                                required>
                             <option value="" selected>Chọn quận huyện</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label class="control-label">Phường/Xã <label style="color:red;">*</label> </label>
                         <!--                        <input class="form-control" type="text" required th:field="*{ward}" id="phuongXa">-->
-                        <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}">
+                        <select class="form-control " id="ward" aria-label=".form-select-sm" th:field="*{ward}"
+                                required>
                             <option value="" selected>Chọn phường xã</option>
                         </select>
                     </div>
                     <div class="form-group col-md-4">
-                        <label class="control-label">Đường <label style="color:red;">*</label></label>
-                        <input class="form-control" type="text"  th:field="*{street}" id="streetKH">
-                        <p id="errorStreetKH" style="color: red;"></p>
+                        <label class="control-label">Địa chỉ cụ thể <label style="color:red;">*</label></label>
+                        <input class="form-control" type="text" th:field="*{street}" id="duong">
+                        <div class="error"></div>
                     </div>
 
                     <div class="form-group col-md-4">
                         <label class="control-label">Ảnh <label style="color:red;">*</label></label>
 
                         <!--                            <label  class="control-label">Chọn ảnh</label>-->
-                        <input class="form-control" name="file" type="file" >
+                        <input class="form-control" name="file" type="file" required>
 
 
                     </div>
 
-                    <p id="errorMessage" hidden></p>
-
-                    <div class="col">
 
 
-                        <button class="btn btn-save mr-2 submit-button " type="submit" >Lưu lại
+                    <div class="col" style="margin-top: 45px">
+
+
+                        <button class="btn btn-save mr-2 submit-button " type="submit">Lưu lại
                         </button>
+
+
+
                         <a class="btn btn-cancel ml-2" href="/admin/product">Hủy bỏ</a>
                     </div>
 
@@ -199,74 +228,6 @@
 
 
 </main>
-
-<!--<script>-->
-<!--    function myFunction() {-->
-<!--        // Get the value of the input field with id="numb"-->
-<!--        let x = document.getElementById("tenKH").value;-->
-<!--        let y = document.getElementById("sdtKH").value;-->
-<!--        let a = document.getElementById("emailKH").value;-->
-<!--        let b = document.getElementById("streetKH").value;-->
-
-
-<!--        // If x is Not a Number or less than one or greater than 10-->
-<!--        let tenKH;-->
-<!--        let sdtKH;-->
-<!--        let emailKH;-->
-<!--        let streetKH;-->
-
-<!--        if (x == "") {-->
-<!--            tenKH = "Vui lòng nhập tên ";-->
-
-<!--        }-->
-<!--        if (x != "") {-->
-<!--            tenKH = "";-->
-<!--        }-->
-
-<!--        if (y == "") {-->
-<!--            sdtKH = "Vui lòng nhập số điện thoại";-->
-
-<!--        }-->
-<!--        if (y != "") {-->
-<!--            sdtKH = "";-->
-<!--        }-->
-
-<!--        if (a == "") {-->
-<!--            emailKH = "Vui lòng nhập email";-->
-
-<!--        }-->
-<!--        if (a != "") {-->
-<!--            emailKH = "";-->
-<!--        }-->
-
-<!--        if (b == "") {-->
-<!--            streetKH = "Vui lòng nhập tên đường/ngõ/xóm";-->
-
-<!--        } if (b != "") {-->
-<!--            streetKH = "";-->
-<!--        }-->
-<!--        document.getElementById("errorTenKH").innerHTML = tenKH;-->
-<!--        document.getElementById("errorSDT").innerHTML = sdtKH;-->
-<!--        document.getElementById("errorEmail").innerHTML = emailKH;-->
-<!--        document.getElementById("errorStreetKH").innerHTML = streetKH;-->
-
-
-
-<!--    }-->
-
-
-
-
-
-
-
-
-
-<!--</script>-->
-
-
-<!--<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>-->
-<!--<script type="text/javascript" src="/assets/js/plugins/dataTables.bootstrap.min.js"></script>-->
 
 
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
@@ -285,223 +246,118 @@
 <script src="/assets/vendor/select2/select2.min.js.js"></script>
 
 
-<script>
-
-
-    //        document.addEventListener("DOMContentLoaded", function () {
-    //            $(".submit-button").on("click", function (event) {
-    //                event.preventDefault();
-    //        var tenKH = document.getElementById("tenKH").value;
-    //        var sdt = document.getElementById("sdtKH").value;
-    //        var email = document.getElementById("emailKH").value;
-    //        var thanhPho = document.getElementById("thanhPho").value;
-    //        var quanHuyen =document.getElementById("quanHuyen").value;
-    //        var phuongXa = document.getElementById("phuongXa").value;
-    //        var duong = document.getElementById("streetKH").value;
-    //        var now = new Date();
-    //
-    //        if (tenKH.trim() === "") {
-    //            Swal.fire({
-    //                icon: "error",
-    //                title: "Lỗi",
-    //                text: "Vui lòng nhập tên khách hàng."
-    //            });
-    //            return;
-    //        }
-    //
-    //        if (sdt.trim() === "") {
-    //            Swal.fire({
-    //                icon: "error",
-    //                title: "Lỗi",
-    //                text: "Vui lòng nhập số điện thoại khách hàng."
-    //            });
-    //            return;
-    //        }
-    //
-    //
-    //        if (email.trim() === "") {
-    //            Swal.fire({
-    //                icon: "error",
-    //                title: "Lỗi",
-    //                text: "Vui lòng nhập email khách hàng."
-    //            });
-    //            return;
-    //        }
-    //
-    //        if (thanhPho.trim() === "") {
-    //            Swal.fire({
-    //                icon: "error",
-    //                title: "Lỗi",
-    //                text: "Vui lòng nhập thành phố ."
-    //            });
-    //            return;
-    //        }
-    //        if (quanHuyen.trim() === "") {
-    //            Swal.fire({
-    //                icon: "error",
-    //                title: "Lỗi",
-    //                text: "Vui lòng nhập quận/huyện."
-    //            });
-    //            return;
-    //        }
-    //
-    //
-    //        if (phuongXa.trim() === "") {
-    //            Swal.fire({
-    //                icon: "error",
-    //                title: "Lỗi",
-    //                text: "Vui lòng nhập phường/xã."
-    //            });
-    //            return;
-    //        }
-    //
-    //
-    //        if (duong.trim() === "") {
-    //            Swal.fire({
-    //                icon: "error",
-    //                title: "Lỗi",
-    //                text: "Vui lòng nhập đường/ngõ/xóm."
-    //            });
-    //            return;
-    //        }
-    //
-    //
-    //
-    //        });
-    //    });
-</script>
-
-
-<!--&lt;!&ndash;===============================================================================================&ndash;&gt;-->
-<!--<script type="text/javascript">-->
-<!--    //Thời Gian-->
-<!--    function time() {-->
-<!--        var today = new Date();-->
-<!--        var weekday = new Array(7);-->
-<!--        weekday[0] = "Chủ Nhật";-->
-<!--        weekday[1] = "Thứ Hai";-->
-<!--        weekday[2] = "Thứ Ba";-->
-<!--        weekday[3] = "Thứ Tư";-->
-<!--        weekday[4] = "Thứ Năm";-->
-<!--        weekday[5] = "Thứ Sáu";-->
-<!--        weekday[6] = "Thứ Bảy";-->
-<!--        var day = weekday[today.getDay()];-->
-<!--        var dd = today.getDate();-->
-<!--        var mm = today.getMonth() + 1;-->
-<!--        var yyyy = today.getFullYear();-->
-<!--        var h = today.getHours();-->
-<!--        var m = today.getMinutes();-->
-<!--        var s = today.getSeconds();-->
-<!--        m = checkTime(m);-->
-<!--        s = checkTime(s);-->
-<!--        nowTime = h + " giờ " + m + " phút " + s + " giây";-->
-<!--        if (dd < 10) {-->
-<!--            dd = '0' + dd-->
-<!--        }-->
-<!--        if (mm < 10) {-->
-<!--            mm = '0' + mm-->
-<!--        }-->
-<!--        today = day + ', ' + dd + '/' + mm + '/' + yyyy;-->
-<!--        tmp = '<span class="date"> ' + today + ' - ' + nowTime +-->
-<!--            '</span>';-->
-<!--        document.getElementById("clock").innerHTML = tmp;-->
-<!--        clocktime = setTimeout("time()", "1000", "Javascript");-->
-
-<!--        function checkTime(i) {-->
-<!--            if (i < 10) {-->
-<!--                i = "0" + i;-->
-<!--            }-->
-<!--            return i;-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
-<!--<script>-->
-<!--    const fileInput = document.getElementById('fileInput');-->
-<!--    const imageContainer = document.getElementById('imageContainer');-->
-
-<!--    fileInput.addEventListener('change', () => {-->
-<!--        // Kiểm tra và giới hạn số lượng tệp được chọn-->
-<!--        if (fileInput.files.length > 5) {-->
-<!--            alert('Chỉ được chọn tối đa 5 ảnh.');-->
-<!--            fileInput.value = ''; // Xóa chọn tệp-->
-<!--            return;-->
-<!--        }-->
-
-<!--        // Xóa các ảnh hiện có-->
-<!--        while (imageContainer.firstChild) {-->
-<!--            imageContainer.removeChild(imageContainer.firstChild);-->
-<!--        }-->
-
-<!--        const files = fileInput.files;-->
-<!--        for (let i = 0; i < files.length; i++) {-->
-<!--            const file = files[i];-->
-<!--            const imagePreview = document.createElement('div');-->
-<!--            imagePreview.className = 'imagePreview';-->
-
-<!--            const img = document.createElement('img');-->
-<!--            img.src = URL.createObjectURL(file);-->
-<!--            img.style.maxWidth = '200px';-->
-<!--            img.style.maxHeight = '200px';-->
-
-<!--            const deleteButton = document.createElement('button');-->
-<!--            deleteButton.innerHTML = 'x';-->
-<!--            deleteButton.className = 'deleteButton';-->
-<!--            deleteButton.addEventListener('click', () => {-->
-<!--                imageContainer.removeChild(imagePreview);-->
-<!--            });-->
-
-<!--            imagePreview.appendChild(img);-->
-<!--            imagePreview.appendChild(deleteButton);-->
-
-<!--            imageContainer.appendChild(imagePreview);-->
-<!--        }-->
-<!--    });-->
-<!--</script>-->
-<!--<script>-->
-<!--    $(document).ready(function () {-->
-<!--        $('.js-example-tags').select2({-->
-<!--            tags: false-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-<!--<script>-->
-<!--    // Lấy tham chiếu đến thông báo Bootstrap-->
-<!--    var myAlert = document.getElementById("myAlert");-->
-
-<!--    // Tự đóng thông báo sau 5 giây-->
-<!--    setTimeout(function () {-->
-<!--        myAlert.style.display = "none";-->
-<!--    }, 5000); // 5000 ms = 5 giây-->
-<!--</script>-->
-<!--<script type="text/javascript">-->
-<!--    $(document).ready(function () {-->
-<!--        $(".delete-link").on("click", function (event) {-->
-<!--            event.preventDefault();-->
-<!--            var deleteLink = $(this).attr("href");-->
-
-<!--            Swal.fire({-->
-<!--                title: "Xác nhận",-->
-<!--                text: "Bạn đã chắc chắn chưa, không hối hận chứ ?",-->
-<!--                icon: "warning",-->
-<!--                showCancelButton: true,-->
-<!--                confirmButtonText: "Chắc chắn",-->
-<!--                cancelButtonText: "À mà thôi",-->
-<!--            }).then((result) => {-->
-<!--                if (result.value) {-->
-<!--                    // Nếu người dùng xác nhận, chuyển hướng đến URL xóa-->
-<!--                    window.location.href = deleteLink;-->
-<!--                }-->
-<!--            });-->
-<!--        });-->
-<!--    });-->
-<!--</script>-->
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script>
+
+    const form = document.getElementById('form');
+    const username = document.getElementById('username');
+    const cccd = document.getElementById('cccd');
+    const sdt = document.getElementById('sdt');
+    const email = document.getElementById('email');
+    const duong = document.getElementById('duong');
+
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        validateInputs();
+    });
+
+    const setError = (element, message) => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+
+        errorDisplay.innerText = message;
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success')
+    }
+
+    const setSuccess = element => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+
+        errorDisplay.innerText = '';
+        inputControl.classList.add('success');
+        inputControl.classList.remove('error');
+    };
+
+
+    const isValidEmail = email => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+
+    const validateInputs = () => {
+        const usernameValue = username.value.trim();
+        const cccdValue = cccd.value.trim();
+        const sdtValue = sdt.value.trim();
+        const emailValue = email.value.trim();
+        const duongValue = duong.value.trim();
+
+
+        if (usernameValue === '') {
+            setError(username, 'Tên không được để trống');
+        } else {
+            setSuccess(username);
+        }
+
+
+        if (cccdValue === '') {
+            setError(cccd, 'CCCD không được để trống');
+        } else {
+            setSuccess(cccd);
+        }
+
+
+        if (sdtValue === '') {
+            setError(sdt, 'SDT không được để trống');
+        } else {
+            setSuccess(sdt);
+        }
+
+
+        if (emailValue === '') {
+            setError(email, 'Email không được để trống');
+        }else if(!isValidEmail(emailValue)){
+            setError(email, 'Email không đúng định dạng');
+        } else {
+            setSuccess(email);
+        }
+
+
+        if (duongValue === '') {
+            setError(duong, 'Địa chỉ cụ thể không được để trống');
+        } else {
+            setSuccess(duong);
+        }
+
+        if (usernameValue !== '' && cccdValue !== '' && sdtValue !== '' && emailValue !== '' && duongValue !== '' && isValidEmail(emailValue) ) {
+            form.submit();
+        }
+
+
+
+
+
+
+
+    };
+
+
+
+
+
+
+
+
+
+
+
+
     var citis = document.getElementById("city");
     var districts = document.getElementById("district");
     var wards = document.getElementById("ward");
@@ -543,6 +399,9 @@
         };
     }
 </script>
+
+
+
 
 
 </body>

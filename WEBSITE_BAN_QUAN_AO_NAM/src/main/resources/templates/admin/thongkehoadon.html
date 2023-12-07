@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body onload="time()" class="app sidebar-mini rtl">
 <div th:replace="~{layout/navbar :: navbar}"></div>
@@ -37,14 +37,41 @@
                         <li class="nav-item">
                             <a class="nav-link" href="thongkedoanhthu">Thống kê doanh thu theo ngày</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>
-                        </li>
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>-->
+<!--                        </li>-->
 
                     </ul>
 
+
+
+                    <div class="row" style="margin-top: 20px">
+
+
+                        <div class="panel panel-default col-sm-3" style="margin-left: 80px">
+                            <div class="panel-heading">Doanh thu tháng này</div>
+                            <div class="panel-body" th:text="${doanhthuthangnay} +' '+ 'VND'"></div>
+                        </div>
+
+
+
+                        <div class="panel panel-default col-sm-3" style="margin-left: 55px">
+                            <div class="panel-heading">Doanh thu hôm nay</div>
+                            <div class="panel-body" th:text="${doanhthungayhomnay} +' '+ 'VND'" ></div>
+                        </div>
+
+
+
+
+                        <div class="panel panel-default col-sm-3" style="margin-left: 55px">
+                            <div class="panel-heading">Số sản phẩm đã bán được tháng này</div>
+                            <div class="panel-body" th:text="${sosanphamdabanduocthangnay}"></div>
+                        </div>
+                    </div>
+
+
                     <div class="row" style="margin-top: 30px">
-                       <h5> Top sản phẩm bán chạy</h5>
+                       <h3> Top sản phẩm bán chạy</h3>
 
 
                         <table class="table table-hover table-bordered" id="sampleTable">
@@ -53,28 +80,30 @@
                                 <th>STT</th>
                                 <th>Ảnh</th>
                                 <th>Tên sản phẩm</th>
-                                <th>Giá ánb </th>
+                                <th>Giá bán </th>
                                 <th>Số lượng bán</th>
-                                <th>Giới tính</th>
-                                <th>Trạng thái</th>
-                                <th>Chức năng</th>
+                                <th>Doanh thu</th>
+<!--                                <th>Trạng thái</th>-->
+<!--                                <th>Chức năng</th>-->
                             </tr>
                             </thead>
                             <tbody>
-<!--                            <tr th:each="x,arr : ${listKH}">-->
-<!--                                <td th:text="${arr.index + 1}"></td>-->
-<!--                                <td th:text="${x.Id}"></td>-->
-<!--                                <td><img th:src="@{${x.avatar}}" alt="ảnh san pham" width="100px;"></td>-->
+                            <tr th:each="x,arr : ${sanphambanchay}">
+                                <td th:text="${arr.index + 1}"></td>
+                                <td><img th:src="@{${x.url}}" alt="ảnh san pham" width="100px;"></td>
+                                <td th:text="${x.productName}"></td>
+                                <td th:text="${x.price}"></td>
+                                <td th:text="${x.quantity}"></td>
+                                <td th:text="${x.pricec}"></td>
 
-<!--                                <td th:text="${x.name}"></td>-->
 
-<!--                                <td th:text="${x.email}"></td>-->
+                                <!--                                <td th:text="${x.email}"></td>-->
 <!--                                <td th:text="${x.phoneNumber}"></td>-->
 <!--                                <td th:text="${x.gender} == true?'Nam':'Nữ'"></td>-->
 <!--                                <td th:text="${x.status} == 'onKH'?'Hoạt động':'Không hoạt động'"></td>-->
 
-<!--                              -->
-<!--                            </tr>-->
+
+                            </tr>
                             </tbody>
                         </table>
 

@@ -33,14 +33,15 @@
 
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
-                            <a class="nav-link " href="thongkehoadon" >Thống kê hóa đơn</a>
+                            <a class="nav-link " href="thongkehoadon">Thống kê hóa đơn</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="thongkedoanhthu" style="color: #0b93ff">Thống kê doanh thu theo ngày</a>
+                            <a class="nav-link active" href="thongkedoanhthu" style="color: #0b93ff">Thống kê doanh thu
+                                theo ngày</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>
-                        </li>
+                        <!--                        <li class="nav-item">-->
+                        <!--                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>-->
+                        <!--                        </li>-->
 
                     </ul>
 
@@ -50,20 +51,89 @@
         </div>
 
 
-<!--        <ul class="nav nav-tabs">-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link " href="thongkehoadon">Thống kê hóa đơn</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link active" href="thongkedoanhthu" style="color: #0b93ff">Thống kê doanh thu theo ngày</a>-->
-<!--            </li>-->
-<!--            <li class="nav-item">-->
-<!--                <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>-->
-<!--            </li>-->
 
-<!--        </ul>-->
+
+
+            <div id="container"
+                 style="width: 100%; height: 400px; margin: 0 auto"></div>
+
+        <script
+                src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script
+                src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script th:inline="javascript">
+            $(function(){
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Biểu đồ thống kê'
+                    },
+                    // subtitle: {
+                    //     text: 'Details'
+                    // },
+                    xAxis: {
+                        categories: [[${keySet}]],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        max:100,
+                        title: {
+                            text: 'Doanh thu'
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.1f} VND</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Doanh thu',
+                        data: [[${values}]]
+                    }]
+                });
+            });
+        </script>
+
+
+        <!--        <ul class="nav nav-tabs">-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link " href="thongkehoadon">Thống kê hóa đơn</a>-->
+        <!--            </li>-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link active" href="thongkedoanhthu" style="color: #0b93ff">Thống kê doanh thu theo ngày</a>-->
+        <!--            </li>-->
+        <!--            <li class="nav-item">-->
+        <!--                <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>-->
+        <!--            </li>-->
+
+        <!--        </ul>-->
     </div>
+
+
+
+
+
+
+
+
 </main>
+
+
 
 
 <script src="/assets/js/jquery-3.2.1.min.js"></script>

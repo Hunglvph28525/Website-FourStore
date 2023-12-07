@@ -84,6 +84,9 @@ public class User implements UserDetails {
     @Column(name = "status", columnDefinition = ("nvarchar(255)"))
     private String status;
 
+    @Column(name = "cccd",columnDefinition = ("nvarchar(255)"))
+    private String cccd;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles;

@@ -34,6 +34,7 @@ public class UserRequest {
     private String password;
     private String avatar;
     private  String status;
+    private  String cccd;
     private List<Role> roles;
 
 
@@ -55,6 +56,7 @@ public class UserRequest {
                 .phoneNumber(this.phoneNumber)
                 .email(this.email)
                 .avatar(this.avatar)
+                .cccd(this.cccd)
                 .status(this.status)
                 .build();
         return user;
