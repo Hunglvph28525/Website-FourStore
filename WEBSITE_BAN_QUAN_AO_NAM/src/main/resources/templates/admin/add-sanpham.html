@@ -22,9 +22,24 @@
 
     <link rel="stylesheet" href="/assets/vendor/select2/select2.css">
     <link rel="stylesheet" href="/assets/vendor/select2/select2.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+          integrity="sha256-DLf8ZSo7bnFv08uyFqnL+s5z5e72L6W6/4pPexCqHcA=" crossorigin="anonymous"/>
 
 
     <style>
+
+        #loading-icon {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        .hidden {
+            display: none;
+        }
 
         #imageContainer {
             display: flex;
@@ -93,7 +108,17 @@
         .select2-container .select2-selection__choice__remove {
             color: #fff;
         }
-
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background-color: #e3e3e3;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            cursor: default;
+            color: #0a0a0a;
+            float: left;
+            margin-right: 5px;
+            margin-top: 5px;
+            padding: 0 5px;
+        }
     </style>
 
 </head>
@@ -162,17 +187,18 @@
                         <label class="control-label">Chất liệu<sup style="color: red">(*)</sup></label>
                         <input class="form-control" type="text" required th:field="*{fabric}">
                     </div>
-                    <div class="form-group col-md-3">
-                        <label class="control-label">Hướng dẫn giặt<sup style="color: red">(*)</sup></label>
-                        <input class="form-control" type="text" required th:field="*{manual}">
-                    </div>
-                    <div class="form-group col-md-3 ">
-                        <label for="exampleSelect1" class="control-label">Thương hiệu<sup style="color: red">(*)</sup></label>
+<!--                    <div class="form-group col-md-3">-->
+<!--                        <label class="control-label">Hướng dẫn giặt<sup style="color: red">(*)</sup></label>-->
+<!--                        <input class="form-control" type="text" required th:field="*{manual}">-->
+<!--                    </div>-->
+                    <div class="form-group col-md-4 ">
+                        <label for="exampleSelect1" class="control-label">Thương hiệu<sup
+                                style="color: red">(*)</sup></label>
                         <select class="form-control" id="exampleSelect1" th:field="*{brand}" required>
                             <option th:each="x : ${brands}" th:value="${x.id}" th:text="${x.name}"></option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Màu sắc<sup style="color: red">(*)</sup></label>
                         <select class="js-example-tags form-control" multiple data-live-search="false" required
                                 th:field="*{colors}">
@@ -180,7 +206,7 @@
                                     th:text="${x.name}"></option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-4">
                         <label class="control-label">Kích cỡ<sup style="color: red">(*)</sup></label>
                         <select class="js-example-tags form-control" multiple data-live-search="false" required
                                 th:field="*{sizes}">
@@ -269,7 +295,7 @@ MODAL DANH MỤC
                 <h5>Thêm mới thương hiệu </h5>
               </span>
                 </div>
-                <form action="/admin/product/add-brand"  method="post">
+                <form action="/admin/product/add-brand" method="post">
                     <div class="form-group col-lg-12">
                         <label class="control-label">Nhập tên thương hiệu mới</label>
                         <input class="form-control" name="name" type="text" required>
@@ -396,7 +422,9 @@ MODAL
         </div>
     </div>
 </div>
-
+<div id="loading-icon" class="hidden">
+    <i class="fas fa-spinner fa-spin"></i>
+</div>
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="/assets/js/popper.min.js"></script>
@@ -557,6 +585,22 @@ MODAL
                 }
             });
         });
+    });
+</script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+
+<!-- JavaScript để điều khiển hiển thị biểu tượng loading -->
+<script>
+    $(document).ajaxStart(function () {
+        // Khi bắt đầu gửi yêu cầu Ajax, hiển thị biểu tượng loading
+        $('#loading-icon').removeClass('hidden');
+    });
+
+    $(document).ajaxStop(function () {
+        // Khi tất cả yêu cầu Ajax kết thúc, ẩn biểu tượng loading
+        $('#loading-icon').addClass('hidden');
     });
 </script>
 <!-- Include SweetAlert2 -->

@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <!--CDN BOOTRAP-->
+    <script src="https://cdn.rawgit.com/serratus/quaggaJS/0.12.1/dist/quagga.min.js"></script>
+
     <style>
         .nav-tabs .nav-item {
             position: relative;
@@ -226,7 +228,8 @@
                                         data-toggle="modal" th:data-target="${'#modal' + tab.codeBill}">Thêm sản phẩm
                                 </button>
                                 <button class="btn btn-warning"
-                                        style="float: right; margin-right: 30px; margin-bottom: 30px">QR code
+                                        style="float: right; margin-right: 30px; margin-bottom: 30px"
+                                        data-toggle="modal" th:data-target="${'#qrcode' + tab.codeBill}">Quét QR
                                 </button>
                             </div>
                             <div class="table-responsive" style="text-align: center">
@@ -313,14 +316,69 @@
                                 <div class="row py-2 d-flex" style="min-height: 500px">
                                     <!-- Ô thông tin khách hàng -->
                                     <div class="col-md-6">
-                                        <form>
-                                            <div class="col">
-                                                <h5 class="mb-3">Thông tin khách hàng</h5>
-                                                <p class="mt-3">Khách hàng : <strong th:text="${tab.customer}"></strong>
+                                        <div class="col">
+                                            <h5 class="mb-3">Thông tin khách hàng</h5>
+                                            <div>
+                                                <p class="mt-3">Khách hàng : <strong
+                                                        th:text="${tab.customer}"></strong></p>
+                                                <p>Số điện thoại nhận hàng : <strong
+                                                        th:text="${tab.sdt}"></strong></p>
+                                                <p>Giao hàng tới : <strong
+                                                        th:text="${tab.address}"></strong> <button th:if="${tab.shipping}" class="btn btn-link"
+                                                        th:attr="onclick='giaoHangEdit( \'' + ${tab.codeBill} + '\')'">sửa</button>
                                                 </p>
-                                                <!-- Các thông tin khác của khách hàng -->
                                             </div>
-                                        </form>
+                                            <div th:id="'diachi'+${tab.codeBill}" style="display: none">
+                                                <form th:action="@{'/admin/sale/addShipping/'+${tab.codeBill}}"
+                                                      method="post">
+                                                    <div class="form-group col-md-12">
+                                                        <label class="control-label">Tên người nhận</label>
+                                                        <input type="text" class="form-control" readonly
+                                                               th:value="${tab.customer}" name="name">
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label class="control-label">Số điện thoại</label>
+                                                        <input type="text" class="form-control"
+                                                               th:value="${tab.user.phoneNumber}" name="sdt">
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label class="control-label">Tỉnh/Thành phố <label
+                                                                style="color:red;">*</label></label>
+                                                        <select class="form-control" th:id="${'city' + i.index}"
+                                                                name="city"
+                                                                aria-label=".form-select-sm">
+                                                            <option value="Name" selected>Chọn tỉnh thành</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group col-md-12">
+                                                        <label class="control-label">Quận/Huyện <label
+                                                                style="color:red;">*</label></label>
+                                                        <select class="form-control"
+                                                                th:id="${'district' + i.index}" name="district"
+                                                                aria-label=".form-select-sm">
+                                                            <option value="" selected>Chọn quận huyện</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group col-md-12">
+                                                        <label class="control-label">Phường/Xã <label
+                                                                style="color:red;">*</label> </label>
+                                                        <select class="form-control" th:id="${'ward' + i.index}"
+                                                                name="ward"
+                                                                aria-label=".form-select-sm">
+                                                            <option value="" selected>Chọn phường xã</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-12">
+                                                        <label class="control-label">Địa chỉ cụ thể </label>
+                                                        <input type="text" class="form-control" name="diachi">
+                                                    </div>
+                                                    <button class="btn btn-save" type="submit">Xác nhận</button>
+                                                    <a class="btn btn-cancel" th:href="@{'/admin/sale/'+${tab.codeBill}+'/huy'}">Hủy giao hàng</a>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <!-- Ô thông tin thanh toán -->
@@ -329,7 +387,9 @@
                                         <div class="d-flex mt-3">
                                             <div class="checkbox_item citem_2">
                                                 <label class="checkbox_wrap">
-                                                    <input type="checkbox" name="checkbox" class="checkbox_inp">
+                                                    <input type="checkbox" name="checkbox" class="checkbox_inp"
+                                                           value="true" th:checked="${tab.shipping}"
+                                                           th:attr="onclick='giaoHang(this, \'' + ${tab.codeBill} + '\')'">
                                                     <span class="checkbox_mark"></span>
                                                 </label>
                                             </div>
@@ -472,6 +532,25 @@
                                                 </tr>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade"
+                                 th:id="'qrcode'+${tab.codeBill}"
+                                 tabindex="-1"
+                                 role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle"
+                                 data-backdrop="static"
+                                 data-keyboard="false">
+                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <h5 class="py-3" align="center">Quét mã QR</h5>
+                                        <div class="modal-body">
+
                                         </div>
                                         <div class="modal-footer">
                                             <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
@@ -657,6 +736,28 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">QR Code Scanner</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Video container -->
+                <video id="qr-video" width="100%" height="100%"></video>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -881,6 +982,79 @@
         }
         console.log(tienphaitra);
     }
+
+    function giaoHang(e, codeBill) {
+        if (e.checked) {
+            document.getElementById('diachi' + codeBill).style.display = 'block';
+        } else {
+            document.getElementById('diachi' + codeBill).style.display = 'none';
+
+        }
+    }
+
+    function giaoHangEdit(codeBill) {
+        document.getElementById('diachi' + codeBill).style.display = 'block';
+    }
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+
+    var formsCount = 5; // Số lượng form/tab
+
+    for (var i = 0; i < formsCount; i++) {
+        // Thực hiện tất cả các xử lý JavaScript trong một vòng lặp
+        (function (formIndex) {
+            var city = document.getElementById("city" + formIndex);
+            var district = document.getElementById("district" + formIndex);
+            var ward = document.getElementById("ward" + formIndex);
+
+            var Parameter = {
+                url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+                method: "GET",
+                responseType: "application/json",
+            };
+
+            var promise = axios(Parameter);
+
+            promise.then(function (result) {
+                renderCity(result.data, formIndex);
+            });
+
+            function renderCity(data, index) {
+                for (const x of data) {
+                    city.options[city.options.length] = new Option(x.Name, x.Name);
+                }
+                city.onchange = function () {
+                    district.length = 1;
+                    ward.length = 1;
+                    if (this.value !== "") {
+                        const result = data.filter(n => n.Name === this.value);
+
+                        for (const k of result[0].Districts) {
+                            district.options[district.options.length] = new Option(k.Name, k.Name);
+                        }
+                    }
+                };
+                district.onchange = function () {
+                    ward.length = 1;
+                    const dataCity = data.filter((n) => n.Name === city.value);
+                    if (this.value !== "") {
+                        const dataWards = dataCity[0].Districts.filter(n => n.Name === this.value)[0].Wards;
+
+                        for (const w of dataWards) {
+                            ward.options[ward.options.length] = new Option(w.Name, w.Name);
+                        }
+                    }
+                };
+            }
+        })(i);
+    }
+
+    /*]]>*/
+</script>
+<script>
 
 </script>
 

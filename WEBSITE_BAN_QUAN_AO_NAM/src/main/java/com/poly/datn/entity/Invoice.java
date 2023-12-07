@@ -61,6 +61,9 @@ public class Invoice {
     @Column(name = "shipping_cost")// (Phí vận chuyển)
     private BigDecimal shippingCost;
 
+    @Column(name = "shipping")// (giao hay không giao)
+    private Boolean shipping;
+
     @Column(name = "total") // tổng tiền sản phẩm
     private BigDecimal total;
 

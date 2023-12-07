@@ -11,11 +11,8 @@ import com.poly.datn.service.UserService;
 import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -43,6 +40,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     private PaymentMethodRepository paymentMethodRepository;
+
+    @Autowired
+    private ShippingAddressRepository shippingAddressRepository;
 
     @Autowired
     private UserService userService;
@@ -103,6 +103,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                     .shippingCost(BigDecimal.valueOf(0))
                     .giaGiam(BigDecimal.valueOf(0))
                     .grandTotal(BigDecimal.valueOf(0))
+                    .shipping(false)
                     .tienThoi(BigDecimal.ZERO)
                     .userPay(BigDecimal.ZERO)
                     .build();
@@ -152,6 +153,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setPromotion(null);
         invoice.setGiaGiam(BigDecimal.ZERO);
         invoice.setGrandTotal(total);
+        invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
         repository.save(invoice);
         return new MessageUtil(1, "Thêm thành công", "bg-success");
     }
@@ -176,6 +178,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setPromotion(null);
         invoice.setGiaGiam(BigDecimal.ZERO);
         invoice.setGrandTotal(total);
+        invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
         repository.save(invoice);
 
         return new MessageUtil(1, "Xóa thành công", "bg-success");
@@ -199,8 +202,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         BigDecimal total = list.stream().map(x -> x.getPrice().multiply(BigDecimal.valueOf(x.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add);
         invoice.setTotal(total);
         invoice.setPromotion(null);
-        invoice.setGiaGiam(BigDecimal.ZERO);
+        invoice.setGiaGiam(invoice.getGiaGiam());
         invoice.setGrandTotal(total);
+        invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
         invoice = repository.save(invoice);
         Map<String, Integer> map = new HashMap<>();
         map.put("total", invoice.getTotal().intValue());
@@ -214,10 +218,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public MessageUtil addUser(String codeBill, Long user) {
         Invoice invoice = repository.getReferenceById(codeBill);
-        if (user != -1){
+        if (user != -1) {
             User user1 = userRepository.getReferenceById(user);
             invoice.setUser(user1);
-        }else {
+        } else {
             invoice.setUser(null);
         }
 
@@ -240,6 +244,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoice.setGrandTotal(invoice.getTotal().subtract(invoice.getGiaGiam()));
             invoice.setPromotion(promotion);
             promotion.setQuantity(promotion.getQuantity() - 1);
+            invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
             promotionRepository.save(promotion);
             repository.save(invoice);
             return new MessageUtil(1, "Áp dụng thành công", "bg-success");
@@ -256,6 +261,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoice.setGiaGiam(BigDecimal.ZERO);
             invoice.setGrandTotal(invoice.getTotal());
             promotion.setQuantity(promotion.getQuantity() + 1);
+            invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
             promotionRepository.save(promotion);
             repository.save(invoice);
         }
@@ -268,7 +274,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setPaymentMethod(paymentMethodRepository.getReferenceById(paymentMethod));
         if (tienKhachDua >= invoice.getGrandTotal().doubleValue()) {
             invoice.setPaymentDate(LocalDateTime.now());
-            invoice.setStatus("4");
+            if (invoice.getShipping()) {
+                invoice.setStatus("2");
+            } else {
+                invoice.setStatus("4");
+            }
             invoice.setPaymentInfo("Đơn hàng được thanh toán bằng Tiền mặt thành công !");
             invoice.setPaymentStatus("1");
             invoice.setUserPay(BigDecimal.valueOf(tienKhachDua));
@@ -299,7 +309,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         LocalDateTime datePay = LocalDateTime.parse(payDate, formatter);
         if (status.equals("00")) {
             invoice.setPaymentDate(datePay);
-            invoice.setStatus("4");
+            if (invoice.getShipping()) {
+                invoice.setStatus("2");
+            } else {
+                invoice.setStatus("4");
+            }
             invoice.setPaymentInfo(ghiChu + "thanh cong !");
             invoice.setPaymentStatus("1");
             invoice.setShippingDate(LocalDateTime.now());
@@ -326,6 +340,57 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setUser(user);
         repository.save(invoice);
         return MessageUtil.builder().message("Thêm khách hàng thành công !").status(1).type("bg-success").build();
+    }
+
+    @Override
+    public MessageUtil addShipping(String codeBill, String city, String district, String ward, String diaChi, String sdt, String name) {
+        Invoice invoice = repository.getReferenceById(codeBill);
+        BigDecimal shipCost = BigDecimal.ZERO;
+        if (city.equals("Thành phố Hà Nội")) {
+            shipCost = BigDecimal.valueOf(15000);
+        } else {
+            shipCost = BigDecimal.valueOf(25000);
+        }
+        ShippingAddress shippingAddress = new ShippingAddress();
+        invoice.setShipping(true);
+        if (invoice.getShippingAddress() == null) {
+            invoice.setSdtNhan(sdt);
+            invoice.setShippingAddress(ShippingAddress.builder()
+                    .province(city)
+                    .district(district)
+                    .ward(ward)
+                    .street(diaChi)
+                    .invoice(invoice)
+                    .build());
+            invoice.setShippingCost(shipCost);
+            invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
+        } else {
+            shippingAddress = invoice.getShippingAddress();
+            invoice.setGrandTotal(invoice.getGrandTotal().subtract(invoice.getShippingCost()));
+            invoice.setSdtNhan(sdt);
+            invoice.setShippingAddress(ShippingAddress.builder()
+                    .province(city)
+                    .district(district)
+                    .ward(ward)
+                    .street(diaChi)
+                    .invoice(invoice)
+                    .build());
+            invoice.setShippingCost(shipCost);
+            invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
+        }
+        repository.save(invoice);
+        shippingAddressRepository.delete(shippingAddress);
+        return MessageUtil.builder().message("Cập nhật địa chỉ giao hàng thành công !").status(1).type("bg-success").build();
+    }
+
+    @Override
+    public MessageUtil huyGh(String codeBill) {
+        Invoice invoice = repository.getReferenceById(codeBill);
+        invoice.setShipping(false);
+        invoice.setGrandTotal(invoice.getGrandTotal().subtract(invoice.getShippingCost()));
+        invoice.setShippingCost(BigDecimal.ZERO);
+        repository.save(invoice);
+        return MessageUtil.builder().message("Hủy giao hàng thành công !").status(1).type("bg-success").build();
     }
 
     private String generateCodeBill(int x) {

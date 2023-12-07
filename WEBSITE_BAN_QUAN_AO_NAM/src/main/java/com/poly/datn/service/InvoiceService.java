@@ -39,4 +39,8 @@ public interface InvoiceService {
     MessageUtil resposePayment(String codeBill, String ghiChu, String payDate, String status);
 
     MessageUtil newUser(User user, String codeBill);
+
+    MessageUtil addShipping(String codeBill, String city, String district, String ward, String diaChi, String sdt, String name);
+
+    MessageUtil huyGh(String codeBill);
 }

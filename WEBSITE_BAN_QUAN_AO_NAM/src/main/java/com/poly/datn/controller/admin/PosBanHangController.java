@@ -120,6 +120,28 @@ public class PosBanHangController {
         return "redirect:/admin/sale";
     }
 
+    @PostMapping("/sale/addShipping/{codeBill}")
+    public String addShipping(@PathVariable("codeBill") String codeBill,
+                              @RequestParam("name") String name,
+                              @RequestParam("sdt") String sdt,
+                              @RequestParam("city") String city,
+                              @RequestParam("district") String district,
+                              @RequestParam("ward") String ward,
+                              @RequestParam("diachi") String diaChi,
+                              RedirectAttributes attributes) {
+
+        MessageUtil message = invoiceService.addShipping(codeBill, city, district, ward, diaChi, sdt, name);
+        attributes.addFlashAttribute("message", message);
+        return "redirect:/admin/sale";
+    }
+
+    @GetMapping("/sale/{codeBill}/huy")
+    public String huyGH(@PathVariable("codeBill") String codeBill,RedirectAttributes attributes) {
+        MessageUtil message = invoiceService.huyGh(codeBill);
+        attributes.addFlashAttribute("message", message);
+        return "redirect:/admin/sale";
+    }
+
     @ModelAttribute("addUser")
     public Object initAddUser() {
         return new User();

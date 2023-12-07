@@ -102,11 +102,14 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <button class="btn btn-save ml-3">Cập nhật</button>
+                        <button class="btn btn-save ml-3" th:if="${detail.status == '0' || detail.status == '1' ||detail.status == '2' || detail.status == '3' }">Cập nhật</button>
+
                         <!--                    modal input ghi chú-->
-                        <button class="btn btn-cancel ml-3">Hủy</button>
+                        <button class="btn btn-cancel ml-3" th:if="${detail.paymentStatus == '0' && detail.status == '0' || detail.paymentStatus == '0' && detail.status == '1' || detail.paymentStatus == '0' && detail.status == '2' || detail.paymentStatus == '0' && detail.status == '3' }">Hủy</button>
+
                         <!--                   info moldal thông tin-->
-                        <button class="btn btn-info" style="float: right; margin-right: 30px">Chi tiết</button>
+                        <button class="btn btn-info" style="margin-left: 70%">Chi tiết</button>
+
                     </div>
                 </div>
             </div>
@@ -150,7 +153,7 @@
 
                         </div>
                         <div class="col">
-                            <p th:text="${'Trạng thái : '+ detail.paymentStatus}"></p>
+                            <p th:text="${'Trạng thái : '+ (detail.paymentStatus == '1' ? 'Đã thanh toán' : 'Chưa thanh toán')}"></p>
                         </div>
                     </div>
                 </div>
