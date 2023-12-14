@@ -23,7 +23,7 @@
 <div th:replace="~{layout/navbar :: navbar}"></div>
 <main class="app-content">
 
-    <div class="container">
+    <div class="container-fluid">
 
         <div class="row">
             <div class="col-md-12">
@@ -48,24 +48,29 @@
                     <div class="row" style="margin-top: 20px">
 
 
-                        <div class="panel panel-default col-sm-3" style="margin-left: 80px">
-                            <div class="panel-heading">Doanh thu tháng này</div>
-                            <div class="panel-body" th:text="${doanhthuthangnay} +' '+ 'VND'"></div>
+                        <div class="panel panel-default " style="margin-left: 25px;width: 300px" >
+                            <div class="panel-heading">Tổng đơn hàng</div>
+                            <div class="panel-body" th:text="${tonghoadon}"></div>
                         </div>
 
 
 
-                        <div class="panel panel-default col-sm-3" style="margin-left: 55px">
-                            <div class="panel-heading">Doanh thu hôm nay</div>
-                            <div class="panel-body" th:text="${doanhthungayhomnay} +' '+ 'VND'" ></div>
+                        <div class="panel panel-default " style="margin-left: 25px;width: 300px">
+                            <div class="panel-heading">Đơn hàng hoàn thành</div>
+                            <div class="panel-body" th:text="${donhanghoanthanh}"  ></div>
                         </div>
 
 
 
 
-                        <div class="panel panel-default col-sm-3" style="margin-left: 55px">
-                            <div class="panel-heading">Số sản phẩm đã bán được tháng này</div>
-                            <div class="panel-body" th:text="${sosanphamdabanduocthangnay}"></div>
+                        <div class="panel panel-default " style="margin-left: 25px;width: 300px;">
+                            <div class="panel-heading">Đơn hàng đang giao</div>
+                            <div class="panel-body" th:text="${donhangdanggiao}"></div>
+                        </div>
+
+                        <div class="panel panel-default "style="margin-left: 25px;width: 300px;" >
+                            <div class="panel-heading">Đơn hàng đã hủy</div>
+                            <div class="panel-body" th:text="${donhangdahuy}"></div>
                         </div>
                     </div>
 

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -60,12 +61,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     List<ListThongK> getSanPhamBanChay();
 
 
-//    @Query(value = "select top(10) product_name, invoiceDetails.price \n" +
-//            "from\n" +
-//            "products join productDetails on products.Id = productDetails.Id_product\n" +
-//            "join invoiceDetails on productDetails.Id = invoiceDetails.product_id\n" +
-//            "join images on products.Id = images.Id_product", nativeQuery = true)
-//    List<ListThongK> getSanPhamBanChay();
+
 
 
     @Query(value = "select create_date, sum(invoiceDetails.quantity *invoiceDetails.price) 'price'\n" +
@@ -103,4 +99,51 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     List<BieuDoCot> getBieuDoCot();
 
     Long countAllByStatus(String status);
+
+
+
+
+
+    @Query(value = "\n" +
+            "select create_date 'createDate',sum(quantity * price) 'price'\n" +
+            "            from invoices\n" +
+            "            join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
+            "            where create_date  BETWEEN :ngay1 and :ngay2\n" +
+            "\t\t\tgroup by create_date", nativeQuery = true )
+    List<BieuDoCot> getTimKiemBieuDoCot(LocalDateTime ngay1, LocalDateTime ngay2);
+
+    //tổng hóa đơn
+    @Query(value = "select count(code_bill) from invoices",nativeQuery = true)
+    Integer getTongHoaDon();
+
+    //đơn hàng hoàn thành
+    @Query(value = "select count(code_bill) from invoices\n" +
+            "where status = '4'",nativeQuery = true)
+    Integer getDonHangHoanThanh();
+
+    //đơn hàng đang giao
+    @Query(value = "select count(code_bill) from invoices\n" +
+            "where status = '3'",nativeQuery = true)
+    Integer getDonHangDangGiao();
+
+    //đơn hàng đã hủy
+    @Query(value = "select count(code_bill) from invoices\n" +
+            "where status = '-1'",nativeQuery = true)
+    Integer getDonHangDaHuy();
+
+
+    //doanh thu năm nay
+    @Query(value = "select sum (quantity * price)\n" +
+            "            from invoices\n" +
+            "           join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
+            "            where year(create_date) = year(GETDATE())\n" +
+            "  ", nativeQuery = true)
+    Double getDoanhThuNamNay();
+
+
+    //tổng doanh thu
+    @Query(value = " select sum (quantity * price)\n" +
+            "            from invoices\n" +
+            "           join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id", nativeQuery = true)
+    Double getTongDoanhThu();
 }
