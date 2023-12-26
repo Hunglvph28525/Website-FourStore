@@ -1,15 +1,13 @@
 package com.poly.datn.repository;
 
-import com.poly.datn.dto.InvoiceDto;
-import com.poly.datn.dto.BieuDoCot;
-import com.poly.datn.dto.ListThongK;
-import com.poly.datn.dto.ThongKeDto;
+import com.poly.datn.dto.*;
 import com.poly.datn.entity.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 @Repository
@@ -58,10 +56,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
             "join images on products.Id = images.Id_product\n" +
             "group by product_name, url,invoiceDetails.price \n" +
             "order by quantity desc", nativeQuery = true)
-    List<ListThongK> getSanPhamBanChay();
-
-
-
+    List<ListSPBanChay> getSanPhamBanChay();
 
 
     @Query(value = "select create_date, sum(invoiceDetails.quantity *invoiceDetails.price) 'price'\n" +
@@ -72,17 +67,18 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     List<BieuDoCot> getDoanhThu();
 
 
+    //doanh thu tháng này
     @Query(value = "select sum (quantity * price)\n" +
             "from invoices\n" +
             "join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "where month(create_date) = MONTH(GETDATE())", nativeQuery = true)
+            "where month(create_date) = MONTH(GETDATE()) and invoices.status = '1' ", nativeQuery = true)
     Double getDoanhThuThangNay();
 
-
+//doanh thu hôm nay
     @Query(value = "select sum (quantity * price)\n" +
             "from invoices\n" +
             "join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "where day(create_date) = day(GETDATE())", nativeQuery = true)
+            "where day(create_date) = day(GETDATE()) and  invoices.status = '1'", nativeQuery = true)
     Double getDoanhThuHomNay();
 
     @Query(value = "\n" +
@@ -101,49 +97,122 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     Long countAllByStatus(String status);
 
 
-
-
-
+    //tìm kiếm doanh thu theo ngày
     @Query(value = "\n" +
-            "select create_date 'createDate',sum(quantity * price) 'price'\n" +
+            "select convert(date,create_date) 'createDate',sum(quantity * price) 'price'\n" +
             "            from invoices\n" +
             "            join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            where create_date  BETWEEN :ngay1 and :ngay2\n" +
-            "\t\t\tgroup by create_date", nativeQuery = true )
-    List<BieuDoCot> getTimKiemBieuDoCot(LocalDateTime ngay1, LocalDateTime ngay2);
+            "            where create_date  BETWEEN :ngay1 and :ngay2\n and  invoices.status = '1'" +
+            "\t\t\tgroup by create_date", nativeQuery = true)
+    List<BieuDoCot> getTimKiemBieuDoCot(Date ngay1, Date ngay2);
 
     //tổng hóa đơn
-    @Query(value = "select count(code_bill) from invoices",nativeQuery = true)
+    @Query(value = "select count(code_bill) from invoices", nativeQuery = true)
     Integer getTongHoaDon();
 
     //đơn hàng hoàn thành
     @Query(value = "select count(code_bill) from invoices\n" +
-            "where status = '4'",nativeQuery = true)
+            "where status = '4'", nativeQuery = true)
     Integer getDonHangHoanThanh();
 
     //đơn hàng đang giao
     @Query(value = "select count(code_bill) from invoices\n" +
-            "where status = '3'",nativeQuery = true)
+            "where status = '3'", nativeQuery = true)
     Integer getDonHangDangGiao();
 
     //đơn hàng đã hủy
     @Query(value = "select count(code_bill) from invoices\n" +
-            "where status = '-1'",nativeQuery = true)
+            "where status = '-1'", nativeQuery = true)
     Integer getDonHangDaHuy();
 
 
     //doanh thu năm nay
-    @Query(value = "select sum (quantity * price)\n" +
-            "            from invoices\n" +
-            "           join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            where year(create_date) = year(GETDATE())\n" +
+    @Query(value = " select sum (quantity * price)\n" +
+            "                      from invoices\n" +
+            "                      join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
+            "                       where year(create_date) = year(GETDATE()) and Invoices.status = '1'" +
             "  ", nativeQuery = true)
     Double getDoanhThuNamNay();
 
 
     //tổng doanh thu
     @Query(value = " select sum (quantity * price)\n" +
-            "            from invoices\n" +
-            "           join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id", nativeQuery = true)
+            "                        from invoices\n" +
+            "                      join invoicedetails on invoices.code_bill = invoicedetails.ivoice_id\n" +
+            "\t\t\t\t\t  where Invoices.status = '1'", nativeQuery = true)
     Double getTongDoanhThu();
+
+    //doanh thu 7 ngày trước
+    @Query(value = "SELECT CONVERT(date, create_date) 'createDate',sum (quantity * price) 'price'\n" +
+            "FROM InvoiceDetails join Invoices on InvoiceDetails.ivoice_id = Invoices.code_bill\n" +
+            "WHERE create_date >= DATEADD(day, -7, GETDATE())\n" +
+            "group by create_date", nativeQuery = true)
+    List<BieuDoCot> getDoanhThu7NgayTruoc();
+
+    //doanh thu 1 tháng trước
+    @Query(value = "SELECT CONVERT(date,create_date) 'createDate',sum (quantity * price) 'price'\n" +
+            "FROM InvoiceDetails join Invoices on InvoiceDetails.ivoice_id = Invoices.code_bill\n" +
+            "WHERE create_date >= DATEADD(month, -1, GETDATE())\n" +
+            "group by create_date", nativeQuery = true)
+    List<BieuDoCot> getDoanhThu1ThangTruoc();
+
+    //doanh thu 6 tháng trước
+    @Query(value = "SELECT month(create_date) 'createDate',sum (quantity * price) 'price'\n" +
+            "FROM InvoiceDetails join Invoices on InvoiceDetails.ivoice_id = Invoices.code_bill\n" +
+            "WHERE create_date >= DATEADD(month, -6, GETDATE())\n" +
+            "group by month(create_date)", nativeQuery = true)
+    List<BieuDoThongKeThang> getDoanhThu6ThangTruoc();
+
+    //sản phẩm bán chạy trong ngày gần nhât
+    @Query(value = "select top(10) product_name as 'productName',url ,sum(invoiceDetails.quantity) as 'quantity', invoiceDetails.price ,sum(invoiceDetails.quantity *invoiceDetails.price) 'pricec'\n" +
+            "            from\n" +
+            "            products join productDetails on products.Id = productDetails.Id_product\n" +
+            "            join invoiceDetails on productDetails.Id = invoiceDetails.product_id\n" +
+            "            join images on products.Id = images.Id_product\n" +
+            "\t\t\tjoin Invoices on Invoices.code_bill = InvoiceDetails.ivoice_id\n" +
+            "\t\t\twhere DATEDIFF(day, invoices.create_date, GETDATE()) <= 1\n" +
+            "            group by product_name, url,invoiceDetails.price \n" +
+            "            order by quantity desc", nativeQuery = true)
+    List<ListSPBanChay> getSPBanChayNgay();
+
+    //sản phẩm bán chạy trong tuần gần nhất
+    @Query(value = "select top(10) product_name as 'productName',url ,sum(invoiceDetails.quantity) as 'quantity', invoiceDetails.price ,sum(invoiceDetails.quantity *invoiceDetails.price) 'pricec'\n" +
+            "            from\n" +
+            "            products join productDetails on products.Id = productDetails.Id_product\n" +
+            "            join invoiceDetails on productDetails.Id = invoiceDetails.product_id\n" +
+            "            join images on products.Id = images.Id_product\n" +
+            "\t\t\tjoin Invoices on Invoices.code_bill = InvoiceDetails.ivoice_id\n" +
+            "\t\t\twhere DATEDIFF(week, invoices.create_date, GETDATE()) <= 1\n" +
+            "            group by product_name, url,invoiceDetails.price \n" +
+            "            order by quantity desc", nativeQuery = true)
+    List<ListSPBanChay> getSPBanChayTuan();
+
+    //sản phẩm bán chạy tháng
+    @Query(value = "select top(10) product_name as 'productName',url ,sum(invoiceDetails.quantity) as 'quantity', invoiceDetails.price ,sum(invoiceDetails.quantity *invoiceDetails.price) 'pricec'\n" +
+            "            from\n" +
+            "            products join productDetails on products.Id = productDetails.Id_product\n" +
+            "            join invoiceDetails on productDetails.Id = invoiceDetails.product_id\n" +
+            "            join images on products.Id = images.Id_product\n" +
+            "\t\t\tjoin Invoices on Invoices.code_bill = InvoiceDetails.ivoice_id\n" +
+            "\t\t\twhere DATEDIFF(month, invoices.create_date, GETDATE()) <= 1\n" +
+            "            group by product_name, url,invoiceDetails.price \n" +
+            "            order by quantity desc\n" +
+            "\t\t\t", nativeQuery = true)
+    List<ListSPBanChay> getSPBanChayThang();
+
+    //sản phẩm bán chạy năm
+    @Query(value = "select top(10) product_name as 'productName',url ,sum(invoiceDetails.quantity) as 'quantity', invoiceDetails.price ,sum(invoiceDetails.quantity *invoiceDetails.price) 'pricec'\n" +
+            "            from\n" +
+            "            products join productDetails on products.Id = productDetails.Id_product\n" +
+            "            join invoiceDetails on productDetails.Id = invoiceDetails.product_id\n" +
+            "            join images on products.Id = images.Id_product\n" +
+            "\t\t\tjoin Invoices on Invoices.code_bill = InvoiceDetails.ivoice_id\n" +
+            "\t\t\twhere DATEDIFF(year, invoices.create_date, GETDATE()) <= 1\n" +
+            "            group by product_name, url,invoiceDetails.price \n" +
+            "            order by quantity desc", nativeQuery = true)
+    List<ListSPBanChay> getSPBanChayNam();
+
+    //tổng hóa đơn
+    @Query(value = "select count(code_bill) from invoices ", nativeQuery = true)
+    Integer getHoaDon();
 }

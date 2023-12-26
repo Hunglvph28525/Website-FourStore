@@ -19,11 +19,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 
 
-
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>-->
-<!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>-->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>-->
+    <!--    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>-->
 
 
 </head>
@@ -112,19 +111,18 @@
                                    th:href="@{/admin/customer/view-update/{id}(id=${x.id})}"
                                    title="Sửa"><i class="fas fa-edit"></i></a>
 
-<!--                                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">-->
+                                <!--                                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal">-->
 
-<!--                                    <i class='far fa-envelope-open' style='font-size:24px'></i>-->
+                                <!--                                    <i class='far fa-envelope-open' style='font-size:24px'></i>-->
 
-<!--                                </a>-->
+                                <!--                                </a>-->
 
 
+                                <!--                                <a  th:href="@{|/admin/tk?cid=${x.id}|}"  data-toggle="modal" data-target="#myModal" >-->
 
-<!--                                <a  th:href="@{|/admin/tk?cid=${x.id}|}"  data-toggle="modal" data-target="#myModal" >-->
+                                <!--                                </a>-->
 
-<!--                                </a>-->
-
-                                <a class="btn btn-add btn-sm" th:href="@{/admin/tk/{id}(id=${x.id})}" ><i
+                                <a class="btn btn-add btn-sm" th:href="@{/admin/tk/{id}(id=${x.id})}"><i
                                         class="fas fa-folder-plus"></i></a>
 
 
@@ -150,7 +148,7 @@
                 </div>
 
                 <!-- Modal body -->
-                <div class="modal-body" th:each="p:${items}" >
+                <div class="modal-body" th:each="p:${items}">
                     Modal body..
 
                     <div class="panel-heading">
@@ -171,7 +169,7 @@
     </div>
 
 
-        <div class="text-center" style="font-size: 13px">
+    <div class="text-center" style="font-size: 13px">
         <p><b>Copyright
             <script type="text/javascript">
                 document.write(new Date().getFullYear());
@@ -179,8 +177,19 @@
             Phần mềm quản lý bán hàng | SD-66
         </b></p>
     </div>
+
+
 </main>
 
+<div th:if="${message.status != null}">
+    <div id="myAlert" class="alert alert-dismissible fade show position-fixed"
+         style="top: 120px; right: 30px;width: 400px; height: 50px" th:classappend="${message.type}">
+        <p th:text="${message.message}"></p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
 
 <!-- Essential javascripts for application to work-->
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
@@ -274,6 +283,16 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 

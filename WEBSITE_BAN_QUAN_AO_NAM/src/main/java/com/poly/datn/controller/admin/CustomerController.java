@@ -1,5 +1,6 @@
 package com.poly.datn.controller.admin;
 
+import com.poly.datn.dto.PromotionDto;
 import com.poly.datn.dto.UserRequest;
 import com.poly.datn.entity.Address;
 import com.poly.datn.entity.Product;
@@ -123,7 +124,10 @@ public class CustomerController {
         attributes.addFlashAttribute("message", message);
         return "redirect:/admin/customer";
 
+
     }
+
+
 
 
     @GetMapping("customer/view-update/{id}")
@@ -192,5 +196,8 @@ public class CustomerController {
 
     }
 
-
+    @ModelAttribute("message")
+    public Object initmesage() {
+        return new MessageUtil();
+    }
 }

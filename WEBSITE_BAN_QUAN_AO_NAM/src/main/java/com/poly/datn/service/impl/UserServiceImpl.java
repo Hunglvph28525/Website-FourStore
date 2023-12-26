@@ -187,7 +187,9 @@ public class UserServiceImpl implements UserService {
         address.setUser(u);
         address.setStatus("on");
         Address a = addressRepository.save(address);
-        return MessageUtil.builder().status(0).message("Thêm thành công !").type("bg-success").object(uer).build();
+        return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").build();
+//        return new MessageUtil(1, "Thêm thành công", "bg-success", uer);
+//        return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").object(uer).build();
 
 
     }

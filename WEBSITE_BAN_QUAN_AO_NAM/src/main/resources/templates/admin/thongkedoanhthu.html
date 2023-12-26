@@ -17,7 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
 </head>
 <body onload="time()" class="app sidebar-mini rtl">
 <div th:replace="~{layout/navbar :: navbar}"></div>
@@ -39,9 +39,9 @@
                             <a class="nav-link active" href="thongkedoanhthu" style="color: #0b93ff">Thống kê doanh thu
                                 theo ngày</a>
                         </li>
-                        <!--                        <li class="nav-item">-->
-                        <!--                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>-->
-                        <!--                        </li>-->
+                        <li class="nav-item">
+                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>
+                        </li>
 
                     </ul>
 
@@ -49,45 +49,106 @@
                     <div class="row" style="margin-top: 20px">
 
 
-                        <div class="panel panel-default " style="margin-left: 25px;width: 300px" >
-                            <div class="panel-heading">Doanh thu hôm nay</div>
-                            <div class="panel-body" th:text="${doanhthungayhomnay}"></div>
+                        <!--                        <div class="panel panel-default " style="margin-left: 25px;width: 300px" >-->
+                        <!--                            <div class="panel-heading">Doanh thu hôm nay</div>-->
+                        <!--                            <div class="panel-body" th:text="${doanhthungayhomnay} + ' ' +  'VND'"></div>-->
+                        <!--                        </div>-->
+
+                        <!--                        <div class="panel panel-default" style="margin-left: 25px;width: 300px;height: 150px;background-color: #00a9da">-->
+                        <!--                            <i style="color: #0a0a0a;font-size: 60px;" class="fa fa-bar-chart" aria-hidden="true"></i>-->
+                        <!--                            <div class="panel-heading" style="font-size: 20px;font-weight: bold;color: white;">-->
+                        <!--                                Doanh thu hôm nay</div>-->
+                        <!--                            <div class="panel-body" style="font-size: 20px;font-weight: bold;color: white;text-align: center" th:text="${doanhthungayhomnay} + ' ' +  'VND'"></div>-->
+                        <!--                        </div>-->
+
+                        <div style="margin-left: 35px;width: 300px;height: 150px;background-color: #00a9da">
+                            <div style="float: left;width: 100px;height:100% ">
+                                <i style="color: #0a0a0a;font-size: 80px;margin-left: 10px;margin-top: 30px " class="fa fa-bar-chart" aria-hidden="true"></i>
+                            </div>
+                            <div style="float: left;width: 200px;height:100%">
+                                <p style="font-size: 20px;font-weight: bold;color: white;text-align: center;margin-top: 30px">Doanh thu hôm nay</p>
+                                <div  style="font-size: 20px;font-weight: bold;color: white;text-align: center" th:text="${doanhthungayhomnay} + ' ' +  'VND'"></div>
+                            </div>
+
                         </div>
 
 
+<!--                        <div class="panel panel-default " style="margin-left: 25px;width: 300px">-->
+<!--                            <div class="panel-heading">Doanh thu tháng này</div>-->
+<!--                            <div class="panel-body" th:text="${doanhthuthangnay} + ' ' +  'VND'"></div>-->
 
-                        <div class="panel panel-default " style="margin-left: 25px;width: 300px">
-                            <div class="panel-heading">Doanh thu tháng này</div>
-                            <div class="panel-body" th:text="${doanhthuthangnay}"  ></div>
+<!--                        </div>-->
+
+                        <div style="margin-left: 25px;width: 300px;height: 150px;background-color:#ffdc3e ">
+                            <div style="float: left;width: 100px;height:100% ">
+                                <i style="color: #0a0a0a;font-size: 80px;margin-left: 10px;margin-top: 30px " class="fa fa-line-chart" aria-hidden="true"></i>
+                            </div>
+                            <div style="float: left;width: 200px;height:100%">
+                                <p style="font-size: 20px;font-weight: bold;color: white;text-align: center;margin-top: 30px">Doanh thu tháng này</p>
+                                <div  style="font-size: 20px;font-weight: bold;color: white;text-align: center" th:text="${doanhthuthangnay} + ' ' +  'VND'"></div>
+                            </div>
+
                         </div>
 
 
+<!--                        <div class="panel panel-default " style="margin-left: 25px;width: 300px;">-->
+<!--                            <div class="panel-heading">Doanh thu năm nay</div>-->
+<!--                            <div class="panel-body" th:text="${doanhthunamnay} + ' ' +  'VND'"></div>-->
+<!--                        </div>-->
 
+                        <div style="margin-left: 25px;width: 300px;height: 150px;background-color: #ffa2b3">
+                            <div style="float: left;width: 100px;height:100% ">
+                                <i style="color: #0a0a0a;font-size: 80px;margin-left: 10px;margin-top: 30px " class="fa fa-area-chart" aria-hidden="true"></i>
+                            </div>
+                            <div style="float: left;width: 200px;height:100%">
+                                <p style="font-size: 20px;font-weight: bold;color: white;text-align: center;margin-top: 30px">Doanh thu năm nay</p>
+                                <div  style="font-size: 20px;font-weight: bold;color: white;text-align: center" th:text="${doanhthunamnay} + ' ' +  'VND'"></div>
+                            </div>
 
-                        <div class="panel panel-default " style="margin-left: 25px;width: 300px;">
-                            <div class="panel-heading">Doanh thu năm nay</div>
-                            <div class="panel-body" th:text="${doanhthunamnay}"></div>
                         </div>
 
-                        <div class="panel panel-default "style="margin-left: 25px;width: 300px;" >
-                            <div class="panel-heading">Tổng doanh thu</div>
-                            <div class="panel-body" th:text="${tongdoanhthu}"></div>
+<!--                        <div class="panel panel-default " style="margin-left: 25px;width: 300px;">-->
+<!--                            <div class="panel-heading">Tổng doanh thu</div>-->
+<!--                            <div class="panel-body" th:text="${tongdoanhthu} + ' ' +  'VND'"></div>-->
+<!--                        </div>-->
+
+                        <div style="margin-left: 25px;width: 300px;height: 150px;background-color: #dabfff">
+                            <div style="float: left;width: 100px;height:100% ">
+                                <i style="color: #0a0a0a;font-size: 80px;margin-left: 10px;margin-top: 30px " class="fa fa-pie-chart" aria-hidden="true"></i>
+                            </div>
+                            <div style="float: left;width: 200px;height:100%">
+                                <p style="font-size: 20px;font-weight: bold;color: white;text-align: center;margin-top: 30px">Tổng doanh thu</p>
+                                <div  style="font-size: 20px;font-weight: bold;color: white;text-align: center" th:text="${tongdoanhthu} + ' ' +  'VND'"></div>
+                            </div>
+
                         </div>
                     </div>
 
 
+                    <div class="row">
+                        <label style="margin-left: 25px;font-weight: bold;margin-top: 20px">Chọn thời gian</label>
+                    </div>
 
-                        <form method="get">
-                            <div class="row" style="margin-top: 30px">
 
-                            <input class="form-control col-sm-3  " type="datetime-local" name="ngay1" style="margin-left: 10px">
+                    <form method="get">
+                        <div class="row" style="margin-top: 20px">
+                            <input class="form-control col-sm-3  " type="date" name="ngay1" style="margin-left: 25px">
 
-                            <input class="form-control col-sm-3  " type="datetime-local" name="ngay2" style="margin-left: 10px">
+                            <input class="form-control col-sm-3  " type="date" name="ngay2" style="margin-left: 10px">
 
                             <button type="submit" class="btn btn-add btn-sm" style="margin-left: 10px">Tìm kiếm</button>
-                            </div>
-                        </form>
+                        </div>
+                    </form>
 
+                    <!--                    <div class="row" style="margin-top: 30px">-->
+
+                    <!--                        <a href="/admin/doanhthu7ngay" class="btn btn-add btn-sm col-sm-3" style="margin-left: 10px;">7 ngày trước</a>-->
+
+
+                    <!--                        <a href="/admin/doanhthu1thang" class="btn btn-add btn-sm col-sm-3" style="margin-left: 10px;">1 tháng trước</a>-->
+
+                    <!--                        <a href="/admin/doanhthu6thang" class="btn btn-add btn-sm col-sm-3" style="margin-left: 10px;">6 tháng trước</a>-->
+                    <!--                    </div>-->
 
 
                 </div>
@@ -133,7 +194,7 @@
                         }
                     },
                     tooltip: {
-                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        headerFormat: '<span style="font-size:20px">{point.key}</span><table>',
                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
                             '<td style="padding:0"><b>{point.y:.1f} VND</b></td></tr>',
                         footerFormat: '</table>',

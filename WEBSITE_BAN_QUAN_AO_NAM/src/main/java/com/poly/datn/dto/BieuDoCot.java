@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 
 public interface BieuDoCot {
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
-    LocalDateTime getCreateDate();
+//    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    Date getCreateDate();
 
 
     Double getPrice();

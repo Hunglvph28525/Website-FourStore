@@ -37,9 +37,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="thongkedoanhthu">Thống kê doanh thu theo ngày</a>
                         </li>
-<!--                        <li class="nav-item">-->
-<!--                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>-->
-<!--                        </li>-->
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="thongkesanpham">Thống kê sản phẩm</a>
+                        </li>
 
                     </ul>
 
@@ -49,72 +50,33 @@
 
 
                         <div class="panel panel-default " style="margin-left: 25px;width: 300px" >
-                            <div class="panel-heading">Tổng đơn hàng</div>
-                            <div class="panel-body" th:text="${tonghoadon}"></div>
+                            <div class="panel-heading" style="color: #0000FF;font-size: 20px;font-weight: bold;">Tổng đơn hàng</div>
+                            <div class="panel-body" style="font-weight: bold" th:text="${tonghoadon}"></div>
                         </div>
 
 
 
-                        <div class="panel panel-default " style="margin-left: 25px;width: 300px">
-                            <div class="panel-heading">Đơn hàng hoàn thành</div>
-                            <div class="panel-body" th:text="${donhanghoanthanh}"  ></div>
+                        <div class="panel panel-default " style="margin-left: 25px;width: 300px;">
+                            <div class="panel-heading" style="color: #0000FF;font-size: 20px;font-weight: bold;">Đơn hàng hoàn thành</div>
+                            <div class="panel-body" style="font-weight: bold" th:text="${donhanghoanthanh}"  ></div>
                         </div>
 
 
 
 
                         <div class="panel panel-default " style="margin-left: 25px;width: 300px;">
-                            <div class="panel-heading">Đơn hàng đang giao</div>
-                            <div class="panel-body" th:text="${donhangdanggiao}"></div>
+                            <div class="panel-heading" style="color: #0000FF;font-size: 20px;font-weight: bold;">Đơn hàng đang giao</div>
+                            <div class="panel-body" style="font-weight: bold" th:text="${donhangdanggiao}"></div>
                         </div>
 
                         <div class="panel panel-default "style="margin-left: 25px;width: 300px;" >
-                            <div class="panel-heading">Đơn hàng đã hủy</div>
-                            <div class="panel-body" th:text="${donhangdahuy}"></div>
+                            <div class="panel-heading" style="color: #0000FF;font-size: 20px;font-weight: bold;">Đơn hàng đã hủy</div>
+                            <div class="panel-body" style="font-weight: bold" th:text="${donhangdahuy}"></div>
                         </div>
                     </div>
 
 
-                    <div class="row" style="margin-top: 30px">
-                       <h3> Top sản phẩm bán chạy</h3>
 
-
-                        <table class="table table-hover table-bordered" id="sampleTable">
-                            <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Giá bán </th>
-                                <th>Số lượng bán</th>
-                                <th>Doanh thu</th>
-<!--                                <th>Trạng thái</th>-->
-<!--                                <th>Chức năng</th>-->
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="x,arr : ${sanphambanchay}">
-                                <td th:text="${arr.index + 1}"></td>
-                                <td><img th:src="@{${x.url}}" alt="ảnh san pham" width="100px;"></td>
-                                <td th:text="${x.productName}"></td>
-                                <td th:text="${x.price}"></td>
-                                <td th:text="${x.quantity}"></td>
-                                <td th:text="${x.pricec}"></td>
-
-
-                                <!--                                <td th:text="${x.email}"></td>-->
-<!--                                <td th:text="${x.phoneNumber}"></td>-->
-<!--                                <td th:text="${x.gender} == true?'Nam':'Nữ'"></td>-->
-<!--                                <td th:text="${x.status} == 'onKH'?'Hoạt động':'Không hoạt động'"></td>-->
-
-
-                            </tr>
-                            </tbody>
-                        </table>
-
-
-
-                    </div>
                 </div>
             </div>
         </div>

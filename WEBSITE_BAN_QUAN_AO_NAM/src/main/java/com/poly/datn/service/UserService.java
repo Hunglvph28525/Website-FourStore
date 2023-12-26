@@ -10,6 +10,7 @@ import com.poly.datn.request.UserSignUpRequest;
 import com.poly.datn.request.forgot_passwort.UserForgotPasswordRequest;
 import com.poly.datn.util.MessageUtil;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +54,8 @@ public interface UserService extends Converter<UserSignUpRequest, User>
     Address detailAddress(Long id);
 
     void updateAddress(Long idKH, Long idAddress);
+
+
 }
 
 

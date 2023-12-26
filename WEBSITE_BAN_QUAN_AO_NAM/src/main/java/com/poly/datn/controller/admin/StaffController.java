@@ -99,4 +99,9 @@ public class StaffController {
 
     }
 
+    @ModelAttribute("message")
+    public Object initmesage() {
+        return new MessageUtil();
+    }
+
 }
