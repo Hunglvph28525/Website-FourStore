@@ -3,7 +3,6 @@ package com.poly.datn.service.impl;
 import com.poly.datn.dto.UserDto;
 import com.poly.datn.dto.UserRequest;
 import com.poly.datn.entity.Address;
-import com.poly.datn.entity.Product;
 import com.poly.datn.entity.User;
 import com.poly.datn.repository.AddressRepository;
 import com.poly.datn.repository.RoleRepository;
@@ -91,8 +90,6 @@ public class UserServiceImpl implements UserService {
         javaMailSender.send(mailMessage);
         return userRepository.save(user);
     }
-
-
     /**
      * @param email
      * @return nếu mà ko tìm đc email thì ko tồn tại -> đăng ký
@@ -104,10 +101,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.getByUser(username).get();
     }
-
 
     @Override
     public User convert(UserSignUpRequest source) {

@@ -1,0 +1,204 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Coron-shop</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="web/assets/img/favicon.png">
+
+    <!-- all css here -->
+    <link rel="stylesheet" href="web\assets\css\bootstrap.min.css">
+    <link rel="stylesheet" href="web\assets\css\plugin.css">
+    <link rel="stylesheet" href="web\assets\css\bundle.css">
+    <link rel="stylesheet" href="web\assets\css\style.css">
+    <link rel="stylesheet" href="web\assets\css\responsive.css">
+    <script src="web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
+</head>
+
+<body>
+<!-- Add your site or application content here -->
+<div class="pos_page">
+    <div class="container">
+        <!--pos page inner-->
+        <div class="pos_page_inner">
+            <!--header end -->
+            <div th:replace="~{layout/webheader :: webheader}"></div>
+            <!--breadcrumbs area start-->
+            <div class="breadcrumbs_area">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb_content">
+                            <ul>
+                                <li><a href="index.html">home</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li>shop</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--breadcrumbs area end-->
+
+            <!--pos home section-->
+            <div class=" pos_home_section">
+                <div class="row pos_home">
+                    <div class="col-lg-3 col-md-12">
+                        <!--layere categorie"-->
+                        <div class="sidebar_widget shop_c">
+                            <div class="categorie__titile">
+                                <h4>Danh mục</h4>
+                            </div>
+                            <div class="layere_categorie">
+                                <ul>
+                                    <li>
+                                        <input id="acces" type="checkbox">
+                                        <label for="acces">Áo<span>(1)</span></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--layere categorie end-->
+
+                        <!--color area start-->
+                        <div class="sidebar_widget color">
+                            <h2>Màu sắc</h2>
+                            <div class="widget_color">
+                                <ul>
+
+                                    <li><a href="#">Đen <span>(10)</span></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <!--color area end-->
+
+                        <!--price slider start-->
+                        <div class="sidebar_widget price">
+                            <h2>Giá</h2>
+                            <div class="ca_search_filters">
+
+                                <input type="text" name="text" id="amount">
+                                <div id="slider-range"></div>
+                            </div>
+                        </div>
+                        <!--price slider end-->
+
+
+                        <!--popular tags area-->
+                        <div class="sidebar_widget shop_c">
+                            <div class="categorie__titile">
+                                <h4>Thương hiệu</h4>
+                            </div>
+                            <div class="layere_categorie">
+                                <ul>
+                                    <li>
+                                        <input id="acces1" type="checkbox">
+                                        <label for="acces1">Áo<span>(1)</span></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--popular tags end-->
+                    </div>
+                    <div class="col-lg-9 col-md-12">
+
+                        <!--shop toolbar start-->
+                        <div class="shop_toolbar mb-35">
+
+                            <div class="list_button">
+                                <ul class="nav" role="tablist">
+                                    <li>
+                                        <a class="active" data-toggle="tab" href="#large" role="tab" aria-controls="large" aria-selected="true"><i class="fa fa-th-large"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="page_amount">
+                                <p>Showing 1–9 of 21 results</p>
+                            </div>
+                        </div>
+                        <!--shop toolbar end-->
+
+                        <!--shop tab product-->
+                        <div class="shop_tab_product">
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="large" role="tabpanel">
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-6" th:each="x : ${topProducts}">
+                                            <div class="single_product">
+                                                <div class="product_thumb">
+                                                    <a th:href="@{'/shop/'+ ${x.id}}" ><img
+                                                            th:src="@{${x.image}}"
+                                                            alt=""></a>
+                                                    <div class="img_icone">
+                                                        <img src="/web/assets/img/cart/span-new.png" alt="">
+                                                    </div>
+                                                    <div class="product_action">
+                                                        <a  th:href="@{'/shop/'+ ${x.id}}" >Thêm vào giỏ hàng</a>
+
+                                                    </div>
+                                                </div>
+                                                <div class="product_content">
+                                                    <span class="product_price">500.000đ</span>
+                                                    <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}"  th:text="${x.name}"></a></h3>
+                                                </div>
+                                                <div class="product_info">
+                                                    <ul>
+                                                        <li><a th:href="@{#}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--shop tab product end-->
+
+                        <!--pagination style start-->
+                        <div class="pagination_style mt-5">
+                            <div class="item_page">
+                                <form action="#">
+                                    <label for="page_select">show</label>
+                                    <select id="page_select">
+                                        <option value="1">9</option>
+                                        <option value="2">10</option>
+                                        <option value="3">11</option>
+                                    </select>
+                                    <span>Products by page</span>
+                                </form>
+                            </div>
+                            <div class="page_number">
+                                <span>Pages: </span>
+                                <ul>
+                                    <li>«</li>
+                                    <li class="current_number">1</li>
+                                    <li><a href="#">2</a></li>
+                                    <li>»</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--pagination style end-->
+                    </div>
+                </div>
+            </div>
+            <!--pos home section end-->
+        </div>
+        <!--pos page inner end-->
+    </div>
+</div>
+<div th:replace="~{layout/webfooter :: webfooter}"></div>
+<!--pos page end-->
+<!-- all js here -->
+<script src="web\assets\js\vendor\jquery-1.12.0.min.js"></script>
+<script src="web\assets\js\popper.js"></script>
+<script src="web\assets\js\bootstrap.min.js"></script>
+<script src="web\assets\js\ajax-mail.js"></script>
+<script src="web\assets\js\plugins.js"></script>
+<script src="web\assets\js\main.js"></script>
+</body>
+
+</html>

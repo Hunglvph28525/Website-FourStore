@@ -4,6 +4,7 @@ import com.poly.datn.entity.Invoice;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.entity.ShippingAddress;
 import com.poly.datn.entity.User;
+import com.poly.datn.util.Fomater;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,10 +35,14 @@ public class InvoiceDto {
     private String paymentStatus;
     private List<InvoiceDetailDto> product;
     private Integer total;
+    private String totalFomat;
     private Integer giaGiam;
+    private String giaGiamFomat;
     private Boolean shipping;
     private Integer shippingCost;
+    private String shippingCostFomat;
     private Integer grandTotal;
+    private String grandTotalFomat;
     private User user;
     private Long tongSp;
     private String pgg;
@@ -61,6 +66,13 @@ public class InvoiceDto {
         this.pgg = x.getPromotion() == null ? null : x.getPromotion().getGiftCode();
         this.user = x.getUser() == null ? new User() : x.getUser();
         this.shipping = x.getShipping();
+
+        this.totalFomat = Fomater.fomatTien().format(this.total);
+        this.giaGiamFomat = Fomater.fomatTien().format(this.giaGiam);
+        this.grandTotalFomat = Fomater.fomatTien().format(this.grandTotal);
+        this.shippingCostFomat = Fomater.fomatTien().format(this.shippingCost);
+
+
     }
 
     private String address(ShippingAddress x) {

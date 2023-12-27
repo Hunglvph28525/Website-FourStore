@@ -1,10 +1,10 @@
 (function($) {
     "use strict";
-    
+
     /*----------------------------
        stickey menu
     ----------------------------*/
-    $(window).on('scroll',function() {    
+    $(window).on('scroll',function() {
            var scroll = $(window).scrollTop();
            if (scroll < 100) {
             $(".sticky-header").removeClass("sticky");
@@ -21,8 +21,8 @@
         meanMenuContainer: ".mobile-menu",
         onePage: true,
     });
-    
-    
+
+
       /*--------------------------
      ScrollUp
     ---------------------------- */
@@ -32,7 +32,7 @@
         scrollSpeed: 900,
         animation: 'fade'
     });
-	
+
 
     /* slider activation */
     $('.slider_active').owlCarousel({
@@ -45,8 +45,8 @@
         dots:true,
         responsiveClass:true,
 	});
-    
-    
+
+
     /* product activation */
     $('.product_active').owlCarousel({
         animateOut: 'fadeOut',
@@ -71,7 +71,7 @@
 
 		  }
     });
-    
+
      /* brand activation */
     $('.brand_active').owlCarousel({
         animateOut: 'fadeOut',
@@ -99,7 +99,7 @@
 
 		  }
     });
-    
+
 
       /* single_p activation */
     $('.single_p_active').owlCarousel({
@@ -128,7 +128,7 @@
 
 		  }
     });
-    
+
       /* blog activation */
     $('.blog_active').owlCarousel({
         animateOut: 'fadeOut',
@@ -139,17 +139,17 @@
         items: 1,
         dots:true,
         navText: ['<i class="fa fa-angle-left"></i>','<i class="fa fa-angle-right"></i>'],
-    
+
     });
-    
-    
-    
+
+
+
     /*wow activation*/
     new WOW().init();
-    
 
-  
-    
+
+
+
 
     /*------addClass/removeClass-------*/
    $(".languages a,.currency a").on("click", function() {
@@ -164,18 +164,18 @@
             $('.dropdown_languages,.dropdown_currency').removeClass('open');
         }
     });
-    
-    
+
+
     /*mini cart slideToggle*/
-    
+
     $(".shopping_cart").on("click", function() {
             $('.mini_cart').slideToggle('medium');
-    }); 
-    
-    
-    
-    
-    
+    });
+
+
+
+
+
     // Header Custom dropdowns
         $("header .dropdown-toggle").on("click", function() {
             $(this).toggleClass('open').next('.dropdown-menu').toggleClass('open');
@@ -190,11 +190,11 @@
             }
         });
 
-    
-    
-    
 
-    
+
+
+
+
      /*------------------------------
       Category menu Activation
     ------------------------------*/
@@ -219,11 +219,11 @@
           }
          });
          $('.has-sub > a').append('<span class="holder"></span>');
-    
-    
-    
-    
-    
+
+
+
+
+
          /*----------------------------
     	slider-range here
     ------------------------------ */
@@ -238,42 +238,42 @@
     });
     $( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
       " - $" + $( "#slider-range" ).slider( "values", 1 ) );
-    
-    
-	
-	
-    /*niceSelect*/
-     $('select').niceSelect();
-    
 
 
-    
-    
-    
+
+
+    // /*niceSelect*/
+    //  $('select').niceSelect();
+
+
+
+
+
+
     /*magnificPopup activation*/
-    
+
     $('.large_view,.port_popup').magnificPopup({
       type: 'image',
         gallery:{
         enabled:true,
       }
     });
-    
+
      $('.video_popup').magnificPopup({
       type: 'iframe',
     });
-    
-    
 
-    
+
+
+
     /*counterup activation*/
     $('.counter_number').counterUp({
         delay: 10,
         time: 1000
     });
-    
-    
-    
+
+
+
      $('.portfolio_gallery').imagesLoaded( function() {
         // init Isotope
         var $grid = $('.portfolio_gallery').isotope({
@@ -283,18 +283,23 @@
                 columnWidth: '.gird_item'
             }
         });
-            
+
         // filter items on button click
         $('.portfolio_button').on( 'click', 'button', function() {
           var filterValue = $(this).attr('data-filter');
           $grid.isotope({ filter: filterValue });
-            
+
            $(this).siblings('.active').removeClass('active');
            $(this).addClass('active');
         });
     });
-    
-    
+
+
 
 
 })(jQuery);
+var myAlert = document.getElementById("myAlert");
+// Tự đóng thông báo sau 5 giây
+setTimeout(function () {
+    myAlert.style.display = "none";
+}, 5000); // 5000 ms = 5 giây

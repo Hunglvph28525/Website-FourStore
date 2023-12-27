@@ -1,0 +1,306 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FourStore</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="web/assets/img/favicon.png">
+
+    <!-- all css here -->
+    <link rel="stylesheet" href="web\assets\css\bootstrap.min.css">
+    <link rel="stylesheet" href="web\assets\css\plugin.css">
+    <link rel="stylesheet" href="web\assets\css\bundle.css">
+    <link rel="stylesheet" href="web\assets\css\style.css">
+    <link rel="stylesheet" href="web\assets\css\responsive.css">
+    <script src="web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+<!-- Add your site or application content here -->
+
+<!--pos page start-->
+<div class="pos_page">
+    <div class="container">
+        <!--pos page inner-->
+        <div class="pos_page_inner">
+            <!--header area -->
+            <div th:replace="~{layout/webheader :: webheader}"></div>
+            <!--header end -->
+            <!--breadcrumbs area start-->
+            <div class="breadcrumbs_area">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb_content">
+                            <ul>
+                                <li><a href="/home">Trang chủ</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li>Thanh toán</li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--breadcrumbs area end-->
+
+
+            <div class="Checkout_section">
+                <div class="checkout_form">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <h3>Địa chỉ nhận hàng</h3>
+                            <div class="row">
+                                <div class="col-12 mb-30" th:if="${order.address != null }">
+                                    <label>Địa chỉ giao hàng :</label>
+                                    <p style="font-size: 18px;"><strong
+                                            th:text="${ ' '+order.name + ' - ' + order.sdt + ' '}">
+                                    </strong><span
+                                            th:text="${order.address.street + ', ' + order.address.ward + ', ' + order.address.district +', ' + order.address.province+'.' }"></span>
+                                        <button type="button" class="btn btn-link"
+                                                data-toggle="modal" data-target="#exampleModal">
+                                            Thay đổi
+                                        </button>
+                                    </p>
+                                </div>
+                                <div th:if="${order.address == null }" class="col-12 mb-30">
+                                    <form class="row" action="/checkout/add-address" method="post">
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Họ và tên <label
+                                                    style="color:red;">*</label></label>
+                                            <input type="text" class="form-control" th:value="${order.name}" name="name">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Số điện thoại<label
+                                                    style="color:red;">*</label></label>
+                                            <input type="text" class="form-control" th:value="${order.sdt}" name="sdt">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Tỉnh/Thành phố <label
+                                                    style="color:red;">*</label></label>
+                                            <select class="form-control " id="city" aria-label=".form-select-sm">
+                                                <option value="Name" selected>Chọn tỉnh thành
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Quận/Huyện <label
+                                                    style="color:red;">*</label></label>
+
+                                            <select class="form-control " id="district" aria-label=".form-select-sm">
+                                                <option value="" selected>Chọn quận huyện
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Phường/Xã <label
+                                                    style="color:red;">*</label></label>
+
+                                            <select class="form-control " id="ward" aria-label=".form-select-sm">
+                                                <option value="" selected>Chọn phường xã
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label">Số nhà, Đường <label
+                                                    style="color:red;">*</label></label>
+                                            <input type="text" class="form-control" name="street">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                        <form action="#">
+                            <h3>Sản phẩm</h3>
+                            <div class="order_table table-responsive mb-30">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th class="product_thumb">Hình ảnh</th>
+                                        <th class="product_name">Tên sản phẩm</th>
+                                        <th class="product-price">Giá bán</th>
+                                        <th class="product_quantity">Số lượng</th>
+                                        <th class="product_total">Thành tiền</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="x,i: ${order.products}">
+                                        <td><a href="#"><img width="120px" th:src="@{${x.product.img}}"
+                                                                                   alt=""></a></td>
+                                        <td><a href="#" th:text="${x.product.name}"></a></td>
+                                        <td th:text="${x.price + ' đ'}"></td>
+                                        <td th:text="${x.quantity}"></td>
+                                        <td th:text="${x.price * x.quantity}"></td>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th colspan="4">Tổng tiền sản phẩm</th>
+                                        <td><strong th:text="${order.total}"></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">Phí giao hàng</th>
+                                        <td><strong th:text="${order.shippingCost}"></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">Giá giảm</th>
+                                        <td><strong th:text="${order.giaGiam}"></strong></td>
+                                    </tr>
+                                    <tr class="order_total">
+                                        <th colspan="4">Tổng đơn hàng</th>
+                                        <td><strong th:text="${order.grandTotal}"></strong></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="payment_method">
+                                <div class="panel-default">
+                                    <input id="payment" name="check_method" type="radio"
+                                           data-target="createp_account">
+                                    <label for="payment" data-toggle="collapse" data-target="#method"
+                                           aria-controls="method">Create an account?</label>
+
+                                    <div id="method" class="collapse one" data-parent="#accordion">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-default">
+                                <input id="payment_defult" name="check_method" type="radio"
+                                       data-target="createp_account">
+                                <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult"
+                                       aria-controls="collapsedefult">PayPal <img src="assets\img\visha\papyel.png"
+                                                                                  alt=""></label>
+
+                            </div>
+                            <div class="order_button">
+                                <button type="submit">Proceed to PayPal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--pos page end-->
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Chọn địa chỉ giao hàng
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="" id="selectDiachi" th:if="${order.addresses != null}">
+                    <div th:each="x : ${order.addresses}">
+                        <input class="ml-1" type="radio" name="diachi" th:value="${x.id}"><label><strong
+                            th:text="${ ' '+order.name + ' - ' + order.sdt + ' '}">
+                    </strong><span
+                            th:text="${x.street + ', ' + x.ward + ', ' + x.district +', ' + x.province+'.' }"></span></label>
+                    </div>
+                </form>
+                <form action="/checkout-new-address" id="newDiaChi" method="post">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Họ và tên <label style="color:red;">*</label></label>
+                        <input type="text" class="form-control" name="street">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Số điện thoại<label style="color:red;">*</label></label>
+                        <input type="text" class="form-control" name="street">
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
+
+                        <select class="form-control " id="city" aria-label=".form-select-sm">
+                            <option value="Name" selected>Chọn tỉnh thành
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
+
+                        <select class="form-control " id="district" aria-label=".form-select-sm">
+                            <option value="" selected>Chọn quận huyện
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Phường/Xã <label style="color:red;">*</label></label>
+
+                        <select class="form-control " id="ward" aria-label=".form-select-sm">
+                            <option value="" selected>Chọn phường xã
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Số nhà, Đường <label style="color:red;">*</label></label>
+                        <input type="text" class="form-control" name="street">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">thoát</button>
+                <button type="button" class="btn btn-primary">Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--footer area start-->
+<div th:replace="~{layout/webfooter :: webfooter}"></div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // Function to render dropdown options
+    function renderDropdown(data, dropdown, placeholder) {
+        dropdown.innerHTML = `<option value="" selected>${placeholder}</option>`;
+        data.forEach(item => {
+            dropdown.innerHTML += `<option value="${item.Name}">${item.Name}</option>`;
+        });
+    }
+
+    // Fetch data from the provided URL
+    axios.get("https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json")
+        .then(response => {
+            const data = response.data;
+            const cityDropdown = document.getElementById("city");
+            const districtDropdown = document.getElementById("district");
+            const wardDropdown = document.getElementById("ward");
+            renderDropdown(data, cityDropdown, "Chọn tỉnh/thành phố");
+            cityDropdown.addEventListener("change", function () {
+                const selectedCity = this.value;
+                const selectedCityData = data.find(item => item.Name === selectedCity);
+                renderDropdown(selectedCityData.Districts, districtDropdown, "Chọn quận/huyện");
+                wardDropdown.innerHTML = `<option value="" selected>Chọn phường/xã</option>`;
+            });
+            districtDropdown.addEventListener("change", function () {
+                const selectedDistrict = this.value;
+                const selectedDistrictData = data
+                    .map(item => item.Districts.find(district => district.Name === selectedDistrict))
+                    .filter(Boolean)[0];
+                renderDropdown(selectedDistrictData.Wards, wardDropdown, "Chọn phường/xã");
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
+</script>
+
+<!-- all js here -->
+<script src="web\assets\js\vendor\jquery-1.12.0.min.js"></script>
+<script src="web\assets\js\popper.js"></script>
+<script src="web\assets\js\bootstrap.min.js"></script>
+<script src="web\assets\js\ajax-mail.js"></script>
+<script src="web\assets\js\plugins.js"></script>
+<script src="web\assets\js\main.js"></script>
+</body>
+</html>

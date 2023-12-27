@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface InvoiceService {
-    List<Invoice> getAll();
+    List<InvoiceDto> getAll();
 
     List<InvoiceDto> fillAll(String status);
 
@@ -43,4 +43,8 @@ public interface InvoiceService {
     MessageUtil addShipping(String codeBill, String city, String district, String ward, String diaChi, String sdt, String name);
 
     MessageUtil huyGh(String codeBill);
+
+    MessageUtil updateStatus(String codeBill, String note);
+
+    MessageUtil huyDh(String codeBill, String note);
 }

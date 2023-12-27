@@ -1,42 +1,3 @@
-<!--<!doctype html>-->
-<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport"-->
-<!--          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
-<!--    <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
-<!--    <title>Document</title>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<table class="table table-hover table-bordered" id="sampleTable">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <th>STT</th>-->
-<!--        <th>Id</th>-->
-<!--        <th>TP</th>-->
-<!--        <th>Huyen</th>-->
-
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    <tr th:each="x,arr : ${items}">-->
-<!--        <td th:text="${arr.index + 1}"></td>-->
-<!--        <td th:text="${x.id}"></td>-->
-
-
-<!--        <td th:text="${x.province}"></td>-->
-<!--        <td th:text="${x.district}"></td>-->
-
-
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->
-
-<!--</body>-->
-<!--</html>-->
-
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -151,53 +112,28 @@
             <div class="tile">
                 <h3 class="tile-title">Địa chỉ khách hàng</h3>
 
+                <div class="card" th:each="x,arr : ${items}">
+                    <div class="card-body">
 
-                <!--                <table class="table table-hover table-bordered" id="sampleTable">-->
-                <!--                    <thead>-->
-                <!--                    <tr>-->
+                        <div style="color:#0b93ff;" th:if="${x.status} == 'on'">Địa chỉ mặc định</div>
 
-                <!--                        <th>TP</th>-->
-                <!--                        <th>Huyen</th>-->
-                <!--                        <th>KH</th>-->
-
-                <!--                    </tr>-->
-                <!--                    </thead>-->
-                <!--                    <tbody>-->
-                <!--                    <tr th:each="x,arr : ${items}">-->
-
-                <!--                        <td th:text="${x.province}"></td>-->
-                <!--                        <td th:text="${x.district}"></td>-->
-                <!--&lt;!&ndash;                        <td th:text="${x.user.Id}"></td>&ndash;&gt;-->
+                        <div th:text="${x.user.name}"></div>
+                        <div th:text="${x.user.phoneNumber}"></div>
 
 
-                <!--                    </tr>-->
-                <!--                    </tbody>-->
-                <!--                </table>-->
-
-
-                    <div class="card" th:each="x,arr : ${items}">
-                        <div class="card-body">
-
-                            <div style="color:#0b93ff;" th:if="${x.status} == 'on'">Địa chỉ mặc định</div>
-
-                            <div th:text="${x.user.name}"></div>
-                            <div th:text="${x.user.phoneNumber}"></div>
-
-
-                            Địa chỉ:
-                            <div th:text="${x.street} + ','+ ${x.ward} + ' '+',' + ${x.district} + ','+ ${x.province}"></div>
-                            <!--                       <div  th:text="${x.province}"></div>-->
-                            <!--                        <div th:text="${x.district}"></div>-->
-                            <!--                        th:action="@{/admin/customer/update(id=${att.Id})}" method="post" th:object="${att}"-->
-                            <div  style="color:#0b93ff;" th:if="${x.status} == 'off'">
-                                <a class=" btn btn-primary btn edit bg-warning"  th:href="@{/admin/address/detail/{id}(id=${x.id})}" >Cập nhật</a>
+                        Địa chỉ:
+                        <div th:text="${x.street} + ','+ ${x.ward} + ' '+',' + ${x.district} + ','+ ${x.province}"></div>
+                        <div>
+                            <a class=" btn btn-primary btn edit bg-warning"
+                               th:href="@{/admin/address/detail/{id}(id=${x.id})}">Sửa</a>
+                            <div th:if="${x.status} == 'off'">
+                                <a class=" btn btn-success"
+                                   th:href="@{'/admin/account/'+${x.user.id}+'/dc-macdinh/'+${x.id}}">Đặt mặc định</a>
                             </div>
-
                         </div>
+
                     </div>
-
-<!--               -->
-
+                </div>
             </div>
         </div>
     </div>
@@ -227,10 +163,10 @@
                     <input type="hidden" name="user" th:value="${user.Id}"/>
 
 
-<!--                    <div class="form-group col-lg-12">-->
-<!--                        <label class="control-label">Tỉnh/Thành phố</label>-->
-<!--                        <input class="form-control" th:field="*{province}" type="text" required>-->
-<!--                    </div>-->
+                    <!--                    <div class="form-group col-lg-12">-->
+                    <!--                        <label class="control-label">Tỉnh/Thành phố</label>-->
+                    <!--                        <input class="form-control" th:field="*{province}" type="text" required>-->
+                    <!--                    </div>-->
 
                     <div class="form-group col-md-8">
                         <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
@@ -241,11 +177,10 @@
                     </div>
 
 
-
-<!--                    <div class="form-group col-lg-12">-->
-<!--                        <label class="control-label">Quận/Huyện</label>-->
-<!--                        <input class="form-control" th:field="*{district}" type="text" required>-->
-<!--                    </div>-->
+                    <!--                    <div class="form-group col-lg-12">-->
+                    <!--                        <label class="control-label">Quận/Huyện</label>-->
+                    <!--                        <input class="form-control" th:field="*{district}" type="text" required>-->
+                    <!--                    </div>-->
 
                     <div class="form-group col-md-8">
                         <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
@@ -256,10 +191,10 @@
                     </div>
 
 
-<!--                    <div class="form-group col-lg-12">-->
-<!--                        <label class="control-label">Xã</label>-->
-<!--                        <input class="form-control" th:field="*{ward}" type="text" required>-->
-<!--                    </div>-->
+                    <!--                    <div class="form-group col-lg-12">-->
+                    <!--                        <label class="control-label">Xã</label>-->
+                    <!--                        <input class="form-control" th:field="*{ward}" type="text" required>-->
+                    <!--                    </div>-->
 
                     <div class="form-group col-md-8">
                         <label class="control-label">Phường/Xã <label style="color:red;">*</label></label>
@@ -287,15 +222,6 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
 <script>
     var citis = document.getElementById("city");
@@ -318,7 +244,7 @@
         citis.onchange = function () {
             district.length = 1;
             ward.length = 1;
-            if(this.value != ""){
+            if (this.value != "") {
                 const result = data.filter(n => n.Name === this.value);
 
                 for (const k of result[0].Districts) {
@@ -339,13 +265,6 @@
         };
     }
 </script>
-
-
-
-
-
-
-
 
 
 <!--<script type="text/javascript" src="/assets/js/plugins/jquery.dataTables.min.js"></script>-->

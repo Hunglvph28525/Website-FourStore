@@ -3,12 +3,11 @@ package com.poly.datn.dto;
 import com.poly.datn.entity.Color;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.entity.Size;
+import com.poly.datn.util.Fomater;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,6 +19,7 @@ public class ColorSizeVertion {
     private Size size;
     private Integer quantity;
     private Long price;
+    private String priceFomat;
 
     public ColorSizeVertion(ProductDetail x) {
         this.id = x.getId();
@@ -27,5 +27,6 @@ public class ColorSizeVertion {
         this.size = x.getSize();
         this.quantity = x.getQuantity();
         this.price = x.getPrice().longValue();
+        this.priceFomat = Fomater.fomatTien().format(x.getPrice());
     }
 }

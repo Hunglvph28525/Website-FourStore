@@ -33,7 +33,8 @@
             <!--logo start-->
             <div class="col-lg-3 col-md-3">
                 <div class="logo">
-                    <a href="index.html"><img src="web/assets/img/logo/logo31kb.png  " style="height: 45px; width: 200px;" alt=""></a>
+                    <a href="/"><img src="/web/assets/img/logo/logo31kb.png  " style="height: 45px; width: 200px;"
+                                     alt=""></a>
                 </div>
             </div>
             <!--logo end-->
@@ -46,33 +47,30 @@
                         </form>
                     </div>
                     <div class="shopping_cart">
-                        <a href="#"><i class="fa fa-shopping-cart"></i> 2 - 200.000đ <i class="fa fa-angle-down"></i></a>
+                        <a href="#" th:text="${giohang.tongSp + ' - ' + giohang.total}"><i class="fa fa-shopping-cart"></i>
+                              <i class="fa fa-angle-down"></i></a>
 
                         <!--mini cart-->
                         <div class="mini_cart">
-                            <div class="cart_item">
+                            <div class="cart_item" th:each="x: ${giohang.cartDetails}">
                                 <div class="cart_img">
-                                    <a href="#"><img src="https://aristino.com/Data/ResizeImage/images/product/so-mi-ngan-tay/ass042s3/_TC_4917x500x500x4.webp" alt=""></a>
+                                    <a href="#"><img th:src="@{${x.product.img}}" alt=""></a>
                                 </div>
                                 <div class="cart_info">
-                                    <a href="#">Áo sơ mi ngắn tay</a>
-                                    <span class="cart_price">115.000đ</span>
-                                    <span class="quantity">Số lượng: 1</span>
+                                    <a href="#" th:text="${x.product.name}"></a>
+                                    <span class="cart_price" th:text="${x.price + ' đ'}"></span>
+                                    <span class="quantity" th:text="${x.quantity}"></span>
                                 </div>
                                 <div class="cart_remove">
                                     <a title="Remove this item" href="#"><i class="fa fa-times-circle"></i></a>
                                 </div>
                             </div>
-                            <div class="shipping_price">
-                                <span> Kích cỡ Màu sắc   </span>
-                                <span>  L - trắng  </span>
-                            </div>
                             <div class="total_price">
                                 <span> Tổng tiền </span>
-                                <span class="prices">  235.000đ  </span>
+                                <span class="prices" th:text="${giohang.total}"></span>
                             </div>
                             <div class="cart_button">
-                                <a href="/thanh-toan"> Thanh toán ngay</a>
+                                <a href="/cart"> Thanh toán ngay</a>
                             </div>
                         </div>
                         <!--mini cart end-->
@@ -92,7 +90,7 @@
                             <ul>
                                 <li class="active"><a href="/">Trang chủ</a>
                                 </li>
-                                <li><a href="shop.html">Sản Phẩm bán chạy</a>
+                                <li><a href="/shop">Sản Phẩm</a>
                                 </li>
 
                                 <li><a href="#">Áo</a>
@@ -120,6 +118,7 @@
                                     </div>
                                 </li>
                                 <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/Blog">Blog</a></li>
 
                             </ul>
                         </nav>
@@ -156,19 +155,8 @@
 
                                     </div>
                                 </li>
-                                <!-- <li><a href="blog.html">blog</a>
-                                    <div class="mega_menu jewelry">
-                                        <div class="mega_items jewelry">
-                                            <ul>
-                                                <li><a href="blog-details.html">blog details</a></li>
-                                                <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
-                                                <li><a href="blog-sidebar.html">blog sidebar</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li> -->
                                 <li><a href="/lien-he">Liên hệ</a></li>
-
+                                <li><a href="/Blog">Blog</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -176,6 +164,16 @@
             </div>
         </div>
     </div>
+    <div th:if="${message.status != null}">
+        <div id="myAlert" class="alert alert-dismissible fade show position-fixed"
+             style="top: 120px; right: 30px;width: 400px; height: 50px" th:classappend="${message.type}">
+            <p th:text="${message.message}"></p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>
