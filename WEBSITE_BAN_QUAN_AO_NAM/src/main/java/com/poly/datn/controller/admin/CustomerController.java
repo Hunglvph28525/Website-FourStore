@@ -195,6 +195,11 @@ public class CustomerController {
        return "redirect:/admin/tk/" + address.getUser().getId();
 
     }
+    @GetMapping("/account/{user}/dc-macdinh/{id}")
+    public String diaChiMacDinh(@PathVariable("id") Long idAddress,@PathVariable("user") Long idUser){
+       MessageUtil messageUtil = addressService.selectMacDinh(idUser,idAddress);
+        return "redirect:/admin/tk/"+idUser;
+    }
 
     @ModelAttribute("message")
     public Object initmesage() {

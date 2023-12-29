@@ -4,6 +4,7 @@ import com.poly.datn.entity.Image;
 import com.poly.datn.entity.InvoiceDetail;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.ProductDetail;
+import com.poly.datn.util.Fomater;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +26,10 @@ public class InvoiceDetailDto {
     private String size;
     private Integer quantity;
     private Integer price;
+    private String priceFomat;
     private Integer total;
+    private String totalFomat;
+
     private String img;
     private ProductDetail productDetail;
 
@@ -41,6 +45,8 @@ public class InvoiceDetailDto {
         this.total = x.getQuantity() * x.getInvoiceId().getProductDetail().getPrice().intValue();
         this.img = image.getUrl();
         this.productDetail = x.getInvoiceId().getProductDetail();
+        this.priceFomat = Fomater.fomatTien().format(x.getPrice());
+        this.totalFomat = Fomater.fomatTien().format(this.total);
     }
 
 }

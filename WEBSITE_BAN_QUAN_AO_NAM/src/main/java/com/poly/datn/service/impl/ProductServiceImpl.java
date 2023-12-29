@@ -90,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto getDetailtoCart(Long id) {
+    public ProductDto getDetail(Long id) {
         Product product = productRepository.getReferenceById(id);
         ProductDto productDto = new ProductDto(product);
         List<ColorSizeVertion> vertions = new ArrayList<>();

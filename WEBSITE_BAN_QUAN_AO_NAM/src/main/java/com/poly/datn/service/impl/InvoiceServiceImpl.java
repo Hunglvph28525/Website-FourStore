@@ -8,6 +8,7 @@ import com.poly.datn.entity.composite.InvoiceId;
 import com.poly.datn.repository.*;
 import com.poly.datn.service.InvoiceService;
 import com.poly.datn.service.UserService;
+import com.poly.datn.util.Fomater;
 import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +49,16 @@ public class InvoiceServiceImpl implements InvoiceService {
     private UserService userService;
 
     @Override
-    public List<Invoice> getAll() {
+    public List<InvoiceDto> getAll() {
         List<Invoice> list = repository.getAll();
+        List<InvoiceDto> invoiceDtos = new ArrayList<>();
         list.stream().forEach(x -> {
             if (x.getUser() == null) {
                 x.setUser(User.builder().name("Khách lẻ").build());
             }
+            invoiceDtos.add(new InvoiceDto(x));
         });
-        return list;
+        return invoiceDtos;
     }
 
     @Override
@@ -66,6 +69,10 @@ public class InvoiceServiceImpl implements InvoiceService {
             o.setProduct(products == null ? products = new ArrayList<>() : products);
             o.setTotal(o.getProduct().stream().map(x -> x.getPrice() * x.getQuantity()).reduce(0, Integer::sum));
             o.setTongSp(products.stream().count());
+            o.setTotalFomat(Fomater.fomatTien().format(o.getTotal()));
+            o.setGiaGiamFomat(Fomater.fomatTien().format(o.getGiaGiam()));
+            o.setShippingCostFomat(Fomater.fomatTien().format(o.getShippingCost()));
+            o.setGrandTotalFomat(Fomater.fomatTien().format(o.getGrandTotal()));
         });
         return list;
     }
@@ -107,7 +114,14 @@ public class InvoiceServiceImpl implements InvoiceService {
                     .tienThoi(BigDecimal.ZERO)
                     .userPay(BigDecimal.ZERO)
                     .build();
-            repository.save(invoice);
+            invoice = repository.save(invoice);
+            Transaction transaction = Transaction.builder().invoice(invoice)
+                    .name(UserUltil.getUser().getName())
+                    .status(invoice.getStatus())
+                    .note(invoice.getNote())
+                    .createDate(LocalDateTime.now())
+                    .build();
+            transactionRepository.save(transaction);
             return new MessageUtil(1, "Tạo đơn hàng thành công", "bg-success", invoice);
         }
 
@@ -117,11 +131,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public MessageUtil delete(String codeBill) {
+        Invoice invoice = repository.getReferenceById(codeBill);
         List<InvoiceDetail> list = detailRepository.getByCodeBill(codeBill);
         detailRepository.deleteAll(list);
+        List<Transaction> transactions = invoice.getTransactions().stream().toList();
+        transactionRepository.deleteAll(transactions);
         repository.deleteById(codeBill);
         return new MessageUtil(1, "Xóa thành công", "bg-success");
-
     }
 
     @Override
@@ -391,6 +407,46 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setShippingCost(BigDecimal.ZERO);
         repository.save(invoice);
         return MessageUtil.builder().message("Hủy giao hàng thành công !").status(1).type("bg-success").build();
+    }
+
+    @Override
+    public MessageUtil updateStatus(String codeBill, String note) {
+        Invoice invoice = repository.getReferenceById(codeBill);
+        if (invoice.getStatus().equals("1")) {
+            invoice.setStatus("2");
+        } else if (invoice.getStatus().equals("2")) {
+            invoice.setStatus("3");
+        } else if (invoice.getStatus().equals("3")) {
+            invoice.setStatus("4");
+        }else if (invoice.getStatus().equals("0")) {
+            return MessageUtil.builder().message("Cập nhật thất bại !").status(1).type("bg-danger").object(codeBill).build();
+        }
+        invoice = repository.save(invoice);
+        Transaction transaction = Transaction.builder()
+                .invoice(invoice)
+                .createDate(LocalDateTime.now())
+                .note(note)
+                .status(invoice.getStatus())
+                .name(UserUltil.getUser().getName())
+                .build();
+        transactionRepository.save(transaction);
+        return MessageUtil.builder().message("Cập nhật thành công !").status(1).type("bg-success").object(codeBill).build();
+    }
+
+    @Override
+    public MessageUtil huyDh(String codeBill, String note) {
+        Invoice invoice = repository.getReferenceById(codeBill);
+        invoice.setStatus("-1");
+        invoice = repository.save(invoice);
+        Transaction transaction = Transaction.builder()
+                .invoice(invoice)
+                .createDate(LocalDateTime.now())
+                .note(note)
+                .status(invoice.getStatus())
+                .name(UserUltil.getUser().getName())
+                .build();
+        transactionRepository.save(transaction);
+        return MessageUtil.builder().message("Hủy thành công !").status(1).type("bg-success").object(codeBill).build();
     }
 
     private String generateCodeBill(int x) {

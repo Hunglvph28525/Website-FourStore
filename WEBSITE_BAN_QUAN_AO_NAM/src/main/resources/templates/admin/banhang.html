@@ -227,10 +227,10 @@
                                         style="float: right; margin-right: 30px; margin-bottom: 30px"
                                         data-toggle="modal" th:data-target="${'#modal' + tab.codeBill}">Thêm sản phẩm
                                 </button>
-                                <button class="btn btn-warning"
-                                        style="float: right; margin-right: 30px; margin-bottom: 30px"
-                                        data-toggle="modal" th:data-target="${'#qrcode' + tab.codeBill}">Quét QR
-                                </button>
+                                <!--                                <button class="btn btn-warning"-->
+                                <!--                                        style="float: right; margin-right: 30px; margin-bottom: 30px"-->
+                                <!--                                        data-toggle="modal" th:data-target="${'#qrcode' + tab.codeBill}">Quét QR-->
+                                <!--                                </button>-->
                             </div>
                             <div class="table-responsive" style="text-align: center">
                                 <div th:if="${tab.product == null or tab.product.size() == 0}">
@@ -273,12 +273,12 @@
                                                        type="number"
                                                        th:value="${a.quantity}"
                                                        step="1" min="1"
-                                                       th:max="${a.productDetail.quantity}"
+                                                       th:max="${a.quantity + a.productDetail.quantity}"
                                                        th:attr="onchange='updateQuantity(\'' + ${a.id} + '\', \'' + ${tab.codeBill} + '\', this.value, ' + ${a.price} + ')'"/>
                                             </td>
-                                            <td class="align-middle p-4" th:text="${a.price + ' đ'}"></td>
+                                            <td class="align-middle p-4" th:text="${a.priceFomat}"></td>
                                             <td class="align-middle p-4" th:id="'total-'+${a.id}"
-                                                th:text="${a.total + ' đ'}"></td>
+                                                th:text="${a.totalFomat}"></td>
                                             <td style="text-align: center">
                                                 <a class="btn bg-danger" style="margin-top: 42px"
                                                    th:href="@{'/admin/cart/'+${tab.codeBill} +'/'+${a.id}}"><i
@@ -290,7 +290,7 @@
                                         <tr>
                                             <td colspan="4" class="text-right"><strong>Tổng cộng :</strong></td>
                                             <td colspan="2"><strong th:id="${'totalAmount-'+tab.codeBill}"
-                                                                    th:text="${tab.total + ' đ'}"></strong>
+                                                                    th:text="${tab.totalFomat}"></strong>
 
                                             </td>
                                         </tr>
@@ -324,8 +324,11 @@
                                                 <p>Số điện thoại nhận hàng : <strong
                                                         th:text="${tab.sdt}"></strong></p>
                                                 <p>Giao hàng tới : <strong
-                                                        th:text="${tab.address}"></strong> <button th:if="${tab.shipping}" class="btn btn-link"
-                                                        th:attr="onclick='giaoHangEdit( \'' + ${tab.codeBill} + '\')'">sửa</button>
+                                                        th:text="${tab.address}"></strong>
+                                                    <button th:if="${tab.shipping}" class="btn btn-link"
+                                                            th:attr="onclick='giaoHangEdit( \'' + ${tab.codeBill} + '\')'">
+                                                        sửa
+                                                    </button>
                                                 </p>
                                             </div>
                                             <div th:id="'diachi'+${tab.codeBill}" style="display: none">
@@ -375,7 +378,9 @@
                                                         <input type="text" class="form-control" name="diachi">
                                                     </div>
                                                     <button class="btn btn-save" type="submit">Xác nhận</button>
-                                                    <a class="btn btn-cancel" th:href="@{'/admin/sale/'+${tab.codeBill}+'/huy'}">Hủy giao hàng</a>
+                                                    <a class="btn btn-cancel"
+                                                       th:href="@{'/admin/sale/'+${tab.codeBill}+'/huy'}">Hủy giao
+                                                        hàng</a>
                                                 </form>
                                             </div>
                                         </div>
@@ -422,7 +427,7 @@
                                                         : </strong></label>
                                                     <div class="text-large text-start col"><strong
                                                             th:id="${'total-'+tab.codeBill}"
-                                                            th:text="${tab.total}"></strong>
+                                                            th:text="${tab.totalFomat}"></strong>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2 text-right">
@@ -430,7 +435,7 @@
                                                         : </strong></label>
                                                     <div class="text-large text-start col"><strong
                                                             th:id="${'giaGiam-'+tab.codeBill}"
-                                                            th:text="${tab.giaGiam}"></strong>
+                                                            th:text="${tab.giaGiamFomat}"></strong>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2 text-right">
@@ -438,14 +443,14 @@
                                                         : </strong></label>
                                                     <div class="text-large col"><strong
                                                             th:id="${'phiShip-'+tab.codeBill}"
-                                                            th:text="${tab.shippingCost}"></strong></div>
+                                                            th:text="${tab.shippingCostFomat}"></strong></div>
                                                 </div>
                                                 <div class="row mt-2 text-right">
                                                     <label class="text-start col"><strong>Thành tiền
                                                         : </strong></label>
                                                     <div class="text-large text-start col"><strong
                                                             th:id="${'grandTotal-'+tab.codeBill}"
-                                                            th:text="${tab.grandTotal}"></strong>
+                                                            th:text="${tab.grandTotalFomat}"></strong>
                                                     </div>
                                                 </div>
                                             </div>
@@ -521,7 +526,7 @@
                                                     <td style="text-align: center"><strong th:text="${x.name}"></strong>
                                                     </td>
                                                     <td style="text-align: center" th:text="${x.quantity}"></td>
-                                                    <td style="text-align: center" th:text="${x.price}"></td>
+                                                    <td style="text-align: center" th:text="${x.priceFomat}"></td>
                                                     <td style="text-align: center">
                                                         <!-- data-toggle="modal" data-target="#modal_box"-->
                                                         <a th:href="@{'/admin/sale/'+${tab.codeBill}+'/add-'+${x.id}}"
@@ -741,7 +746,8 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -926,10 +932,12 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/src/js.cookie.min.js"></script>
 <script th:inline="javascript">
+    const format = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'});
 
     function updateQuantity(productId, codeBill, newQuantity, price) {
         var newTotal = newQuantity * price;
-        document.getElementById('total-' + productId).innerText = newTotal + ' đ';
+        console.log(format.format(newTotal));
+        document.getElementById('total-' + productId).innerText = format.format(newTotal);
         var reg = {
             productId: productId,
             codeBill: codeBill,
@@ -945,11 +953,11 @@
             success: function (response) {
                 // Xử lý kết quả từ server nếu cần
                 console.log(response);
-                document.getElementById('totalAmount-' + codeBill).innerText = response.total;
-                document.getElementById('total-' + codeBill).innerText = response.total;
-                document.getElementById('giaGiam-' + codeBill).innerText = response.giaGiam;
-                document.getElementById('phiShip-' + codeBill).innerText = response.phiShip;
-                document.getElementById('grandTotal-' + codeBill).innerText = response.grandTotal;
+                document.getElementById('totalAmount-' + codeBill).innerText = format.format(response.total);
+                document.getElementById('total-' + codeBill).innerText = format.format(response.total);
+                document.getElementById('giaGiam-' + codeBill).innerText = format.format(response.giaGiam);
+                document.getElementById('phiShip-' + codeBill).innerText = format.format(response.phiShip);
+                document.getElementById('grandTotal-' + codeBill).innerText = format.format(response.grandTotal);
                 document.getElementById('selectPgg' + codeBill).remove();
             },
             error: function () {
@@ -958,8 +966,6 @@
         });
     }
 
-</script>
-<script>
     function check(x, codeBill) {
         var input = document.getElementById('tienmat' + codeBill);
         if (x == 1) {
@@ -972,15 +978,25 @@
     function tinhtienthua(tienKhach, codeBill) {
         var x = document.getElementById('tienthua' + codeBill);
         var o = document.getElementById('grandTotal-' + codeBill);
-        let tienphaitra = o.innerText || o.textContent;
 
+        let m = o.innerText || o.textContent;
+        console.log("output của m "+ m);
+        let tienphaitra = parseFormattedCurrency(m);
         let n = Number(tienKhach) - Number(tienphaitra);
         if (n >= 0) {
-            x.innerText = 'Tiền thừa :' + n + ' đ';
+            x.innerText = 'Tiền thừa :' + format.format(n);
         } else {
-            x.innerText = 'Quý khách còn thiếu :' + -n + ' đ';
+            x.innerText = 'Quý khách còn thiếu :' + format.format(-n);
         }
-        console.log(tienphaitra);
+        console.log('output của tien phải tra '+ tienphaitra);
+    }
+    function parseFormattedCurrency(x) {
+        const cleanedString = x.replace(/[^\d.,]/g, '');
+
+        // Thay thế dấu phẩy (nếu có) bằng dấu chấm và chuyển đổi chuỗi thành số
+        const parsedNumber = cleanedString.replaceAll('.', '');
+
+        return Number(parsedNumber);
     }
 
     function giaoHang(e, codeBill) {
@@ -995,6 +1011,7 @@
     function giaoHangEdit(codeBill) {
         document.getElementById('diachi' + codeBill).style.display = 'block';
     }
+
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>

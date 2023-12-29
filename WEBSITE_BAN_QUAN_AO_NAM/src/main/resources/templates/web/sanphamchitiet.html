@@ -1,0 +1,380 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Coron-single product</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/web/assets/img/favicon.png">
+
+    <!-- all css here -->
+    <link rel="stylesheet" href="\web\assets\css\bootstrap.min.css">
+    <link rel="stylesheet" href="\web\assets\css\plugin.css">
+    <link rel="stylesheet" href="\web\assets\css\bundle.css">
+    <link rel="stylesheet" href="\web\assets\css\style.css">
+    <link rel="stylesheet" href="\web\assets\css\responsive.css">
+
+    <script src="\web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+<!-- Add your site or application content here -->
+
+<!--pos page start-->
+<div class="pos_page">
+    <div class="container">
+        <!--pos page inner-->
+        <div class="pos_page_inner">
+            <!--header area -->
+            <div th:replace="~{layout/webheader :: webheader}"></div>
+            <!--header end -->
+            <!--breadcrumbs area start-->
+            <div class="breadcrumbs_area">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb_content">
+                            <ul>
+                                <li><a href="/">Trang chủ</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li><a href="/shop">Sản phẩm</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li th:text="${product.name}"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--breadcrumbs area end-->
+            <!--product wrapper start-->
+            <div class="product_details">
+                <div class="row">
+                    <div class="col-lg-5 col-md-6">
+                        <div class="product_tab fix">
+                            <div class="product_tab_button">
+                                <ul class="nav" role="tablist">
+                                    <li th:each="img,i : ${product.images}">
+                                        <a th:classappend="${i.index == 0? 'active':''}" data-toggle="tab"
+                                           th:href="@{'#p_tab'+ ${i.index+1}}" role="tab"
+                                           th:attr="aria-controls='p_tab'+${i.index+1}" aria-selected="false"><img
+                                                th:src="@{${img.url}}" alt=""></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content produc_tab_c">
+                                <div class="tab-pane fade" th:classappend="${i.index == 0? 'show active':''}"
+                                     th:id="'p_tab'+${i.index+1}" role="tabpanel" th:each="img,i : ${product.images}">
+                                    <div class="modal_img">
+                                        <a href="#"><img th:src="@{${img.url}}" alt=""></a>
+                                        <div class="img_icone">
+                                            <img th:src="@{${img.url}}" alt="">
+                                        </div>
+                                        <div class="view_img">
+                                            <a class="large_view" th:href="@{${img.url}}"><i
+                                                    class="fa fa-search-plus"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-6">
+                        <form id="form" method="post">
+                            <div class="product_d_right">
+                                <h1 th:text="${product.name}"></h1>
+
+                                <div class="content_price mb-15 mt-15">
+                                    <span id="price"></span>
+                                </div>
+
+                                <div class="product_d_size mb-20">
+                                    <label for="color">Màu sắc</label>
+                                    <select name="color" id="color" style="width: 200px; border-radius: 10px; border-color: #0a0a0a; margin-left: 15px"  onchange="updateSizes()">
+                                        <option th:each="x : ${product.colors}" th:value="${x.id}"
+                                                th:text="${x.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="sidebar_widget color">
+                                    <h2>Kích cỡ</h2>
+                                    <div class="widget_color">
+                                        <ul id="size">
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="product_stock mb-20">
+                                    <p id="quantity"></p>
+                                </div>
+
+                                <div class="box_quantity mb-20">
+                                    <label>Số luọng</label>
+                                    <input name="quantity" id="slm" onchange="checkinputsl()" value="1" min="1" type="number"/>
+
+                                </div>
+                                <div class="box_quantity mb-20">
+                                    <button type="button" onclick="addtocart()">
+                                        <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng
+                                    </button>
+                                    <button type="button" onclick="muaNgay()">
+                                        <i class="fa fa-shopping-cart"></i> Mua ngay
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--product details end-->
+            <!--product info start-->
+            <div class="product_d_info">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="product_d_inner">
+                            <div class="product_info_button">
+                                <ul class="nav" role="tablist">
+                                    <li>
+                                        <a class="active" data-toggle="tab" href="#info" role="tab" aria-controls="info"
+                                           aria-selected="false">Thông tin</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#sheet" role="tab" aria-controls="sheet"
+                                           aria-selected="false">Thông số</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="info" role="tabpanel">
+                                    <div class="product_info_content">
+                                        <p th:text="${product.descriptionProduct}"></p>
+                                    </div>
+                                </div>
+
+                                <div class="tab-pane fade" id="sheet" role="tabpanel">
+                                    <div class="product_d_table">
+                                        <form action="#">
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="first_child">Kiểu dáng</td>
+                                                    <td th:text="${product.style}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first_child">Chất liệu</td>
+                                                    <td th:text="${product.fabric}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first_child">Họa tiết</td>
+                                                    <td th:text="${product.pattern}"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="first_child">Thương hiệu</td>
+                                                    <td th:text="${product.brand.name}"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                    <div class="product_info_content">
+                                        <p th:text="${product.descriptionProduct}"></p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--product info end-->
+            <!--new product area start-->
+            <div class="new_product_area product_page">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="block_title">
+                            <h3>Sản Phẩm cùng loại</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="single_p_active owl-carousel">
+                        <div class="col-lg-3" th:each="x : ${topProducts}">
+                            <div class="single_product">
+                                <div class="product_thumb">
+                                    <a th:href="@{'/shop/'+ ${x.id}}"><img
+                                            th:src="@{${x.image}}"
+                                            alt=""></a>
+                                    <div class="img_icone">
+                                        <img src="/web/assets/img/cart/span-new.png" alt="">
+                                    </div>
+                                    <div class="product_action">
+                                        <a th:href="@{'/shop/'+ ${x.id}}">Thêm vào giỏ hàng</a>
+
+                                    </div>
+                                </div>
+                                <div class="product_content">
+                                    <span class="product_price">500.000đ</span>
+                                    <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}" th:text="${x.name}"></a>
+                                    </h3>
+                                </div>
+                                <div class="product_info">
+                                    <ul>
+                                        <li><a th:href="@{'/shop/'+ ${x.id}}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--new product area start-->
+            <!--new product area start-->
+<!--            <div class="new_product_area product_page">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-12">-->
+<!--                        <div class="block_title">-->
+<!--                            <h3> Related Products</h3>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="single_p_active owl-carousel">-->
+<!--                        <div class="col-lg-3" th:each="x : ${topProducts}">-->
+<!--                            <div class="single_product">-->
+<!--                                <div class="product_thumb">-->
+<!--                                    <a th:href="@{'/shop/'+ ${x.id}}"><img-->
+<!--                                            th:src="@{${x.image}}"-->
+<!--                                            alt=""></a>-->
+<!--                                    <div class="img_icone">-->
+<!--                                        <img src="/web/assets/img/cart/span-new.png" alt="">-->
+<!--                                    </div>-->
+<!--                                    <div class="product_action">-->
+<!--                                        <a th:href="@{'/shop/'+ ${x.id}}">Thêm vào giỏ hàng</a>-->
+
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="product_content">-->
+<!--                                    <span class="product_price">500.000đ</span>-->
+<!--                                    <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}" th:text="${x.name}"></a>-->
+<!--                                    </h3>-->
+<!--                                </div>-->
+<!--                                <div class="product_info">-->
+<!--                                    <ul>-->
+<!--                                        <li><a th:href="@{'/shop/'+ ${x.id}}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;new product area start&ndash;&gt;-->
+        </div>
+        <!--pos page inner end-->
+    </div>
+</div>
+<script th:inline="javascript">
+    const format = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'});
+    function checkinputsl() {
+        var target = event.target;
+        inputValue = target.value;
+        if (inputValue < parseFloat(target.min)) {
+            target.value = target.min;
+        } else if (inputValue > parseFloat(target.max)) {
+            target.value = target.max;
+        }
+
+    }
+
+    function updateSizes() {
+        var colorId = $('#color').val();
+        console.log(colorId);
+        // /*[[${product.sizes}]]*/ [];
+        var version = /*[[${product.vertions}]]*/ [];
+        var sizes = [];
+        version.forEach(x => {
+            if (x.color.id == colorId) {
+                sizes.push(x.size);
+            }
+        });
+        console.log(sizes);
+        $('#size').empty();
+
+        sizes.forEach(function (size) {
+            $('#size').append('<li><input type="radio" class="mr-1" name="size" onclick="updatePriceAndQuantity(this.value)" value="' + size.id + '"/>' + '<label class="mr-3">' + size.name) + '</label></li>';
+        });
+        updatePriceAndQuantity()
+    }
+
+    function initgia() {
+        var optionsize = document.querySelector('input[type = radio]');
+        optionsize.checked = true;
+        updatePriceAndQuantity(optionsize.value)
+    }
+
+    function updatePriceAndQuantity(sizeId) {
+        var colorId = $('#color').val();
+        var version = /*[[${product.vertions}]]*/ [];
+        version.forEach(x => {
+            if (x.size.id == sizeId && x.color.id == colorId) {
+                $('#price').text( format.format(x.price));
+                var quantity = x.quantity <= 0 ? "Sản phẩm hết hàng" : "Còn " + x.quantity + 'Sản phẩm';
+                $('#quantity').text(quantity);
+                document.getElementById("slm").max = x.quantity;
+                return;
+            }
+        })
+    }
+
+    var productId = /*[[${product.id}]]*/ null;
+
+    function addtocart() {
+        var form = document.getElementById('form')
+        if (chek() == true) {
+            form.action = '/user/addtocart/' + productId;
+            form.submit()
+        }else {
+            alert("Vui lòng chọn số lượng, màu sắc kích cỡ !")
+        }
+    }
+
+    function muaNgay() {
+        var form = document.getElementById('form')
+        if (chek() == true) {
+            form.action = '/user/buynow/' + productId;
+            form.submit()
+        }else {
+            alert("Vui lòng chọn số lượng, màu sắc kích cỡ hoặc sản phẩm đã hết hàng !")
+        }
+    }
+
+    function chek() {
+        var version = /*[[${product.vertions}]]*/ [];
+        var colorId = $('#color').val();
+        var slMua = $('#slm').val();
+        var sizes = document.getElementsByName('size');
+        var sizeId;
+        sizes.forEach(x => {
+            if (x.checked) {
+                sizeId = x.value;
+            }
+        });
+        var isConditionMet = version.some(x => {
+            return x.size.id == sizeId && x.color.id == colorId && x.quantity > 0 && slMua <= x.quantity;
+        });
+        return isConditionMet;
+    }
+
+    $(document).ready(function () {
+        updateSizes();
+        initgia();
+    });
+</script>
+<div th:replace="~{layout/webfooter :: webfooter}"></div>
+<!--pos page end-->
+<!-- all js here -->
+<script src="\web\assets\js\vendor\jquery-1.12.0.min.js"></script>
+<script src="\web\assets\js\popper.js"></script>
+<script src="\web\assets\js\bootstrap.min.js"></script>
+<script src="\web\assets\js\ajax-mail.js"></script>
+<script src="\web\assets\js\plugins.js"></script>
+<script src="\web\assets\js\main.js"></script>
+</body>
+</html>

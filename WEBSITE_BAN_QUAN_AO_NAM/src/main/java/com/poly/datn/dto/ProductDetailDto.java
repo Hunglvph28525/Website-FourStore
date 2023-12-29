@@ -4,6 +4,7 @@ package com.poly.datn.dto;
 import com.poly.datn.entity.Image;
 import com.poly.datn.entity.Product;
 import com.poly.datn.entity.ProductDetail;
+import com.poly.datn.util.Fomater;
 import lombok.*;
 
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class ProductDetailDto {
     private String name;
     private Integer quantity;
     private Long price;
+    private String priceFomat;
     private String img;
 
     public ProductDetailDto(ProductDetail x) {
@@ -29,5 +31,6 @@ public class ProductDetailDto {
         this.quantity = x.getQuantity();
         this.price = x.getPrice().longValue();
         this.img = image.getUrl();
+        this.priceFomat = Fomater.fomatTien().format(this.price);
     }
 }

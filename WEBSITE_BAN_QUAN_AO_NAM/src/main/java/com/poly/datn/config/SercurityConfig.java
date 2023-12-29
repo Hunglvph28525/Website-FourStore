@@ -12,10 +12,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -38,21 +41,27 @@ public class SercurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        return http
-//            .csrf(AbstractHttpConfigurer::disable)
-//            .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
-//                .hasRole("ADMIN")
-//                .anyRequest().permitAll()
-//            )
-//                .formLogin( c -> c.loginPage("/login").defaultSuccessUrl("/home",true))
-//                .logout(c -> c.logoutUrl("/logout").logoutSuccessUrl("/home")).build();
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/user/**","/cart/**","/checkout/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .anyRequest().permitAll()
+                )
+                .formLogin(c -> c.loginPage("/login").defaultSuccessUrl("/home", false))
+                .logout(c -> c.logoutUrl("/logout").logoutSuccessUrl("/login").deleteCookies("JSESSIONID")).httpBasic(Customizer.withDefaults()).build();
 
-//            .formLogin(c -> c.loginPage("/login")
-//                .successForwardUrl("/home"))
+//            http.formLogin()
 //            .logout(lo -> lo.logoutUrl("/logout"))
-//            .httpBasic(Customizer.withDefaults())
+//
 //            .build();
-        return http.csrf().disable().authorizeRequests().anyRequest().permitAll().and().build();
+//        return http.csrf().disable().authorizeRequests().anyRequest().permitAll().and().build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
