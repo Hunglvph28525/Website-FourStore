@@ -3,13 +3,10 @@ package com.poly.datn.controller.web;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.poly.datn.dto.GioHangDto;
 import com.poly.datn.dto.OrderDetailDto;
 import com.poly.datn.dto.SelectedProduct;
-import com.poly.datn.entity.Product;
 import com.poly.datn.service.*;
 import com.poly.datn.util.MessageUtil;
-import com.poly.datn.util.UserUltil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/")
