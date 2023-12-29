@@ -168,8 +168,8 @@
                                 <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
                                           th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
                                 <td th:text="${x.grandTotalFomat}"></td>
-                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
-                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                <td><span class="badge" th:classappend="${x.paymentStatus == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentStatus == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
                                 </td>
                                 <td><span class="badge"
                                           th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
@@ -206,8 +206,8 @@
                                 <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
                                           th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
                                 <td th:text="${x.grandTotalFomat}"></td>
-                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
-                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                <td><span class="badge" th:classappend="${x.paymentStatus == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentStatus == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
                                 </td>
                                 <td><span class="badge"
                                           th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
@@ -244,8 +244,8 @@
                                 <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
                                           th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
                                 <td th:text="${x.grandTotalFomat}"></td>
-                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
-                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                <td><span class="badge" th:classappend="${x.paymentStatus == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentStatus == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
                                 </td>
                                 <td><span class="badge"
                                           th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"
@@ -280,10 +280,10 @@
                                 <td th:text="${x.codeBill}"></td>
                                 <td th:text="${x.user.name}"></td>
                                 <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
-                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                          th:text="${x.type == '1' ? 'Tại Quầy' :'Online'}"></span></td>
                                 <td th:text="${x.grandTotalFomat}"></td>
-                                <td><span class="badge" th:classappend="${x.paymentInfo == '0'? 'bg-danger':'bg-info'}"
-                                          th:text="${x.paymentInfo == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                <td><span class="badge" th:classappend="${x.paymentStatus == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentStatus == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
                                 </td>
                                 <td><span class="badge"
                                           th:classappend="${x.status == '0' ? 'bg-warning' : (x.status.matches('[1-3]') ? 'bg-info' : (x.status == '4' ? 'bg-success' : 'bg-danger'))}"

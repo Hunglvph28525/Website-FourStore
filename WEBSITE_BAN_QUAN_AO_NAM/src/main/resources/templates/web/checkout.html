@@ -16,6 +16,11 @@
     <link rel="stylesheet" href="web\assets\css\style.css">
     <link rel="stylesheet" href="web\assets\css\responsive.css">
     <script src="web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <!-- Add your site or application content here -->
@@ -58,18 +63,25 @@
                                             th:text="${ ' '+order.name + ' - ' + order.sdt + ' '}">
                                     </strong><span
                                             th:text="${order.address.street + ', ' + order.address.ward + ', ' + order.address.district +', ' + order.address.province+'.' }"></span>
-                                        <button type="button" class="btn btn-link"
+                                        <button type="button" class="btn btn-link" style="color: #4bac4d"
                                                 data-toggle="modal" data-target="#exampleModal">
                                             Thay đổi
                                         </button>
                                     </p>
+                                    <button type="button" class="btn btn-link" style="color: #0b93ff" id="btn-new"
+                                            onclick="showAddress(true)">
+                                        Tạo địa chỉ mới
+                                    </button>
                                 </div>
-                                <div th:if="${order.address == null }" class="col-12 mb-30">
-                                    <form class="row" action="/checkout/add-address" method="post">
+
+                                <div class="col-12 mb-30">
+                                    <form class="row" action="/checkout/add-address" id="form-new" method="post"
+                                          th:classappend="${order.address == null ? '':'hidden' }" th:object="${order}">
                                         <div class="form-group col-md-6">
                                             <label class="control-label">Họ và tên <label
                                                     style="color:red;">*</label></label>
-                                            <input type="text" class="form-control" th:value="${order.name}" name="name">
+                                            <input type="text" class="form-control" th:value="${order.name}"
+                                                   name="name">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label class="control-label">Số điện thoại<label
@@ -79,7 +91,8 @@
                                         <div class="form-group col-md-6">
                                             <label class="control-label">Tỉnh/Thành phố <label
                                                     style="color:red;">*</label></label>
-                                            <select class="form-control " id="city" aria-label=".form-select-sm">
+                                            <select class="form-control " id="city" aria-label=".form-select-sm"
+                                                    name="province">
                                                 <option value="Name" selected>Chọn tỉnh thành
                                                 </option>
                                             </select>
@@ -88,7 +101,8 @@
                                             <label class="control-label">Quận/Huyện <label
                                                     style="color:red;">*</label></label>
 
-                                            <select class="form-control " id="district" aria-label=".form-select-sm">
+                                            <select class="form-control " id="district" aria-label=".form-select-sm"
+                                                    name="district">
                                                 <option value="" selected>Chọn quận huyện
                                                 </option>
                                             </select>
@@ -97,7 +111,8 @@
                                             <label class="control-label">Phường/Xã <label
                                                     style="color:red;">*</label></label>
 
-                                            <select class="form-control " id="ward" aria-label=".form-select-sm">
+                                            <select class="form-control " id="ward" aria-label=".form-select-sm"
+                                                    name="ward">
                                                 <option value="" selected>Chọn phường xã
                                                 </option>
                                             </select>
@@ -107,77 +122,100 @@
                                                     style="color:red;">*</label></label>
                                             <input type="text" class="form-control" name="street">
                                         </div>
+                                        <div class="form-group col-md-6">
+                                            <button type="button" class="btn btn-cancel" onclick="showAddress(false)">
+                                                Hủy
+                                            </button>
+                                            <button type="submit" class="btn btn-success">Xác nhận</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12">
-                        <form action="#">
+                        <form action="/order/payment" method="post">
                             <h3>Sản phẩm</h3>
                             <div class="order_table table-responsive mb-30">
                                 <table>
                                     <thead>
                                     <tr>
-                                        <th class="product_thumb">Hình ảnh</th>
-                                        <th class="product_name">Tên sản phẩm</th>
-                                        <th class="product-price">Giá bán</th>
-                                        <th class="product_quantity">Số lượng</th>
-                                        <th class="product_total">Thành tiền</th>
+                                        <th>STT</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá bán</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="x,i: ${order.products}">
+                                        <td th:text="${i.index+1}"></td>
                                         <td><a href="#"><img width="120px" th:src="@{${x.product.img}}"
-                                                                                   alt=""></a></td>
+                                                             alt=""></a></td>
                                         <td><a href="#" th:text="${x.product.name}"></a></td>
-                                        <td th:text="${x.price + ' đ'}"></td>
                                         <td th:text="${x.quantity}"></td>
-                                        <td th:text="${x.price * x.quantity}"></td>
+                                        <td th:text="${x.priceFomat}"></td>
                                         </td>
                                     </tr>
                                     </tbody>
                                     <tfoot>
                                     <tr>
                                         <th colspan="4">Tổng tiền sản phẩm</th>
-                                        <td><strong th:text="${order.total}"></strong></td>
+                                        <td><strong th:text="${order.totalFomat}"></strong></td>
                                     </tr>
                                     <tr>
                                         <th colspan="4">Phí giao hàng</th>
-                                        <td><strong th:text="${order.shippingCost}"></strong></td>
+                                        <td><strong th:text="${order.shippingCostFomat}"></strong></td>
                                     </tr>
                                     <tr>
                                         <th colspan="4">Giá giảm</th>
-                                        <td><strong th:text="${order.giaGiam}"></strong></td>
+                                        <td><strong th:text="${order.giaGiamFomat}"></strong></td>
                                     </tr>
                                     <tr class="order_total">
                                         <th colspan="4">Tổng đơn hàng</th>
-                                        <td><strong th:text="${order.grandTotal}"></strong></td>
+                                        <td><strong th:text="${order.grandTotalFomat}"></strong></td>
                                     </tr>
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="payment_method">
-                                <div class="panel-default">
-                                    <input id="payment" name="check_method" type="radio"
-                                           data-target="createp_account">
-                                    <label for="payment" data-toggle="collapse" data-target="#method"
-                                           aria-controls="method">Create an account?</label>
+                            <div class="row">
+                                <div class="col-md-6 mb-30">
+                                    <div class="coupon_code">
+                                        <h3>Phiếu giảm giá</h3>
 
-                                    <div id="method" class="collapse one" data-parent="#accordion">
+                                        <div class="coupon_inner">
+                                            <div th:if="${order.promotion != null}">
+                                                <p><span th:text="${'Áp dụng mã '+ order.promotion.giftCode + ' thành công '}"></span></p>
+                                                <button type="button"
+                                                        class="btn btn-link" data-toggle="modal" data-target="#pgg">
+                                                    thay đổi phiếu giảm giá
+                                                </button>
+                                            </div>
+                                            <button type="button" th:if="${order.promotion == null}"
+                                                    class="btn btn-primary" data-toggle="modal" data-target="#pgg">
+                                                chọn phiếu giảm giá
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="panel-default">
-                                <input id="payment_defult" name="check_method" type="radio"
-                                       data-target="createp_account">
-                                <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult"
-                                       aria-controls="collapsedefult">PayPal <img src="assets\img\visha\papyel.png"
-                                                                                  alt=""></label>
+                                <div class="col-md-6">
+                                    <div class="mt-1 mb-1">
+                                        <div>
+                                            <label>Lời nhắn : </label>
+                                            <input name="note" type="text" placeholder="Lời nhắn cho người bán">
 
-                            </div>
-                            <div class="order_button">
-                                <button type="submit">Proceed to PayPal</button>
+                                        </div>
+                                    </div>
+                                    <div class="payment_method" th:each="x, i : ${paymeThod}">
+                                        <div class="panel-default">
+                                            <input th:id="${'mt' + i.index}" name="paymethod" type="radio" th:value="${x.id}">
+                                            <label th:for="${'mt' + i.index}" th:text="${x.methodName}"></label>
+                                        </div>
+                                    </div>
+                                    <div class="order_button">
+                                        <button type="submit">Thanh toán</button>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -186,7 +224,54 @@
         </div>
     </div>
 </div>
+<div class="modal" id="pgg">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Chọn phiếu giảm giá</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
 
+            <div class="modal-body">
+                <table>
+                    <thead>
+                    <tr>
+                        <th style="text-align: center">STT</th>
+                        <th style="text-align: center">Mã giảm giá</th>
+                        <th style="text-align: center">Điều kiện</th>
+                        <th style="text-align: center">Giảm giá</th>
+                        <th style="text-align: center">Lượt dùng</th>
+
+                        <th style="text-align: center">Chức năng</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="x,arr : ${pgg}">
+                        <td style="text-align: center"
+                            th:text="${arr.index + 1}"></td>
+                        <td style="text-align: center" th:text="${x.giftCode}"></td>
+                        <td style="text-align: center"
+                            th:text="${'Đơn tối thiểu ' + x.minValue1 + ' đ'}"></td>
+                        <td style="text-align: center"
+                            th:text="${x.discount + '%'}"></td>
+                        <td style="text-align: center" th:text="${x.quantity}"></td>
+                        <td style="text-align: center">
+                            <!-- data-toggle="modal" data-target="#modal_box"-->
+                            <a th:href="@{'/checkout/add-pgg/'+${x.id}}"
+                               class="btn btn-success">chọn</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 <!--pos page end-->
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -201,57 +286,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" id="selectDiachi" th:if="${order.addresses != null}">
-                    <div th:each="x : ${order.addresses}">
-                        <input class="ml-1" type="radio" name="diachi" th:value="${x.id}"><label><strong
+                <form action="/checkout/edit-address" id="selectDiachi" method="post"
+                      th:if="${order.addresses != null}">
+                    <div th:each="x: ${order.addresses}">
+                        <input class="ml-1" type="radio" name="diachi" th:id="${x.id}" th:value="${x.id}"><label
+                            th:for="${x.id}"><strong
                             th:text="${ ' '+order.name + ' - ' + order.sdt + ' '}">
                     </strong><span
-                            th:text="${x.street + ', ' + x.ward + ', ' + x.district +', ' + x.province+'.' }"></span></label>
+                            th:text="${x.street + ', ' + x.ward + ', ' + x.district +', ' + x.province+'.' }"></span>
+                        <span style="color: red" th:text="${x.status == 'on'? '[ Mặc định ]' : ' '}"></span></label>
                     </div>
-                </form>
-                <form action="/checkout-new-address" id="newDiaChi" method="post">
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Họ và tên <label style="color:red;">*</label></label>
-                        <input type="text" class="form-control" name="street">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Số điện thoại<label style="color:red;">*</label></label>
-                        <input type="text" class="form-control" name="street">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Tỉnh/Thành phố <label style="color:red;">*</label></label>
-
-                        <select class="form-control " id="city" aria-label=".form-select-sm">
-                            <option value="Name" selected>Chọn tỉnh thành
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Quận/Huyện <label style="color:red;">*</label></label>
-
-                        <select class="form-control " id="district" aria-label=".form-select-sm">
-                            <option value="" selected>Chọn quận huyện
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Phường/Xã <label style="color:red;">*</label></label>
-
-                        <select class="form-control " id="ward" aria-label=".form-select-sm">
-                            <option value="" selected>Chọn phường xã
-                            </option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Số nhà, Đường <label style="color:red;">*</label></label>
-                        <input type="text" class="form-control" name="street">
-                    </div>
-
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">thoát</button>
-                <button type="button" class="btn btn-primary">Lưu lại</button>
+                <button type="button" class="btn btn-success" onclick="submitForm()">Lưu lại</button>
             </div>
         </div>
     </div>
@@ -261,11 +310,25 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
     // Function to render dropdown options
+    function submitForm() {
+        document.getElementById("selectDiachi").submit();
+    }
+
     function renderDropdown(data, dropdown, placeholder) {
         dropdown.innerHTML = `<option value="" selected>${placeholder}</option>`;
         data.forEach(item => {
             dropdown.innerHTML += `<option value="${item.Name}">${item.Name}</option>`;
         });
+    }
+
+    function showAddress(bll) {
+        var form = document.getElementById('form-new');
+        form.classList.toggle("hidden");
+        if (bll == true) {
+            document.getElementById('btn-new').style.display = 'none';
+        } else {
+            document.getElementById('btn-new').style.display = 'block';
+        }
     }
 
     // Fetch data from the provided URL

@@ -124,7 +124,7 @@
                     <div class="row">
                         <div class="col">
                             <p th:text="${'Mã đơn hàng : ' + detail.codeBill}"></p>
-                            <p th:text="${'Loại đơn hàng : ' + detail.type}"></p>
+                            <p th:text="${'Loại đơn hàng : ' + (detail.type == '1' ? 'Tại Quầy' :'Online')}"></p>
                             <p th:text="${'Trạng thái : ' + (detail.status == '0' ? 'Chờ thanh toán' : (detail.status == '1' ? 'Chờ xác nhận' : (detail.status == '2' ? 'Chờ giao' : (detail.status == '3' ? 'Đang giao hàng' : (detail.status == '4' ? 'Hoàn thành' : 'Đã hủy')))))}"></p>
                         </div>
                         <div class="col">

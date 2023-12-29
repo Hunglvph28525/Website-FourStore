@@ -47,7 +47,7 @@
             <!--breadcrumbs area end-->
             <!--shopping cart area start -->
             <div class="shopping_cart_area">
-                <form id="checkoutForm" action="/checkout" method="post">
+                <form id="checkoutForm" action="" method="post">
                     <div class="row">
                         <div class="col-12">
                             <div class="table_desc">
@@ -60,24 +60,27 @@
                                             <th class="product_name">Tên sản phẩm</th>
                                             <th class="product-price">Giá bán</th>
                                             <th class="product_quantity">Số lượng</th>
-                                            <th class="product_total">Tổng tiền</th>
                                             <th class="product_remove">Xóa</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="x,i: ${giohang.cartDetails}">
-                                            <td><input onchange="iselectSp()" type="checkbox" th:id="'product' + ${i.index}" th:value="${x.product.id}" name="idSp"></td>
+                                            <td style="width: 100px"><input onchange="iselectSp()" type="checkbox"
+                                                                            th:id="'product' + ${i.index}"
+                                                                            th:value="${x.product.id}" name="idSp"></td>
                                             <td class="product_thumb"><a href="#"><img th:src="@{${x.product.img}}"
                                                                                        alt=""></a></td>
                                             <td class="product_name"><a href="#" th:text="${x.product.name}"></a></td>
-                                            <td class="product-price" th:text="${x.price + ' đ'}"></td>
+                                            <td class="product-price" th:text="${x.priceFomat}"></td>
                                             <td class="product_quantity"><input th:id="'quantity'+${i.index}"
                                                                                 name="quantity" min="1"
                                                                                 th:max="${x.product.quantity}"
                                                                                 th:value="${x.quantity}"
-                                                                                type="number" onchange="tinhtien()"></td>
-                                            <td class="product_total" th:text="${x.price * x.quantity}"></td>
-                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a>
+                                                                                type="number" onchange="tinhtien()">
+                                            </td>
+                                            <td class="product_remove"><a
+                                                    th:href="@{'/cart/delete-product/'+${x.product.id}}"><i
+                                                    class="fa fa-trash-o"></i></a>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -90,15 +93,18 @@
                     <div class="coupon_area">
                         <div class="row">
                             <div class="col-lg-6 col-md-6">
-<!--                                <div class="coupon_code">-->
-<!--                                    <h3>Phiếu giảm giá</h3>-->
-<!--                                    <div class="coupon_inner">-->
-<!--                                        <select name="color" id="color" style="width: 200px; border-radius: 10px; border-color: #0a0a0a; margin-left: 15px"  onchange="updateSizes()">-->
-<!--                                            <option th:each="x : ${vouchers}" th:value="${x.id}"-->
-<!--                                                    th:text="${x.giftCode}"></option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                                <div class="coupon_code">
+                                    <h3>Sản phẩm</h3>
+                                    <div class="coupon_inner">
+                                        <div class="cart_subtotal">
+                                            <p>Đã chọn :</p>
+                                            <p class="cart_amount" id="tongsp"></p>
+                                        </div>
+                                        <div class="checkout_btn">
+                                            <button type="button" onclick="deletecarr()">Xóa khỏi giỏ hàng</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-lg-6 col-md-6">
                                 <div class="coupon_code">
@@ -107,10 +113,10 @@
                                         <div class="cart_subtotal">
                                             <p>Tổng tiền hàng</p>
                                             <p class="cart_amount" id="tongTien">0 đ</p>
-                                            <input type="hidden" id="selectedProducts" name="selectedProducts" />
+                                            <input type="hidden" id="selectedProducts" name="selectedProducts"/>
                                         </div>
                                         <div class="checkout_btn">
-                                            <button type="button"  onclick="submitCheckoutForm()">Thanh toán</button>
+                                            <button type="button" onclick="submitCheckoutForm()">Thanh toán</button>
                                         </div>
                                     </div>
                                 </div>
@@ -131,6 +137,8 @@
 <div th:replace="~{layout/webfooter :: webfooter}"></div>
 
 <script>
+    const format = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'});
+
     function iselectAll() {
         var selectall = document.getElementById("selectAll");
         var sp = document.getElementsByName("idSp");
@@ -142,34 +150,50 @@
         tinhtien();
     }
 
+    function parseFormattedCurrency(x) {
+        const cleanedString = x.replace(/[^\d.,]/g, '');
+
+        // Thay thế dấu phẩy (nếu có) bằng dấu chấm và chuyển đổi chuỗi thành số
+        const parsedNumber = cleanedString.replaceAll('.', '');
+
+        return Number(parsedNumber);
+    }
+
     function iselectSp() {
         document.getElementById("selectAll").checked = false;
         tinhtien();
     }
 
     function tinhtien() {
+        checkinputsl();
         var checkboxes = document.getElementsByName('idSp');
         var total = 0;
+        var count = 0;
 
         checkboxes.forEach(function (checkbox, index) {
             if (checkbox.checked) {
                 // Assuming prices and quantities are stored in adjacent cells
                 var row = checkbox.closest('tr');
-                var price = parseFloat(row.querySelector('.product-price').textContent);
+                var price = row.querySelector('.product-price').textContent;
                 var quantity = parseInt(row.querySelector('.product_quantity input').value);
-                total += price * quantity;
+                count++;
+                total += parseFormattedCurrency(price) * quantity;
             }
         });
 
         // Update the total amount on your page
-        document.getElementById('tongTien').textContent = total.toFixed(0) + ' đ';
+        document.getElementById('tongsp').textContent = count + " sản phẩm";
+        document.getElementById('tongTien').textContent = format.format(total.toFixed(0));
     }
+
     function submitCheckoutForm() {
         var checkboxes = document.getElementsByName('idSp');
         var selectedProducts = [];
+        var count = 0;
 
         checkboxes.forEach(function (checkbox) {
             if (checkbox.checked) {
+                count++;
                 var row = checkbox.closest('tr');
                 var productId = checkbox.value; // Thay thế bằng selector của ID sản phẩm hoặc thông tin khác
                 var quantity = parseInt(row.querySelector('.product_quantity input').value);
@@ -180,12 +204,53 @@
                 });
             }
         });
+        if (count > 0) {
+            document.getElementById('selectedProducts').value = JSON.stringify(selectedProducts);
+            // Submit form
+            document.getElementById('checkoutForm').action = "/checkout"
+            document.getElementById('checkoutForm').submit();
+        } else {
+            alert("hãy chọn sản phẩm cần thanh toán");
+        }
+    }
 
-        // Đặt giá trị JSON vào một trường ẩn của form để gửi về server
-        document.getElementById('selectedProducts').value = JSON.stringify(selectedProducts);
-console.log(selectedProducts);
-        // Submit form
-        document.getElementById('checkoutForm').submit();
+    function deletecarr() {
+        var checkboxes = document.getElementsByName('idSp');
+        var selectedProducts = [];
+        var count = 0;
+
+        checkboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                count++;
+                var row = checkbox.closest('tr');
+                var productId = checkbox.value; // Thay thế bằng selector của ID sản phẩm hoặc thông tin khác
+                var quantity = parseInt(row.querySelector('.product_quantity input').value);
+
+                selectedProducts.push({
+                    productId: productId,
+                    quantity: quantity
+                });
+            }
+        });
+        if (count > 0) {
+            document.getElementById('selectedProducts').value = JSON.stringify(selectedProducts);
+            // Submit form
+            document.getElementById('checkoutForm').action = "/delete/cart"
+            document.getElementById('checkoutForm').submit();
+        } else {
+            alert("hãy chọn sản phẩm cần xóa");
+        }
+    }
+
+    function checkinputsl() {
+        var target = event.target;
+        inputValue = target.value;
+        if (inputValue < parseFloat(target.min)) {
+            target.value = target.min;
+        } else if (inputValue > parseFloat(target.max)) {
+            target.value = target.max;
+        }
+
     }
 </script>
 

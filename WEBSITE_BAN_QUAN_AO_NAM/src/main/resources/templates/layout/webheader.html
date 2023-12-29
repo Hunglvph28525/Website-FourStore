@@ -47,7 +47,7 @@
                         </form>
                     </div>
                     <div class="shopping_cart">
-                        <a href="#" th:text="${giohang.tongSp + ' - ' + giohang.total}"><i class="fa fa-shopping-cart"></i>
+                        <a href="#" th:text="${giohang.tongSp + ' - ' + giohang.totalFomat}"><i class="fa fa-shopping-cart"></i>
                               <i class="fa fa-angle-down"></i></a>
 
                         <!--mini cart-->
@@ -58,16 +58,15 @@
                                 </div>
                                 <div class="cart_info">
                                     <a href="#" th:text="${x.product.name}"></a>
-                                    <span class="cart_price" th:text="${x.price + ' đ'}"></span>
+                                    <span class="cart_price" th:text="${x.priceFomat}"></span>
                                     <span class="quantity" th:text="${x.quantity}"></span>
                                 </div>
                                 <div class="cart_remove">
-                                    <a title="Remove this item" href="#"><i class="fa fa-times-circle"></i></a>
                                 </div>
                             </div>
                             <div class="total_price">
                                 <span> Tổng tiền </span>
-                                <span class="prices" th:text="${giohang.total}"></span>
+                                <span class="prices" th:text="${giohang.totalFomat}"></span>
                             </div>
                             <div class="cart_button">
                                 <a href="/cart"> Thanh toán ngay</a>

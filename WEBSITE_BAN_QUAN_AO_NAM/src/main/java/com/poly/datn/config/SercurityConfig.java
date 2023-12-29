@@ -45,7 +45,7 @@ public class SercurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
                         .hasRole("ADMIN")
-                        .requestMatchers("/user/**","/cart/**")
+                        .requestMatchers("/user/**","/cart/**","/checkout/**")
                         .hasAnyRole("ADMIN", "USER")
                         .anyRequest().permitAll()
                 )

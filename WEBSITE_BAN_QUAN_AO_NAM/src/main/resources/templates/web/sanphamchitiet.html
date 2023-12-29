@@ -109,7 +109,7 @@
 
                                 <div class="box_quantity mb-20">
                                     <label>Số luọng</label>
-                                    <input name="quantity" id="slm" min="0" max="100" value="1" type="number"/>
+                                    <input name="quantity" id="slm" onchange="checkinputsl()" value="1" min="1" type="number"/>
 
                                 </div>
                                 <div class="box_quantity mb-20">
@@ -189,7 +189,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="block_title">
-                            <h3> 11 other products category:</h3>
+                            <h3>Sản Phẩm cùng loại</h3>
                         </div>
                     </div>
                 </div>
@@ -216,7 +216,7 @@
                                 </div>
                                 <div class="product_info">
                                     <ul>
-                                        <li><a th:href="@{#}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
+                                        <li><a th:href="@{'/shop/'+ ${x.id}}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -226,51 +226,63 @@
             </div>
             <!--new product area start-->
             <!--new product area start-->
-            <div class="new_product_area product_page">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="block_title">
-                            <h3> Related Products</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="single_p_active owl-carousel">
-                        <div class="col-lg-3" th:each="x : ${topProducts}">
-                            <div class="single_product">
-                                <div class="product_thumb">
-                                    <a th:href="@{'/shop/'+ ${x.id}}"><img
-                                            th:src="@{${x.image}}"
-                                            alt=""></a>
-                                    <div class="img_icone">
-                                        <img src="/web/assets/img/cart/span-new.png" alt="">
-                                    </div>
-                                    <div class="product_action">
-                                        <a th:href="@{'/shop/'+ ${x.id}}">Thêm vào giỏ hàng</a>
+<!--            <div class="new_product_area product_page">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-12">-->
+<!--                        <div class="block_title">-->
+<!--                            <h3> Related Products</h3>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="single_p_active owl-carousel">-->
+<!--                        <div class="col-lg-3" th:each="x : ${topProducts}">-->
+<!--                            <div class="single_product">-->
+<!--                                <div class="product_thumb">-->
+<!--                                    <a th:href="@{'/shop/'+ ${x.id}}"><img-->
+<!--                                            th:src="@{${x.image}}"-->
+<!--                                            alt=""></a>-->
+<!--                                    <div class="img_icone">-->
+<!--                                        <img src="/web/assets/img/cart/span-new.png" alt="">-->
+<!--                                    </div>-->
+<!--                                    <div class="product_action">-->
+<!--                                        <a th:href="@{'/shop/'+ ${x.id}}">Thêm vào giỏ hàng</a>-->
 
-                                    </div>
-                                </div>
-                                <div class="product_content">
-                                    <span class="product_price">500.000đ</span>
-                                    <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}" th:text="${x.name}"></a>
-                                    </h3>
-                                </div>
-                                <div class="product_info">
-                                    <ul>
-                                        <li><a th:href="@{#}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--new product area start-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="product_content">-->
+<!--                                    <span class="product_price">500.000đ</span>-->
+<!--                                    <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}" th:text="${x.name}"></a>-->
+<!--                                    </h3>-->
+<!--                                </div>-->
+<!--                                <div class="product_info">-->
+<!--                                    <ul>-->
+<!--                                        <li><a th:href="@{'/shop/'+ ${x.id}}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>-->
+<!--                                    </ul>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;new product area start&ndash;&gt;-->
         </div>
         <!--pos page inner end-->
     </div>
 </div>
 <script th:inline="javascript">
+    const format = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'});
+    function checkinputsl() {
+        var target = event.target;
+        inputValue = target.value;
+        if (inputValue < parseFloat(target.min)) {
+            target.value = target.min;
+        } else if (inputValue > parseFloat(target.max)) {
+            target.value = target.max;
+        }
+
+    }
+
     function updateSizes() {
         var colorId = $('#color').val();
         console.log(colorId);
@@ -302,9 +314,10 @@
         var version = /*[[${product.vertions}]]*/ [];
         version.forEach(x => {
             if (x.size.id == sizeId && x.color.id == colorId) {
-                $('#price').text(x.price + " VNĐ");
+                $('#price').text( format.format(x.price));
                 var quantity = x.quantity <= 0 ? "Sản phẩm hết hàng" : "Còn " + x.quantity + 'Sản phẩm';
                 $('#quantity').text(quantity);
+                document.getElementById("slm").max = x.quantity;
                 return;
             }
         })

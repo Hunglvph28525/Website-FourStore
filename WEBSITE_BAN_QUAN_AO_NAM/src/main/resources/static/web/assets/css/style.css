@@ -2241,7 +2241,7 @@
 	padding: 10px;
 }
 .table_desc table tbody tr td.product_thumb img {
-	width: inherit;
+	width: 150px;
 }
 .table_desc table tbody tr td.product_name a {
 	color: #333;
@@ -2269,9 +2269,9 @@
 	color: #00bba6;
 }
 .cart_submit button,.coupon_inner button {
-	background: #333;
-	border: 0;
-	color: #fff;
+	background: #00bba6;
+	border: 0px;
+	color: #ffffff;
 	display: inline-block;
 	font-size: 12px;
 	font-weight: 700;
@@ -2284,7 +2284,7 @@
 	transition: .3s;
 }
 .cart_submit button:hover,.coupon_inner button:hover{
-    background:  #00bba6;
+    background: #dd2828;
 }
 .checkout_btn a:hover{
     background: #ea3a3c;
@@ -2301,7 +2301,7 @@
 	color: #fff;
 	line-height: 37px;
 	padding: 5px 15px;
-	background: #333;
+	background: #00bba6;
 	text-transform: uppercase;
 	font-size: 16px;
 	font-weight: 700;
@@ -2580,7 +2580,7 @@
 	padding: 5px 10px;
 	text-transform: uppercase;
 	color: #fff;
-	background: #333;
+	background: #00bba6;
 	font-weight: 700;
 }
 .checkout_form input {

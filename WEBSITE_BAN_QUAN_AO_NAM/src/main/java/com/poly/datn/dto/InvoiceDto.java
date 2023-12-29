@@ -50,7 +50,7 @@ public class InvoiceDto {
 
     public InvoiceDto(Invoice x) {
         this.codeBill = x.getCodeBill();
-        this.type = x.getType().equals("1") ? "Tại quầy" : "Online";
+        this.type = x.getType();
         this.status = x.getStatus();
         this.customer = x.getUser() == null ? "Khách bán lẻ" : x.getUser().getName();
         this.sdt = x.getSdtNhan();
