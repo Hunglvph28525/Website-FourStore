@@ -76,6 +76,15 @@ public class CartServiceImpl implements CartService {
         User user = UserUltil.getUser();
         if (user == null) return new GioHangDto();
         Cart cart = cartRepository.getByUser_Id(user.getId());
+        if (cart == null) {
+            cart = cartRepository.save(Cart.builder()
+                    .user(UserUltil.getUser())
+                    .createDate(LocalDateTime.now())
+                    .editDate(LocalDateTime.now())
+                    .status("1")
+                    .build());
+            cart = cartRepository.save(cart);
+        }
         List<CartDetail> cartDetails = cartDetailRepository.getCartDetail(cart.getId());
         List<CartDetailDto> details = cartDetails.stream().map(x ->
                 CartDetailDto.builder()
