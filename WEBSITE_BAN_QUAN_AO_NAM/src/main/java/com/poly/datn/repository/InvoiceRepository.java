@@ -74,14 +74,14 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 //            "where month(create_date) = MONTH(GETDATE()) and invoices.status = '4' ", nativeQuery = true)
     @Query(value = "SELECT t1 + COALESCE(t2, 0) AS total\n" +
             "            FROM (\n" +
-            "            SELECT SUM(invoicedetails.quantity * price + shipping_cost)  AS t1\n" +
+            "            SELECT SUM(invoicedetails.quantity * price )  AS t1\n" +
             "            FROM invoices\n" +
             "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "            WHERE month(invoices.create_date) = month(GETDATE()) AND Invoices.status = '4'\n" +
             "            AND invoices.id_promotion IS NULL\n" +
             "            ) AS a\n" +
             "            LEFT JOIN (\n" +
-            "            SELECT SUM(invoicedetails.quantity * price + shipping_cost) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+            "            SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
             "            FROM invoices\n" +
             "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
@@ -99,14 +99,14 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     @Query(value = "SELECT t1 + COALESCE(t2, 0) AS total\n" +
             "FROM (\n" +
-            "SELECT SUM(invoicedetails.quantity * price + shipping_cost) AS t1\n" +
+            "SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
             "FROM invoices\n" +
             "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "WHERE DAY(invoices.create_date) = DAY(GETDATE()) AND Invoices.status = '4'\n" +
             "AND invoices.id_promotion IS NULL\n" +
             ") AS a\n" +
             "LEFT JOIN (\n" +
-            "SELECT SUM(invoicedetails.quantity * price + shipping_cost) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+            "SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
             "FROM invoices\n" +
             "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "JOIN promotions ON promotions.id = invoices.id_promotion\n" +
@@ -141,7 +141,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     @Query(value = " SELECT a.createDate, a.t1 + COALESCE(b.t2, 0) AS price\n" +
             "FROM (\n" +
-            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price + shipping_cost) AS t1\n" +
+            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price ) AS t1\n" +
             "FROM invoices\n" +
             "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "AND invoices.id_promotion IS NULL\n" +
@@ -149,7 +149,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
             "GROUP BY CONVERT(DATE, invoices.create_date)\n" +
             ") AS a\n" +
             "LEFT JOIN (\n" +
-            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price + shipping_cost) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
             "FROM invoices\n" +
             "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "JOIN promotions ON promotions.id = invoices.id_promotion\n" +
@@ -205,14 +205,14 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     @Query(value = "SELECT t1 + COALESCE(t2, 0) AS total\n" +
             "            FROM (\n" +
-            "            SELECT SUM(invoicedetails.quantity * price + shipping_cost) AS t1\n" +
+            "            SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
             "            FROM invoices\n" +
             "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "            WHERE year(invoices.create_date) = year(GETDATE()) AND Invoices.status = '4'\n" +
             "            AND invoices.id_promotion IS NULL\n" +
             "            ) AS a\n" +
             "            LEFT JOIN (\n" +
-            "            SELECT SUM(invoicedetails.quantity * price + shipping_cost) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+            "            SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
             "            FROM invoices\n" +
             "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
@@ -230,14 +230,14 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     @Query(value = "SELECT t1 + COALESCE(t2, 0) AS total\n" +
             "                       FROM (\n" +
-            "                      SELECT SUM(invoicedetails.quantity * price + shipping_cost) AS t1\n" +
+            "                      SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
             "                      FROM invoices\n" +
             "                      JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "                      AND invoices.id_promotion IS NULL\n" +
             "\t\t\t\t\t  where Invoices.status = '4'\n" +
             "                       ) AS a\n" +
             "                       LEFT JOIN (\n" +
-            "                       SELECT SUM(invoicedetails.quantity * price + shipping_cost) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+            "                       SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
             "                       FROM invoices\n" +
             "                       JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
             "                       JOIN promotions ON promotions.id = invoices.id_promotion\n" +
