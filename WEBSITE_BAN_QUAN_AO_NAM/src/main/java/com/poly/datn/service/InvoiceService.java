@@ -12,6 +12,9 @@ import java.util.Map;
 public interface InvoiceService {
     List<InvoiceDto> getAll();
 
+
+    List<InvoiceDto> hoaDonMoi();
+
     List<InvoiceDto> fillAll(String status);
 
     List<Invoice> getStatus(String status);

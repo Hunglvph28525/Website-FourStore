@@ -12,7 +12,7 @@ public interface ListSPBanChay {
 
     Double getPrice();
 
-    Double getPricec();  //doanh thu
+    String getPricec();  //doanh thu
 
     DecimalFormat df = new DecimalFormat("#,###");
 

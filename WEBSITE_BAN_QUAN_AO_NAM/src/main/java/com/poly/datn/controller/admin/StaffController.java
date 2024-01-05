@@ -42,7 +42,7 @@ public class StaffController {
 
 
         model.addAttribute("user", UserUltil.getUser());
-        model.addAttribute("listNV", userService.getAllStaff());
+        model.addAttribute("listNV", userService.getAllNV(status));
         return "admin/nhanvien";
     }
 

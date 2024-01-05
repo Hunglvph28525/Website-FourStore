@@ -51,7 +51,7 @@
                             <a class="nav-link" href="thongkedoanhthu">Thống kê doanh thu theo ngày</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" href="thongkesanpham" style="color: #0b93ff">Thống kê sản
+                            <a class="nav-link active" href="banchayngay" style="color: #0b93ff">Thống kê sản
                                 phẩm</a>
                         </li>
 
@@ -75,11 +75,11 @@
                         <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Ảnh</th>
                             <th>Tên sản phẩm</th>
-                            <th>Giá bán</th>
+
                             <th>Số lượng bán</th>
-                            <th>Doanh thu</th>
+                            <th>Giá bán</th>
+<!--                            <th>Doanh thu</th>-->
                             <!--                                <th>Trạng thái</th>-->
                             <!--                                <th>Chức năng</th>-->
                         </tr>
@@ -87,17 +87,13 @@
                         <tbody>
                         <tr th:each="x,arr : ${sanphambanchayngay}">
                             <td th:text="${arr.index + 1}"></td>
-                            <td><img th:src="@{${x.url}}" alt="ảnh san pham" width="100px;"></td>
                             <td th:text="${x.productName}"></td>
-                            <td th:text="${x.price}"></td>
                             <td th:text="${x.quantity}"></td>
-                            <td th:text="${x.pricec}"></td>
+                            <td th:text="${x.pricec} + ' ' + 'VND'"></td>
 
 
-                            <!--                                <td th:text="${x.email}"></td>-->
-                            <!--                                <td th:text="${x.phoneNumber}"></td>-->
-                            <!--                                <td th:text="${x.gender} == true?'Nam':'Nữ'"></td>-->
-                            <!--                                <td th:text="${x.status} == 'onKH'?'Hoạt động':'Không hoạt động'"></td>-->
+
+
 
 
                         </tr>

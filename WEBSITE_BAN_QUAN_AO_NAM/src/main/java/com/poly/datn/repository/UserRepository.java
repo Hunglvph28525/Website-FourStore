@@ -44,6 +44,22 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "ORDER BY id desc", nativeQuery = true)
     List<Customernew> getNewKH();
 
+
+
+
+
+    @Query(""" 
+            from User where email = :u and status = 'onNV'
+            """)
+    Optional<User> getByEmailNV(@Param("u") String email);
+
+    @Query("select new com.poly.datn.dto.UserDto(c) from User c where c.status = 'onNV' or c.status='offNV' order by c.Id DESC ")
+    List<UserDto> getAllNV();
+
+
+    @Query("select new com.poly.datn.dto.UserDto(c) from User c where c.status = :status   order by c.Id desc ")
+    List<UserDto> tkStatusNV(String status);
+
 }
 
 
