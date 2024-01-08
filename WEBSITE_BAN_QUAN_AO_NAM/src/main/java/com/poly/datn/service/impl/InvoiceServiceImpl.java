@@ -67,6 +67,20 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public List<InvoiceDto> hoaDonMoi() {
+        List<Invoice> list = repository.getDonHangMoi();
+        List<InvoiceDto> invoiceDtos = new ArrayList<>();
+        list.stream().forEach(x -> {
+            if (x.getUser() == null) {
+                x.setUser(User.builder().name("Khách lẻ").build());
+            }
+            invoiceDtos.add(new InvoiceDto(x));
+        });
+        return invoiceDtos;
+    }
+
+
+    @Override
     public List<InvoiceDto> fillAll(String status) {
         List<InvoiceDto> list = repository.fillAll(status);
         list.stream().forEach(o -> {

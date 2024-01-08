@@ -52,6 +52,10 @@ public interface UserService extends Converter<UserSignUpRequest, User>, UserDet
 
     void updateAddress(Long idKH, Long idAddress);
 
+    boolean isEmailExistsNV(String email);
+
+
+    List<UserDto> getAllNV(String status);
 
     MessageUtil doiThongTin(String pass);
 

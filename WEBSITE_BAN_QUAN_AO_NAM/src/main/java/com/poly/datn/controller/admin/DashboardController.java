@@ -3,6 +3,7 @@ package com.poly.datn.controller.admin;
 import com.poly.datn.repository.InvoiceRepository;
 import com.poly.datn.repository.ProductDetailRepository;
 import com.poly.datn.repository.UserRepository;
+import com.poly.datn.service.InvoiceService;
 import com.poly.datn.util.UserUltil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @RequestMapping("/admin")
 @Controller
 public class DashboardController {
-
+    @Autowired
+    private InvoiceService invoiceService;
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -36,6 +38,8 @@ public class DashboardController {
         model.addAttribute("spsaphet",productDetailRepository.getSPSapHet());
         model.addAttribute("newKH",userRepository.getNewKH());
         model.addAttribute("sphet",productDetailRepository.sapHet());
+
+        model.addAttribute("all", invoiceService.hoaDonMoi());
 
         return "admin/index";
     }

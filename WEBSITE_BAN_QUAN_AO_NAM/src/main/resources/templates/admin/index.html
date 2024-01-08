@@ -198,14 +198,47 @@
 
                     </div>
                 </div>
-<!--                <div class="col-md-12">-->
-<!--                    <div class="tile">-->
-<!--                        <h3 class="tile-title">Thống kê 6 tháng doanh thu</h3>-->
-<!--                        <div class="embed-responsive embed-responsive-16by9">-->
-<!--                            <canvas class="embed-responsive-item" id="barChartDemo"></canvas>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
+
+
+                <div class="col-md-12">
+                    <div class="tile">
+                        <h3 class="tile-title">Đơn hàng mới</h3>
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Đơn hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Tình trạng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,ass : ${all}">
+                                <td th:text="${ass.index+1}"></td>
+                                <td th:text="${x.codeBill}"></td>
+                                <td th:text="${x.user.name}"></td>
+                                <td><span class="badge" th:classappend="${x.type == '0' ? 'bg-info':'bg-warning'}"
+                                          th:text="${x.type == '0' ? 'Online':'Tại Quầy'}"></span></td>
+                                <td th:text="${x.grandTotalFomat}"></td>
+                                <td><span class="badge" th:classappend="${x.paymentStatus == '0'? 'bg-danger':'bg-info'}"
+                                          th:text="${x.paymentStatus == '0'? 'Chưa thanh toán':'Đã thanh toán'}"></span>
+                                </td>
+
+
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+
+
             </div>
 
         </div>

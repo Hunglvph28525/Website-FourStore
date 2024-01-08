@@ -57,6 +57,8 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+
+
     @Override
     public Optional<User> detail(Long id) {
         return userRepository.findById(id);
@@ -90,6 +92,7 @@ public class UserServiceImpl implements UserService {
         javaMailSender.send(mailMessage);
         return userRepository.save(user);
     }
+
     /**
      * @param email
      * @return nếu mà ko tìm đc email thì ko tồn tại -> đăng ký
@@ -99,6 +102,12 @@ public class UserServiceImpl implements UserService {
     public boolean isEmailExists(String email) {
         return userRepository.getByEmail(email).isPresent();
     }
+
+    @Override
+    public boolean isEmailExistsNV(String email) {
+        return userRepository.getByEmailNV(email).isPresent();
+    }
+
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -126,17 +135,30 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+
+    @Override
+    public List<UserDto> getAllNV(String status) {
+        if (status.equals("0")) {
+            return userRepository.getAllNV();
+        } else {
+            return userRepository.tkStatusNV(status);
+        }
+    }
+
+
     @Override
     public User detailCustomer(Long id) {
         return userRepository.getReferenceById(id);
     }
 
+
+
+
+
     @Override
     public MessageUtil add(UserRequest userRequest, MultipartFile file) {
 
-//        if (userRequest.getName() == null || userRequest.getName().isEmpty()) {
-//            throw new IllegalArgumentException("Name cannot be empty");
-//        }
+
 
         Random random = new Random();
         int number;
@@ -147,6 +169,15 @@ public class UserServiceImpl implements UserService {
         }
         String matKhau = "abcd" + mk;
         User uer = userRequest.user();
+
+// Check trùng email
+        if (isEmailExists(uer.getEmail())) {
+            return MessageUtil.builder().status(0).message("Email đã tồn tại, thêm thất bại.").type("bg-danger").build();
+        }
+
+        //check trùng số điện thoại
+
+
         uer.setPassword(passwordEncoder.encode(matKhau));
         String s1 = uer.getEmail();
         String[] parts = s1.split("@");
@@ -165,6 +196,7 @@ public class UserServiceImpl implements UserService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         String avatar = uploadResult.get("url").toString();
         uer.setAvatar(avatar);
         User u = userRepository.save(uer);
@@ -173,11 +205,10 @@ public class UserServiceImpl implements UserService {
         address.setStatus("on");
         Address a = addressRepository.save(address);
         return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").build();
-//        return new MessageUtil(1, "Thêm thành công", "bg-success", uer);
-//        return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").object(uer).build();
 
 
     }
+
 
     @Override
     public List<Address> findByIdDiaChi(Long cid) {
@@ -201,6 +232,12 @@ public class UserServiceImpl implements UserService {
         }
         String matKhau = "abcd" + mk;
         User uer = userRequest.user();
+
+        // Check trùng email
+        if (isEmailExistsNV(uer.getEmail())) {
+            return MessageUtil.builder().status(0).message("Email đã tồn tại, thêm thất bại.").type("bg-danger").build();
+        }
+
         uer.setPassword(passwordEncoder.encode(matKhau));
         String s1 = uer.getEmail();
         String[] parts = s1.split("@");
@@ -301,6 +338,7 @@ public class UserServiceImpl implements UserService {
         attributes.addFlashAttribute("message",MessageUtil.builder().status(0).message("Thông tin không chính xác vui lòng thử lại").type("bg-danger").build());
         return "redirect:fogot-password";
     }
+
 
     private String generateCodeBill(int x) {
         String characters = "0123456789";
