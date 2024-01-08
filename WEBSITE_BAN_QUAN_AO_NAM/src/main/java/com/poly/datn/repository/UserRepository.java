@@ -3,6 +3,7 @@ package com.poly.datn.repository;
 import com.poly.datn.dto.Customernew;
 import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.UserDto;
+import com.poly.datn.entity.Address;
 import com.poly.datn.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,6 +45,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "ORDER BY id desc", nativeQuery = true)
     List<Customernew> getNewKH();
 
+    @Query("select c from Address c where c.user.id=:id")
+    List<Address> getAddressByUser(Long id);
+
+    boolean existsByEmail(String email);
+    boolean existsByPhoneNumber(String phoneNumber);
+    boolean existsByUsername(String username);
 }
 
 

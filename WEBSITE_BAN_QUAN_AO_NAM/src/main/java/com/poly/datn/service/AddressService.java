@@ -9,7 +9,11 @@ public interface AddressService {
 
     void add(Address address);
 
+    MessageUtil address(Address address);
+
     MessageUtil selectMacDinh(Long idUser, Long idAddress);
 
     List<Address> getAddressForCustomer();
+
+    MessageUtil delete(Long id);
 }

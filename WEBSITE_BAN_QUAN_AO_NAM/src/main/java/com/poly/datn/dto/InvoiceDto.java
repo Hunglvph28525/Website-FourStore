@@ -31,6 +31,8 @@ public class InvoiceDto {
     private String paymentMethod;
     @DateTimeFormat(pattern = "HH:mm' - 'dd/MM/yyyy")
     private LocalDateTime paymentDate;
+    @DateTimeFormat(pattern = "HH:mm' - 'dd/MM/yyyy")
+    private LocalDateTime createDate;
     private String paymentInfo;
     private String paymentStatus;
     private List<InvoiceDetailDto> product;
@@ -66,7 +68,7 @@ public class InvoiceDto {
         this.pgg = x.getPromotion() == null ? null : x.getPromotion().getGiftCode();
         this.user = x.getUser() == null ? new User() : x.getUser();
         this.shipping = x.getShipping();
-
+        this.createDate = x.getCreateDate();
         this.totalFomat = Fomater.fomatTien().format(this.total);
         this.giaGiamFomat = Fomater.fomatTien().format(this.giaGiam);
         this.grandTotalFomat = Fomater.fomatTien().format(this.grandTotal);

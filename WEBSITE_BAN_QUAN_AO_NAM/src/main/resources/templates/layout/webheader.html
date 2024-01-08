@@ -16,10 +16,12 @@
             <div class="col-lg-6 col-md-6">
                 <div class="header_links">
                     <ul>
-                        <li><a href="/lien-he" title="Contact">Liên hệ</a></li>
-                        <li><a href="/tai-khoan" title="My account">Tài khoản</a></li>
+                        <li th:if="${user != null}"><a href="/tai-khoan" title="My account">Tài khoản</a></li>
                         <li><a href="/cart" title="My cart">Giỏ hàng</a></li>
-                        <li><a href="/login" title="Login">Đăng nhập</a></li>
+                        <li th:if="${user == null}"><a href="/login" title="Login">Đăng nhập</a></li>
+                        <li th:if="${user != null}"><a href="/logout" title="logout">Đăng xuất</a></li>
+                        <li><a href="/admin/dashboard" title="">Quản trị</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -47,8 +49,9 @@
                         </form>
                     </div>
                     <div class="shopping_cart">
-                        <a href="#" th:text="${giohang.tongSp + ' - ' + giohang.totalFomat}"><i class="fa fa-shopping-cart"></i>
-                              <i class="fa fa-angle-down"></i></a>
+                        <a href="#" th:text="${giohang.tongSp + ' - ' + giohang.totalFomat}"><i
+                                class="fa fa-shopping-cart"></i>
+                            <i class="fa fa-angle-down"></i></a>
 
                         <!--mini cart-->
                         <div class="mini_cart">
@@ -87,75 +90,54 @@
                     <div class="main_menu d-none d-lg-block">
                         <nav>
                             <ul>
-                                <li class="active"><a href="/">Trang chủ</a>
+                                <li class="active"><a href="/home">Trang chủ</a>
                                 </li>
                                 <li><a href="/shop">Sản Phẩm</a>
                                 </li>
-
                                 <li><a href="#">Áo</a>
-                                    <div class="mega_menu jewelry">
-                                        <div class="mega_top fix jewelry">
-                                            <div class="mega_items jewelry">
+                                    <div class="mega_menu">
+                                        <div class="mega_top fix">
+                                            <div class="mega_items" th:each=" x : ${category}">
+                                                <h3><a href="#" th:text="${x.name}"></a></h3>
                                                 <ul>
-                                                    <li><a href="#">Áo sơ mi</a></li>
+                                                    <li th:each="i : ${x.typeProducts}"><a
+                                                            th:href="@{'/shop?category='+ ${i.id}}"
+                                                            th:text="${i.name}"></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="mega_items">
+                                                <h3><a href="#">Thương hiệu</a></h3>
+                                                <ul>
+                                                    <li th:each="x : ${brands}"><a th:href="@{'/shop?brand='+ ${x.id}}"
+                                                                                   th:text="${x.name}"></a></li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
                                 <li><a href="#">Quần</a>
-                                    <div class="mega_menu jewelry">
-                                        <div class="mega_top fix jewelry">
-                                            <div class="mega_items jewelry">
-                                                <!-- <h3><a href="#">Rings</a></h3> -->
+                                    <div class="mega_menu">
+                                        <div class="mega_top fix">
+                                            <div class="mega_items" th:each=" x : ${category}">
+                                                <h3><a href="#" th:text="${x.name}"></a></h3>
                                                 <ul>
-                                                    <li><a href="#">Quần âu</a></li>
+                                                    <li th:each="i : ${x.typeProducts}"><a
+                                                            th:href="@{'/shop?category='+ ${i.id}}"
+                                                            th:text="${i.name}"></a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="mega_items">
+                                                <h3><a href="#">Thương hiệu</a></h3>
+                                                <ul>
+                                                    <li th:each="x : ${brands}"><a th:href="@{'/shop?brand='+ ${x.id}}"
+                                                                                   th:text="${x.name}"></a></li>
                                                 </ul>
                                             </div>
                                         </div>
-
                                     </div>
                                 </li>
                                 <li><a href="/lien-he">Liên hệ</a></li>
-                                <li><a href="/Blog">Blog</a></li>
-
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="mobile-menu d-lg-none">
-                        <nav>
-                            <ul>
-                                <li class="active"><a href="/">Trang chủ</a>
-                                </li>
-                                <li><a href="shop.html">Sản Phẩm bán chạy</a>
-                                </li>
-
-                                <li><a href="#">Áo</a>
-                                    <div class="mega_menu jewelry">
-                                        <div class="mega_top fix jewelry">
-                                            <div class="mega_items jewelry">
-                                                <ul>
-                                                    <li><a href="#">Áo sơ mi</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li><a href="#">Quần</a>
-                                    <div class="mega_menu jewelry">
-                                        <div class="mega_top fix jewelry">
-                                            <div class="mega_items jewelry">
-                                                <!-- <h3><a href="#">Rings</a></h3> -->
-                                                <ul>
-                                                    <li><a href="#">Quần âu</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </li>
-                                <li><a href="/lien-he">Liên hệ</a></li>
-                                <li><a href="/Blog">Blog</a></li>
+                                <!--                                <li><a href="/bai-viet">Blog</a></li>-->
                             </ul>
                         </nav>
                     </div>

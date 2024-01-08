@@ -244,13 +244,20 @@
 
     function checkinputsl() {
         var target = event.target;
-        inputValue = target.value;
-        if (inputValue < parseFloat(target.min)) {
-            target.value = target.min;
-        } else if (inputValue > parseFloat(target.max)) {
-            target.value = target.max;
-        }
+        inputValue = parseFloat(target.value);
+        var minValue = parseFloat(target.min);
+        var maxValue = parseFloat(target.max);
 
+        if (inputValue < minValue) {
+            alert("Tối thiểu là 1 sản phẩm");
+            target.value = minValue;
+        } else if (maxValue < 20 && inputValue > maxValue) {
+            alert("Tối đa là " + maxValue + " sản phẩm");
+            target.value = maxValue;
+        } else if (maxValue >= 20 && inputValue > 20) {
+            alert("Tối đa là 20 sản phẩm");
+            target.value = 20;
+        }
     }
 </script>
 

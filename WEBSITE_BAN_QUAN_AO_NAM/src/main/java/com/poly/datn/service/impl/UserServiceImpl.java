@@ -8,18 +8,19 @@ import com.poly.datn.repository.AddressRepository;
 import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.repository.UserRepository;
 import com.poly.datn.request.UserSignUpRequest;
-import com.poly.datn.request.forgot_passwort.UserForgotPasswordRequest;
 import com.poly.datn.service.ImageService;
 import com.poly.datn.service.UserService;
 import com.poly.datn.util.MessageUtil;
+import com.poly.datn.util.UserUltil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.*;
@@ -34,13 +35,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
     private ImageService imageService;
 
     @Autowired
-    JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
 
     @Autowired
     AddressRepository addressRepository;
@@ -52,8 +50,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void add(User user) {
-//        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
-//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAvatar("https://res.cloudinary.com/dg8hhxkah/image/upload/v1703776131/other/bixhah1m4u2nu0zqsq7m.jpg");
+        user.setStatus("onKH");
         userRepository.save(user);
     }
 
@@ -109,24 +109,13 @@ public class UserServiceImpl implements UserService {
     public User convert(UserSignUpRequest source) {
         return User.builder()
                 .email(source.getEmail())
-                .username(source.getUserName())
+                .username(source.getUsername())
                 .password(source.getPassword())
+                .phoneNumber(source.getPhoneNumber())
+                .name(source.getName())
                 .build();
     }
 
-    @Override
-    public Optional<User> changePassword(UserForgotPasswordRequest userForgotPasswordRequest) {
-
-        Optional<User> userOptional = this.userRepository.getByUser(userForgotPasswordRequest.getUserName());
-
-        userOptional.ifPresent(user -> {
-            user.setPassword(passwordEncoder.encode(userForgotPasswordRequest.getPassword()));
-            userRepository.save(user);
-            System.out.println("\n\n\t user user saved with password: " + userForgotPasswordRequest.getPassword() + "encoded: " + user.getPassword() + "\n\n\t");
-        });
-
-        return userOptional;
-    }
 
     @Override
     public List<UserDto> getAll(String status) {
@@ -254,6 +243,63 @@ public class UserServiceImpl implements UserService {
     public void updateAddress(Long idKH, Long idAddress) {
 
 
+    }
+
+    @Override
+    public MessageUtil doiThongTin(String pass) {
+        User user = UserUltil.getUser();
+        if (user == null) return MessageUtil.builder().status(0).message("Đã xảy ra lõi vui lòng đăng nhập lại !").type("bg-danger").build();
+        user.setPassword(passwordEncoder.encode(pass));
+        userRepository.save(user);
+        return MessageUtil.builder().status(0).message("Đổi mật khẩu thông !").type("bg-success").build();
+    }
+
+    @Override
+    public String dangKy(Model model, UserSignUpRequest userSignUpRequest, RedirectAttributes attributes) {
+        if (userRepository.existsByEmail(userSignUpRequest.getEmail())) {
+            model.addAttribute("emailExists", "email da ton tai");
+            userSignUpRequest.setPassword("");
+            userSignUpRequest.setConfirmPassword("");
+            return "web/login";
+        }if (userRepository.existsByPhoneNumber(userSignUpRequest.getPhoneNumber())) {
+            model.addAttribute("sdtExists", "Số Điện thoại đã tồn tại");
+            userSignUpRequest.setPassword("");
+            userSignUpRequest.setConfirmPassword("");
+            return "web/login";
+        }
+        if (userRepository.existsByUsername(userSignUpRequest.getUsername())) {
+            model.addAttribute("usernameExists", "Username đã tồn tại");
+            userSignUpRequest.setPassword("");
+            userSignUpRequest.setConfirmPassword("");
+            System.out.println("\n\n\n email da ton tai \n\n\n");
+            return "web/login";
+        }
+        if (!userSignUpRequest.getPassword().equals(userSignUpRequest.getConfirmPassword())) {
+            model.addAttribute("error", "mat khau khong khop");
+            return "web/login";
+        }
+        add(convert(userSignUpRequest));
+        attributes.addFlashAttribute("thanhcong", "Tạo tài khaorn thành công ");
+        return "redirect:/login";
+    }
+
+    @Override
+    public String fogotPass(String email, RedirectAttributes attributes) {
+        if (userRepository.existsByEmail(email)){
+            User user = userRepository.getByEmail(email).get();
+            String newPass = "123456abc";
+            user.setPassword(passwordEncoder.encode(newPass));
+            user = userRepository.save(user);
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(email);
+            mailMessage.setSubject("Mật Khảu Mới Của Bạn ");
+            mailMessage.setText("Chào bạn :" + user.getUsername() + "\nMật khẩu mới của bạn là :" + newPass + "Hãy dùng nó để đăng nhập và đổi mật khẩu để đảm bảo an toàn");
+            javaMailSender.send(mailMessage);
+            attributes.addFlashAttribute("message",MessageUtil.builder().status(0).message("Vui Lòng kiểm tra email đẻ lấy thông tin đăng nhập").type("bg-success").build());
+            return "redirect:/login";
+        }
+        attributes.addFlashAttribute("message",MessageUtil.builder().status(0).message("Thông tin không chính xác vui lòng thử lại").type("bg-danger").build());
+        return "redirect:fogot-password";
     }
 
     private String generateCodeBill(int x) {

@@ -5,7 +5,9 @@ import com.poly.datn.dto.UpdateQuantityReq;
 import com.poly.datn.entity.Invoice;
 import com.poly.datn.entity.User;
 import com.poly.datn.util.MessageUtil;
+import jakarta.servlet.http.HttpServletResponse;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -47,4 +49,12 @@ public interface InvoiceService {
     MessageUtil updateStatus(String codeBill, String note);
 
     MessageUtil huyDh(String codeBill, String note);
+
+    MessageUtil ttDonHang(String codeBill, String note);
+
+    void deleteInvoice();
+
+    Object getInvoceByUser();
+
+    void xuatHd(String codeBill, HttpServletResponse response) throws IOException;
 }

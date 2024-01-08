@@ -17,6 +17,21 @@
     <link rel="stylesheet" href="web\assets\css\style.css">
     <link rel="stylesheet" href="web\assets\css\responsive.css">
     <script src="web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
+    <style>
+        .page-item.active .page-link {
+            color: #fff;
+            background-color: #00bba6;
+            border-color: #008071;
+        }
+
+        .page-link {
+            color: #0a0a0a;
+        }
+
+        a:hover {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,9 +48,9 @@
                     <div class="col-12">
                         <div class="breadcrumb_content">
                             <ul>
-                                <li><a href="index.html">home</a></li>
+                                <li><a href="/home">Trang chủ</a></li>
                                 <li><i class="fa fa-angle-right"></i></li>
-                                <li>shop</li>
+                                <li>Sản phẩm</li>
                             </ul>
                         </div>
                     </div>
@@ -54,40 +69,14 @@
                             </div>
                             <div class="layere_categorie">
                                 <ul>
-                                    <li>
-                                        <input id="acces" type="checkbox">
-                                        <label for="acces">Áo<span>(1)</span></label>
+                                    <li th:each="x : ${typeProduct}">
+                                        <label><a th:href="@{'/shop?category='+ ${x.id}}"
+                                                  th:text="${x.name}"></a></label>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <!--layere categorie end-->
-
-                        <!--color area start-->
-                        <div class="sidebar_widget color">
-                            <h2>Màu sắc</h2>
-                            <div class="widget_color">
-                                <ul>
-
-                                    <li><a href="#">Đen <span>(10)</span></a></li>
-
-                                </ul>
-                            </div>
-                        </div>
-                        <!--color area end-->
-
-                        <!--price slider start-->
-                        <div class="sidebar_widget price">
-                            <h2>Giá</h2>
-                            <div class="ca_search_filters">
-
-                                <input type="text" name="text" id="amount">
-                                <div id="slider-range"></div>
-                            </div>
-                        </div>
-                        <!--price slider end-->
-
-
                         <!--popular tags area-->
                         <div class="sidebar_widget shop_c">
                             <div class="categorie__titile">
@@ -95,9 +84,8 @@
                             </div>
                             <div class="layere_categorie">
                                 <ul>
-                                    <li>
-                                        <input id="acces1" type="checkbox">
-                                        <label for="acces1">Áo<span>(1)</span></label>
+                                    <li th:each="x : ${brands}">
+                                        <label><a th:href="@{'/shop?brand='+ ${x.id}}" th:text="${x.name}"></a></label>
                                     </li>
                                 </ul>
                             </div>
@@ -112,12 +100,10 @@
                             <div class="list_button">
                                 <ul class="nav" role="tablist">
                                     <li>
-                                        <a class="active" data-toggle="tab" href="#large" role="tab" aria-controls="large" aria-selected="true"><i class="fa fa-th-large"></i></a>
+                                        <a class="active" data-toggle="tab" href="#large" role="tab"
+                                           aria-controls="large" aria-selected="true"><i class="fa fa-th-large"></i></a>
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="page_amount">
-                                <p>Showing 1–9 of 21 results</p>
                             </div>
                         </div>
                         <!--shop toolbar end-->
@@ -126,32 +112,34 @@
                         <div class="shop_tab_product">
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="large" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-lg-4 col-md-6" th:each="x : ${topProducts}">
-                                            <div class="single_product">
-                                                <div class="product_thumb">
-                                                    <a th:href="@{'/shop/'+ ${x.id}}" ><img
-                                                            th:src="@{${x.image}}"
-                                                            alt=""></a>
-                                                    <div class="img_icone">
-                                                        <img src="/web/assets/img/cart/span-new.png" alt="">
-                                                    </div>
-                                                    <div class="product_action">
-                                                        <a  th:href="@{'/shop/'+ ${x.id}}" >Thêm vào giỏ hàng</a>
+                                    <div id="productListContainer" class="row">
+                                        <!--                                        <div class="col-lg-4 col-md-6" th:each="x : ${topProducts}">-->
+                                        <!--                                            <div class="single_product">-->
+                                        <!--                                                <div class="product_thumb">-->
+                                        <!--                                                    <a th:href="@{'/shop/'+ ${x.id}}"><img-->
+                                        <!--                                                            th:src="@{${x.image}}"-->
+                                        <!--                                                            alt=""></a>-->
+                                        <!--                                                    <div class="img_icone">-->
+                                        <!--                                                        <img src="/web/assets/img/cart/span-new.png" alt="">-->
+                                        <!--                                                    </div>-->
+                                        <!--                                                    <div class="product_action">-->
+                                        <!--                                                        <a th:href="@{'/shop/'+ ${x.id}}">Thêm vào giỏ hàng</a>-->
 
-                                                    </div>
-                                                </div>
-                                                <div class="product_content">
-                                                    <span class="product_price">500.000đ</span>
-                                                    <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}"  th:text="${x.name}"></a></h3>
-                                                </div>
-                                                <div class="product_info">
-                                                    <ul>
-                                                        <li><a th:href="@{#}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <!--                                                    </div>-->
+                                        <!--                                                </div>-->
+                                        <!--                                                <div class="product_content">-->
+                                        <!--                                                    <span class="product_price" th:text="${x.priceFomat}"></span>-->
+                                        <!--                                                    <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}"-->
+                                        <!--                                                                                 th:text="${x.name}"></a></h3>-->
+                                        <!--                                                </div>-->
+                                        <!--                                                <div class="product_info">-->
+                                        <!--                                                    <ul>-->
+                                        <!--                                                        <li><a th:href="@{'/shop/'+ ${x.id}}"> <i class="fa fa-shopping-cart"></i>Xem-->
+                                        <!--                                                            chi tiết</a></li>-->
+                                        <!--                                                    </ul>-->
+                                        <!--                                                </div>-->
+                                        <!--                                            </div>-->
+                                        <!--                                        </div>-->
                                     </div>
                                 </div>
                             </div>
@@ -161,23 +149,11 @@
                         <!--pagination style start-->
                         <div class="pagination_style mt-5">
                             <div class="item_page">
-                                <form action="#">
-                                    <label for="page_select">show</label>
-                                    <select id="page_select">
-                                        <option value="1">9</option>
-                                        <option value="2">10</option>
-                                        <option value="3">11</option>
-                                    </select>
-                                    <span>Products by page</span>
-                                </form>
                             </div>
                             <div class="page_number">
                                 <span>Pages: </span>
-                                <ul>
-                                    <li>«</li>
-                                    <li class="current_number">1</li>
-                                    <li><a href="#">2</a></li>
-                                    <li>»</li>
+                                <ul id="paginationContainer">
+
                                 </ul>
                             </div>
                         </div>
@@ -192,6 +168,109 @@
 </div>
 <div th:replace="~{layout/webfooter :: webfooter}"></div>
 <!--pos page end-->
+<script th:inline="javascript">
+    var itemsPerPage = 9; // Số sản phẩm trên mỗi trang
+    var currentPage = 1; // Trang hiện tại
+
+    function displayProducts() {
+        var startIndex = (currentPage - 1) * itemsPerPage;
+        var endIndex = startIndex + itemsPerPage;
+
+        var currentPageProducts = /*[[${topProducts}]]*/ []; // Danh sách sản phẩm từ Thymeleaf
+
+        // Hiển thị sản phẩm ở trang hiện tại
+        var productListContainer = document.getElementById("productListContainer");
+        productListContainer.innerHTML = "";
+
+        currentPageProducts.slice(startIndex, endIndex).forEach(function (x) {
+            var productElement = document.createElement("div");
+            productElement.className = "col-lg-4 col-md-6";
+            productElement.innerHTML = `
+                <div class="single_product">
+                    <div class="product_thumb">
+                        <a href="/shop/${x.id}"><img src="${x.image}" alt=""></a>
+                        <div class="img_icone">
+                            <img src="/web/assets/img/cart/span-new.png" alt="">
+                        </div>
+                        <div class="product_action">
+                            <a href="/shop/${x.id}">Thêm vào giỏ hàng</a>
+                        </div>
+                    </div>
+                    <div class="product_content">
+                        <span class="product_price">${x.priceFomat}</span>
+                        <h3 class="product_title"><a href="/shop/${x.id}">${x.name}</a></h3>
+                    </div>
+                    <div class="product_info">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            productListContainer.appendChild(productElement);
+        });
+
+        // Hiển thị phân trang
+        // Hiển thị phân trang
+        var totalPages = Math.ceil(currentPageProducts.length / itemsPerPage);
+        var paginationContainer = document.getElementById("paginationContainer");
+        paginationContainer.innerHTML = "";
+
+        // Nút "«"
+        var prevLink = document.createElement("li");
+        prevLink.className = "page-item";
+        var prevButton = document.createElement("a");
+        prevButton.className = "page-link";
+        prevButton.href = "#";
+        prevButton.textContent = "«";
+        prevButton.onclick = function () {
+            if (currentPage > 1) {
+                currentPage--;
+                displayProducts();
+            }
+        };
+        prevLink.appendChild(prevButton);
+        paginationContainer.appendChild(prevLink);
+
+        // Nút số trang
+        for (var i = 1; i <= totalPages; i++) {
+            var pageLink = document.createElement("li");
+            pageLink.className = "page-item";
+            var pageButton = document.createElement("a");
+            pageButton.className = "page-link";
+            pageButton.href = "#";
+            pageButton.textContent = i;
+            pageButton.onclick = function () {
+                currentPage = parseInt(this.textContent);
+                displayProducts();
+            };
+            if (i === currentPage) {
+                pageLink.classList.add("active");
+            }
+            pageLink.appendChild(pageButton);
+            paginationContainer.appendChild(pageLink);
+        }
+
+        // Nút "»"
+        var nextLink = document.createElement("li");
+        nextLink.className = "page-item";
+        var nextButton = document.createElement("a");
+        nextButton.className = "page-link";
+        nextButton.href = "#";
+        nextButton.textContent = "»";
+        nextButton.onclick = function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayProducts();
+            }
+        };
+        nextLink.appendChild(nextButton);
+        paginationContainer.appendChild(nextLink);
+    }
+
+    // Gọi hàm để hiển thị sản phẩm khi trang được tải
+    displayProducts();
+</script>
 <!-- all js here -->
 <script src="web\assets\js\vendor\jquery-1.12.0.min.js"></script>
 <script src="web\assets\js\popper.js"></script>

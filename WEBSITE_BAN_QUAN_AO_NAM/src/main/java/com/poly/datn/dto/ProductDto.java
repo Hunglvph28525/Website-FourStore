@@ -9,11 +9,13 @@ import com.poly.datn.entity.Product;
 import com.poly.datn.entity.ProductDetail;
 import com.poly.datn.entity.Size;
 import com.poly.datn.entity.TypeProduct;
+import com.poly.datn.util.Fomater;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +52,7 @@ public class ProductDto {
     private List<Image> images;
     @JsonIgnore
     private String qrCode;
+    private String priceFomat;
 
 
     private List<ColorSizeVertion> vertions;
@@ -74,6 +77,25 @@ public class ProductDto {
         this.pattern = x.getDescription().getPattern();
         this.category = x.getTypeProduct().getCategory();
         this.brand = x.getBrand();
+        this.priceFomat = initGia(x.getProductDetails().stream().toList());
+    }
+
+    private String initGia(List<ProductDetail> products) {
+        BigDecimal minPrice = products.stream()
+                .map(ProductDetail::getPrice)
+                .min(BigDecimal::compareTo)
+                .orElse(BigDecimal.ZERO);
+
+        BigDecimal maxPrice = products.stream()
+                .map(ProductDetail::getPrice)
+                .max(BigDecimal::compareTo)
+                .orElse(BigDecimal.ZERO);
+
+        if (minPrice.compareTo(maxPrice) == 0) {
+            return Fomater.fomatTien().format(minPrice);
+        } else {
+            return Fomater.fomatTien().format(minPrice) + " - " + Fomater.fomatTien().format(maxPrice);
+        }
     }
 
 

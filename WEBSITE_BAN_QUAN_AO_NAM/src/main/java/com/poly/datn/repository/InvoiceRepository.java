@@ -215,4 +215,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     //tổng hóa đơn
     @Query(value = "select count(code_bill) from invoices ", nativeQuery = true)
     Integer getHoaDon();
+
+    @Query("select c from Invoice c where c.user.id =:id order by c.createDate desc ")
+    List<Invoice> getInvoiceByUser(Long id);
 }

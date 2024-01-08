@@ -6,12 +6,14 @@ import com.poly.datn.service.InvoiceService;
 import com.poly.datn.service.TransactionService;
 import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -64,6 +66,21 @@ public class InvoiceController {
         attributes.addFlashAttribute("message", messageUtil);
         return "redirect:/admin/invoice/" + messageUtil.getObject();
     }
+    @PostMapping("/invoice/{code}/xac-nhan-thanh-toan")
+    public String xacNhanTT(@PathVariable("code") String codeBill, @RequestParam("note") String note, RedirectAttributes attributes) {
+        MessageUtil messageUtil = invoiceService.ttDonHang(codeBill, note);
+        attributes.addFlashAttribute("message", messageUtil);
+        Invoice invoice = (Invoice) messageUtil.getObject();
+        return "redirect:/admin/invoice/" + invoice.getCodeBill();
+    }
+    @GetMapping("/invoice/dowload/{codeBill}")
+    public void taiHoaDon(HttpServletResponse response, @PathVariable("codeBill") String codeBill) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        response.setHeader("Content-Disposition", "attachment; filename=" + codeBill + ".docx");
+        invoiceService.xuatHd(codeBill,response);
+    }
+
+
 
     @ModelAttribute("user")
     public Object initUser() {

@@ -1,0 +1,126 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FourStore</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="web/assets/img/favicon.png">
+
+    <!-- all css here -->
+    <link rel="stylesheet" href="web\assets\css\bootstrap.min.css">
+    <link rel="stylesheet" href="web\assets\css\plugin.css">
+    <link rel="stylesheet" href="web\assets\css\bundle.css">
+    <link rel="stylesheet" href="web\assets\css\style.css">
+    <link rel="stylesheet" href="web\assets\css\responsive.css">
+    <script src="web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
+</head>
+<body>
+<!-- Add your site or application content here -->
+
+<!--pos page start-->
+<div class="pos_page">
+    <div class="container">
+        <!--pos page inner-->
+        <div class="pos_page_inner">
+            <!--header area -->
+            <div th:replace="~{layout/webheader :: webheader}"></div>
+            <!--header end -->
+            <div class="breadcrumbs_area">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb_content">
+                            <ul>
+                                <li><a href="/home">Trang chủ</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li>Liên hệ</li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact_area">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="contact_message">
+                            <h3>Liên hệ với chúng tôi</h3>
+                            <form id="contact-form" method="POST">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input name="name" placeholder="Name *" type="text">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input name="email" placeholder="Email *" type="email">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input name="subject" placeholder="Subject *" type="text">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <input name="phone" placeholder="Phone *" type="text">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="contact_textarea">
+                                            <textarea placeholder="Message *" name="message"
+                                                      class="form-control2"></textarea>
+                                        </div>
+                                        <button type="submit"> Gửi</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="form-messege">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-12">
+                        <div class="contact_message contact_info">
+                            <h3>Về chúng tôi</h3>
+                            <p>Sự rõ ràng cũng là một quá trình năng động tuân theo những thói quen luôn thay đổi của
+                                người đọc. Thật đáng ngạc nhiên khi lưu ý rằng văn học Gothic, thứ mà ngày nay chúng ta
+                                cho là ít rõ ràng, đã có trước các hình thức văn học của con người như thế nào.</p>
+                            <ul>
+                                <li><i class="fa fa-fax"></i> Địa chỉ : 13 phố Trịnh Văn Bô, phường Phương Canh, quận
+                                    Nam Từ Liêm, TP Hà Nội
+                                </li>
+                                <li><i class="fa fa-phone"></i> <a href="#">hotro@fourstore.com</a></li>
+                                <li><i class="fa fa-envelope-o"></i> 0(1234) 567 890</li>
+                            </ul>
+                            <h3><strong>Thời gian làm việc</strong></h3>
+                            <p><strong>Thứ 2 – Thứ 7</strong>: 08AM – 22PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact_map">
+                <div class="row">
+                    <div class="col-12">
+                        <iframe src="https://www.google.com/maps/embed?pb" width="500" height="450" style="border:0" allowfullscreen=""></iframe>
+                    </div>
+                </div>
+            </div>
+            <!--pos home section end-->
+        </div>
+        <!--pos page inner end-->
+    </div>
+</div>
+<!--pos page end-->
+
+<!--footer area start-->
+<div th:replace="~{layout/webfooter :: webfooter}"></div>
+<!--footer area end-->
+
+
+<!-- all js here -->
+<script src="web\assets\js\vendor\jquery-1.12.0.min.js"></script>
+<script src="web\assets\js\popper.js"></script>
+<script src="web\assets\js\bootstrap.min.js"></script>
+<script src="web\assets\js\ajax-mail.js"></script>
+<script src="web\assets\js\plugins.js"></script>
+<script src="web\assets\js\main.js"></script>
+</body>
+</html>

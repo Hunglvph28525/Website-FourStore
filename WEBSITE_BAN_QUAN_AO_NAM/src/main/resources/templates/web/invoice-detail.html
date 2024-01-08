@@ -1,0 +1,316 @@
+<!doctype html>
+<html class="no-js" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>FourStore</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="\web/assets/img/favicon.png">
+
+    <!-- all css here -->
+    <link rel="stylesheet" href="\web\assets\css\bootstrap.min.css">
+    <link rel="stylesheet" href="\web\assets\css\plugin.css">
+    <link rel="stylesheet" href="\web\assets\css\bundle.css">
+    <link rel="stylesheet" href="\web\assets\css\style.css">
+    <link rel="stylesheet" href="\web\assets\css\responsive.css">
+    <script src="\web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
+    <style>
+        p {
+            font-size: 18px;
+        }
+
+        .items-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ccc;
+        }
+
+        .item {
+            padding-top: 10px;
+            padding-bottom: 15px;
+        }
+
+        .item:before {
+            content: '';
+            text-align: center;
+            width: 8px;
+            height: 8px;
+            display: block;
+            border: 2px solid #585CE5;
+            border-radius: 50%;
+            margin: -15px auto 0 auto;
+        }
+
+        .item span {
+            display: block;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .item span.date {
+            margin-top: 2px;
+            margin-bottom: 10px;
+            color: #585CE5;
+        }
+
+        .item span.facility-name {
+            margin-bottom: 2px;
+            color: #666;
+        }
+
+        .item span.doctor-name {
+            color: #000;
+        }
+
+        /*----XXS----*/
+        @media only screen and (max-width: 420px) {
+            .item:nth-child(n+3):nth-child(-n+10) {
+                display: none;
+            }
+
+            .item {
+                margin: 0 8px;
+            }
+        }
+
+        /*----XS----*/
+        @media only screen and (min-width: 421px) and (max-width: 576px) {
+            .item:nth-child(n+3):nth-child(-n+10) {
+                display: none;
+            }
+
+            .item {
+                margin: 0 20px;
+            }
+        }
+
+        /*----S----*/
+        @media only screen and (min-width: 577px) and (max-width: 767px) {
+            .item:nth-child(n+4):nth-child(-n+10) {
+                display: none;
+            }
+
+            .item {
+                margin: 0 10px;
+            }
+        }
+
+        /*----M----*/
+        @media only screen and (min-width: 768px) and (max-width: 991px) {
+            .item:nth-child(n+5):nth-child(-n+10) {
+                display: none;
+            }
+
+            .item {
+                margin: 0 15px;
+            }
+        }
+
+        /*----L----*/
+        @media only screen and (min-width: 992px) and (max-width: 1199px) {
+            .item:nth-child(n+5):nth-child(-n+10) {
+                display: none;
+            }
+
+            .item {
+                margin: 0 30px;
+            }
+        }
+
+        /*----XL----*/
+        @media only screen and (min-width: 1200px) and (max-width: 1439px) {
+            .item:nth-child(n+7):nth-child(-n+10) {
+                display: none;
+            }
+
+            .item {
+                margin: 0 15px;
+            }
+        }
+
+        /*----XXL----*/
+        @media only screen and (min-width: 1440px) and (max-width: 1899px) {
+            .item:nth-child(n+8):nth-child(-n+10) {
+                display: none;
+            }
+
+            .item {
+                margin: 0 20px;
+            }
+        }
+
+        /*----XXXL----*/
+        @media only screen and (min-width: 1900px) {
+            .item:nth-child(n+8):nth-child(-n+10) {
+                display: inline-block;
+            }
+
+            .item {
+                margin: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Add your site or application content here -->
+
+<!--pos page start-->
+<div class="pos_page">
+    <div class="container">
+        <!--pos page inner-->
+        <div class="pos_page_inner">
+            <!--header area -->
+            <div th:replace="~{layout/webheader :: webheader}"></div>
+            <!--header end -->
+
+            <!--breadcrumbs area start-->
+            <div class="breadcrumbs_area">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb_content">
+                            <ul>
+                                <li><a href="/home">Trang chủ</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li><a href="/tai-khoan">Tài khoản</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li>Hóa đơn</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--breadcrumbs area end-->
+            <!--shopping cart area start -->
+            <div class="Checkout_section">
+                <div class="checkout_form">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="items-wrap">
+                                <div class="item" th:each="x : ${transaction}">
+                                    <span class="date"
+                                          th:text="${#temporals.format(x.createDate, 'HH:mm - dd/MM/yyyy')}"></span>
+                                    <h4 class="facility-name"
+                                        th:text="${x.status == '0' ? 'Chờ thanh toán' : (x.status == '1' ? 'Chờ xác nhận' : (x.status == '2' ? 'Chờ giao' : (x.status == '3' ? 'Đang giao hàng' : (x.status == '4' ? 'Hoàn thành' : 'Đã hủy'))))}"></h4>
+                                    <span class="doctor-name" th:text="${'Ghi chú: '+ x.note}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <h3>Địa chỉ nhận hàng</h3>
+                            <div class="row">
+                                <div class="col-12 mb-30">
+                                    <label>Địa chỉ giao hàng :</label>
+                                    <p><strong
+                                            th:text="${ ' '+detail.customer + ' - ' + detail.sdt + ' '}">
+                                    </strong><span
+                                            th:text="${detail.address}"></span>
+                                    </p>
+                                    <p><span
+                                            th:text="${'Trạng thái : '+ (detail.paymentStatus == '1' ? 'Đã thanh toán' : 'Chưa thanh toán')}"></span>
+                                    </p>
+                                    <p><span th:text="${'Phương thức thanh toán : '+ detail.paymentMethod}"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12">
+                        <div>
+                            <h3>Sản phẩm</h3>
+                            <div class="order_table table-responsive mb-30">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Hình ảnh</th>
+                                        <th>Tên sản phẩm</th>
+                                        <th>Số lượng</th>
+                                        <th>Giá bán</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="x,i : ${detail.product}">
+                                        <td th:text="${i.index+1}"></td>
+                                        <td><a href="#"><img width="120px" th:src="@{${x.img}}"
+                                                             alt=""></a></td>
+                                        <td><a href="#" th:text="${x.name + ' [' + x.color + ' - ' +x.size + ']'}"></a>
+                                        </td>
+                                        <td th:text="${x.quantity}"></td>
+                                        <td th:text="${x.priceFomat}"></td>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th colspan="4">Tổng tiền sản phẩm</th>
+                                        <td><strong th:text="${detail.totalFomat}"></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">Phí giao hàng</th>
+                                        <td><strong th:text="${detail.shippingCostFomat}"></strong></td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">Giá giảm</th>
+                                        <td><strong th:text="${detail.giaGiamFomat}"></strong></td>
+                                    </tr>
+                                    <tr class="order_total">
+                                        <th colspan="4">Tổng đơn hàng</th>
+                                        <td><strong th:text="${detail.grandTotalFomat}"></strong></td>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <button type="button" th:if="${detail.status == '1'}" class="btn btn-warning"
+                                    data-toggle="modal" data-target="#exampleModal">
+                                Hủy đơn hàng
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--shopping cart area end -->
+        </div>
+        <!--pos page inner end-->
+    </div>
+</div>
+<!--pos page end-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post" th:action="@{'/invoice/huy/' + ${detail.codeBill}}">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hủy đơn hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <label>Lý do hủy đơn hàng</label>
+                    <input class="form-control" type="text" name="ghichu" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--footer area start-->
+<div th:replace="~{layout/webfooter :: webfooter}"></div>
+
+
+<!-- all js here -->
+<script src="\web\assets\js\vendor\jquery-1.12.0.min.js"></script>
+<script src="\web\assets\js\popper.js"></script>
+<script src="\web\assets\js\bootstrap.min.js"></script>
+<script src="\web\assets\js\ajax-mail.js"></script>
+<script src="\web\assets\js\plugins.js"></script>
+<script src="\web\assets\js\main.js"></script>
+</body>
+</html>

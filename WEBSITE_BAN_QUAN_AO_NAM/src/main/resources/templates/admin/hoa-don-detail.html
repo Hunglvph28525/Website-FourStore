@@ -102,10 +102,14 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <button class="btn btn-save ml-3" data-toggle="modal" data-target="#update" th:if="${detail.status == '0' || detail.status == '1' ||detail.status == '2' || detail.status == '3' }">Cập nhật</button>
+                        <button class="btn btn-save ml-3" data-toggle="modal" data-target="#update" th:if="${detail.status == '0' || detail.status == '1' ||detail.status == '2' || detail.paymentStatus == '1' && detail.status == '3'  }">Cập nhật</button>
 
                         <!--                    modal input ghi chú-->
-                        <button class="btn btn-cancel ml-3" data-toggle="modal" data-target="#huy" th:if="${detail.paymentStatus == '0' && detail.status == '0' || detail.paymentStatus == '0' && detail.status == '1' || detail.paymentStatus == '0' && detail.status == '2' || detail.paymentStatus == '0' && detail.status == '3' }">Hủy</button>
+                        <button class="btn btn-cancel ml-3" data-toggle="modal" data-target="#huy" th:if="${detail.paymentStatus == '0' && detail.status == '0' || detail.paymentStatus == '0' && detail.status == '1' || detail.paymentStatus == '0' && detail.status == '2'}">Hủy</button>
+
+                        <a class="btn btn-success ml-3" th:href="@{'/admin/invoice/dowload/'+ ${codeBill}}">Xuất hóa đơn</a>
+
+                        <button class="btn btn-warning ml-3" data-toggle="modal" data-target="#thanhtoan" th:if="${detail.paymentStatus == '0' && detail.status == '0'  || detail.paymentStatus == '0' && detail.status == '3' }">Xác nhận thanh toán</button>
 
                         <!--                   info moldal thông tin-->
                         <button class="btn btn-info" data-toggle="modal" data-target="#chitiet" style="margin-left: 70%">Chi tiết</button>
@@ -260,6 +264,32 @@
               </span>
                 </div>
                 <form th:action="@{'/admin/invoice/'+${codeBill}+'/huy'}" method="post">
+                    <div class="form-group col-md-12">
+                        <label class="control-label">Ghi chú</label>
+                        <input class="form-control" name="note" type="text" required>
+                    </div>
+                    <br>
+                    <button class="btn btn-save ml-3 " type="submit">Xác nhận</button>
+                    <a class="btn btn-cancel ml-3" data-dismiss="modal" href="#">Hủy bỏ</a>
+                    <br>
+                </form>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="thanhtoan" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <div class="form-group  col-md-12">
+              <span class="thong-tin-thanh-toan">
+                <h5>Xác nhận hủy</h5>
+              </span>
+                </div>
+                <form th:action="@{'/admin/invoice/'+${codeBill}+'/xac-nhan-thanh-toan'}" method="post">
                     <div class="form-group col-md-12">
                         <label class="control-label">Ghi chú</label>
                         <input class="form-control" name="note" type="text" required>

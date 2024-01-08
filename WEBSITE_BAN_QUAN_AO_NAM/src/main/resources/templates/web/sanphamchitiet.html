@@ -50,7 +50,7 @@
             <!--product wrapper start-->
             <div class="product_details">
                 <div class="row">
-                    <div class="col-lg-5 col-md-6">
+                    <div class="col-lg-7 col-md-6">
                         <div class="product_tab fix">
                             <div class="product_tab_button">
                                 <ul class="nav" role="tablist">
@@ -80,7 +80,7 @@
 
                         </div>
                     </div>
-                    <div class="col-lg-7 col-md-6">
+                    <div class="col-lg-5 col-md-6">
                         <form id="form" method="post">
                             <div class="product_d_right">
                                 <h1 th:text="${product.name}"></h1>
@@ -109,7 +109,7 @@
 
                                 <div class="box_quantity mb-20">
                                     <label>Số luọng</label>
-                                    <input name="quantity" id="slm" onchange="checkinputsl()" value="1" min="1" type="number"/>
+                                    <input name="quantity" id="slm" oninput="checkinputsl(event)" value="1" min="1" type="number"/>
 
                                 </div>
                                 <div class="box_quantity mb-20">
@@ -195,7 +195,7 @@
                 </div>
                 <div class="row">
                     <div class="single_p_active owl-carousel">
-                        <div class="col-lg-3" th:each="x : ${topProducts}">
+                        <div class="col-lg-3" th:each="x : ${typeProduct}">
                             <div class="single_product">
                                 <div class="product_thumb">
                                     <a th:href="@{'/shop/'+ ${x.id}}"><img
@@ -210,7 +210,7 @@
                                     </div>
                                 </div>
                                 <div class="product_content">
-                                    <span class="product_price">500.000đ</span>
+                                    <span class="product_price" th:text="${x.priceFomat}"></span>
                                     <h3 class="product_title"><a th:href="@{'/shop/'+ ${x.id}}" th:text="${x.name}"></a>
                                     </h3>
                                 </div>
@@ -272,15 +272,22 @@
 </div>
 <script th:inline="javascript">
     const format = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'});
-    function checkinputsl() {
+    function checkinputsl(event) {
         var target = event.target;
-        inputValue = target.value;
-        if (inputValue < parseFloat(target.min)) {
-            target.value = target.min;
-        } else if (inputValue > parseFloat(target.max)) {
-            target.value = target.max;
-        }
+        inputValue = parseFloat(target.value);
+        var minValue = parseFloat(target.min);
+        var maxValue = parseFloat(target.max);
 
+        if (inputValue < minValue) {
+            alert("Tối thiểu là 1 sản phẩm");
+            target.value = minValue;
+        } else if (maxValue < 20 && inputValue > maxValue) {
+            alert("Tối đa là " + maxValue + " sản phẩm");
+            target.value = maxValue;
+        } else if (maxValue >= 20 && inputValue > 20) {
+            alert("Tối đa là 20 sản phẩm");
+            target.value = 20;
+        }
     }
 
     function updateSizes() {

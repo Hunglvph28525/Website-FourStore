@@ -11,13 +11,18 @@ import com.poly.datn.service.UserService;
 import com.poly.datn.util.Fomater;
 import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -133,6 +138,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     public MessageUtil delete(String codeBill) {
         Invoice invoice = repository.getReferenceById(codeBill);
         List<InvoiceDetail> list = detailRepository.getByCodeBill(codeBill);
+        list.stream().forEach(x -> {
+            ProductDetail productDetail = productDetailRepository.getReferenceById(x.getInvoiceId().getProductDetail().getId());
+            productDetail.setQuantity(productDetail.getQuantity() + x.getQuantity());
+            productDetailRepository.save(productDetail);
+        });
         detailRepository.deleteAll(list);
         List<Transaction> transactions = invoice.getTransactions().stream().toList();
         transactionRepository.deleteAll(transactions);
@@ -152,11 +162,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         } else {
             InvoiceDetail detail = new InvoiceDetail(new InvoiceId(productDetail, invoice), 1, productDetail.getPrice());
-            productDetail.setQuantity(productDetail.getQuantity() - 1);
-            productDetailRepository.save(productDetail);
             detailRepository.save(detail);
-
         }
+
+        productDetail.setQuantity(productDetail.getQuantity() - 1);
+        productDetailRepository.save(productDetail);
         List<InvoiceDetail> list = detailRepository.getByCodeBill(codeBill);
         BigDecimal total = list.stream().map(x -> x.getPrice().multiply(BigDecimal.valueOf(x.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add);
         invoice = repository.getReferenceById(codeBill);
@@ -418,7 +428,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoice.setStatus("3");
         } else if (invoice.getStatus().equals("3")) {
             invoice.setStatus("4");
-        }else if (invoice.getStatus().equals("0")) {
+        } else if (invoice.getStatus().equals("0")) {
             return MessageUtil.builder().message("Cập nhật thất bại !").status(1).type("bg-danger").object(codeBill).build();
         }
         invoice = repository.save(invoice);
@@ -437,6 +447,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     public MessageUtil huyDh(String codeBill, String note) {
         Invoice invoice = repository.getReferenceById(codeBill);
         invoice.setStatus("-1");
+        List<InvoiceDetail> invoiceDetails = detailRepository.getByCodeBill(codeBill);
+        invoiceDetails.stream().forEach(x -> {
+            ProductDetail productDetail = productDetailRepository.getReferenceById(x.getInvoiceId().getProductDetail().getId());
+            productDetail.setQuantity(productDetail.getQuantity() + x.getQuantity());
+            productDetailRepository.save(productDetail);
+        });
         invoice = repository.save(invoice);
         Transaction transaction = Transaction.builder()
                 .invoice(invoice)
@@ -449,6 +465,31 @@ public class InvoiceServiceImpl implements InvoiceService {
         return MessageUtil.builder().message("Hủy thành công !").status(1).type("bg-success").object(codeBill).build();
     }
 
+    @Override
+    public MessageUtil ttDonHang(String codeBill, String note) {
+        Invoice invoice = repository.getReferenceById(codeBill);
+        invoice.setPaymentInfo(note);
+        invoice.setPaymentStatus("1");
+        invoice.setPaymentDate(LocalDateTime.now());
+        invoice = repository.save(invoice);
+        updateStatus(codeBill,note);
+        return MessageUtil.builder().message("Xác nhận thanh toán thành công !").status(1).type("bg-success").object(invoice).build();
+    }
+
+    @Override
+    public void deleteInvoice() {
+        List<Invoice> invoices = repository.getStatus("0");
+        repository.deleteAll(invoices);
+    }
+
+    @Override
+    public Object getInvoceByUser() {
+        if (UserUltil.getUser() == null) return null;
+        List<Invoice> invoices = repository.getInvoiceByUser(UserUltil.getUser().getId());
+        List<InvoiceDto> invoiceDtos = invoices.stream().map(x -> new InvoiceDto(x)).collect(Collectors.toList());
+        return invoiceDtos;
+    }
+
     private String generateCodeBill(int x) {
         String characters = "0123456789";
         Random random = new Random();
@@ -458,6 +499,99 @@ public class InvoiceServiceImpl implements InvoiceService {
             randomString.append(characters.charAt(index));
         }
         return randomString.toString();
+    }
+
+    @Override
+    public void xuatHd(String codeBill, HttpServletResponse response) throws IOException {
+        Invoice invoice = repository.getReferenceById(codeBill);
+        XWPFDocument document = new XWPFDocument();
+        XWPFParagraph xWPFParagraph = document.createParagraph();
+        XWPFRun run = xWPFParagraph.createRun();
+        XWPFParagraph titleGraph = document.createParagraph();
+        titleGraph.setAlignment(ParagraphAlignment.CENTER);
+        String title = "Cửa hàng quần áo FourStore";
+        XWPFRun titleRun = titleGraph.createRun();
+        titleRun.setBold(true);
+        titleRun.setText(title);
+        XWPFParagraph xWPFParagraph1 = document.createParagraph();
+        xWPFParagraph1.setAlignment(ParagraphAlignment.CENTER);
+        run = xWPFParagraph1.createRun();
+        run.setText("ĐC: Phố Trinh Văn Bô , Nam Từ Liêm , Hà Nội");
+        XWPFParagraph xWPFParagraph2 = document.createParagraph();
+        xWPFParagraph2.setAlignment(ParagraphAlignment.CENTER);
+        run = xWPFParagraph2.createRun();
+        run.setText("SĐT:0123456789");
+        XWPFParagraph xWPFParagraph3 = document.createParagraph();
+        xWPFParagraph3.setAlignment(ParagraphAlignment.CENTER);
+        run = xWPFParagraph3.createRun();
+        run.setText("HOÁ ĐƠN BÁN QUẦN ÁO");
+        XWPFParagraph xWPFParagraph4 = document.createParagraph();
+        run = xWPFParagraph4.createRun();
+        run.setText("Khách Hàng :" + (invoice.getUser() == null ? "Khách hàng lẻ" : invoice.getUser().getName()));
+        XWPFParagraph xWPFParagraph0 = document.createParagraph();
+        run = xWPFParagraph0.createRun();
+        run.setText("Mã Hoá Đơn :" + invoice.getCodeBill());
+        XWPFParagraph xWPFParagraph5 = document.createParagraph();
+        run = xWPFParagraph5.createRun();
+        run.setText("Địa Chỉ :" + address(invoice.getShippingAddress()));
+        XWPFParagraph xWPFParagraph6 = document.createParagraph();
+        run = xWPFParagraph6.createRun();
+        run.setText("Số Điện Thoại :" + (invoice.getSdtNhan() == null ? (invoice.getUser() == null ? "Không có" : invoice.getUser().getPhoneNumber()) : invoice.getSdtNhan()));
+        XWPFParagraph xWPFParagraph7 = document.createParagraph();
+        run = xWPFParagraph7.createRun();
+        run.setText("Ngày lập :" + invoice.getCreateDate());
+        XWPFParagraph xWPFParagraph13 = document.createParagraph();
+        run = xWPFParagraph13.createRun();
+        run.setText("  ");
+        XWPFTable table = document.createTable();
+        table.setWidth(10000);
+        XWPFTableRow tableRowOne = table.getRow(0);
+        tableRowOne.getCell(0).setText("tên Sản Phẩm");
+        tableRowOne.addNewTableCell().setText("Số Lượng");
+        tableRowOne.addNewTableCell().setText("Đơn Giá)");
+        tableRowOne.addNewTableCell().setText("Thành Tiền");
+        int row = 0;
+        List<InvoiceDetailDto> invoiceDetailDtos = detailRepository.getAllInvoi(invoice.getCodeBill());
+        for (InvoiceDetailDto x : invoiceDetailDtos) {
+            XWPFTableRow tableRowTwo = table.createRow();
+            tableRowTwo.getCell(0).setText(x.getName());
+            tableRowTwo.getCell(1).setText(x.getQuantity().toString());
+            tableRowTwo.getCell(2).setText(x.getPriceFomat());
+            tableRowTwo.getCell(3).setText(Fomater.fomatTien().format(x.getPrice() * x.getQuantity()));
+            row++;
+        }
+        XWPFParagraph xWPFParagraph14 = document.createParagraph();
+        run = xWPFParagraph14.createRun();
+        run.setText("Tổng tiền hàng : " + Fomater.fomatTien().format(invoice.getTotal()));
+        XWPFParagraph xWPFParagraph8 = document.createParagraph();
+        run = xWPFParagraph8.createRun();
+        run.setText("Giảm Giá :" + Fomater.fomatTien().format(invoice.getGiaGiam()));
+        XWPFParagraph xWPFParagraph9 = document.createParagraph();
+        run = xWPFParagraph9.createRun();
+        run.setText("Tổng Tiền Thanh Toán :" + Fomater.fomatTien().format(invoice.getGrandTotal()));
+        XWPFParagraph xWPFParagraph10 = document.createParagraph();
+        run = xWPFParagraph10.createRun();
+        run.setText("tiền Khách trả :" + Fomater.fomatTien().format(invoice.getUserPay()));
+        XWPFParagraph xWPFParagraph15 = document.createParagraph();
+        run = xWPFParagraph15.createRun();
+        run.setText("tiền trả lại :" + Fomater.fomatTien().format(invoice.getTienThoi()));
+        XWPFParagraph xWPFParagraph11 = document.createParagraph();
+        xWPFParagraph11.setAlignment(ParagraphAlignment.RIGHT);
+        run = xWPFParagraph11.createRun();
+        run.setText("Người Lập Hoá Đơn");
+        XWPFParagraph xWPFParagraph12 = document.createParagraph();
+        xWPFParagraph12.setAlignment(ParagraphAlignment.RIGHT);
+        run = xWPFParagraph12.createRun();
+        run.setText(UserUltil.getUser().getName());
+        OutputStream outputStream = response.getOutputStream();
+        document.write(outputStream);
+        outputStream.close();
+        document.close();
+    }
+
+    private String address(ShippingAddress x) {
+        if (x == null) return "Không";
+        return x.getStreet() + ", " + x.getWard() + ", " + x.getDistrict() + ", " + x.getProvince();
     }
 
 }

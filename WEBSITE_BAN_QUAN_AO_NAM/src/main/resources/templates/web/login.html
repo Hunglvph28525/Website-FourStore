@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="web\assets\css\responsive.css">
     <script src="web\assets\js\vendor\modernizr-2.8.3.min.js"></script>
     <style>
-        input{
+        input {
             width: 100%;
         }
     </style>
@@ -30,89 +30,105 @@
     <div class="container">
         <!--pos page inner-->
         <div class="pos_page_inner">
-        <!--header area -->
+            <!--header area -->
             <div th:replace="~{layout/webheader :: webheader}"></div>
-        <!--header end -->
-        <!--breadcrumbs area start-->
-        <div class="breadcrumbs_area">
-            <div class="row">
-                <div class="col-12">
-                    <div class="breadcrumb_content">
-                        <ul>
-                            <li><a href="/home">Trang chủ</a></li>
-                            <li><i class="fa fa-angle-right"></i></li>
-                            <li>Đăng nhập</li>
-                        </ul>
+            <!--header end -->
+            <!--breadcrumbs area start-->
+            <div class="breadcrumbs_area">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb_content">
+                            <ul>
+                                <li><a href="/home">Trang chủ</a></li>
+                                <li><i class="fa fa-angle-right"></i></li>
+                                <li>Đăng nhập</li>
+                            </ul>
 
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!--breadcrumbs area end-->
+            <!--breadcrumbs area end-->
 
-        <!-- customer login start -->
-        <div class="customer_login">
-            <div class="row">
-                <!--login area start-->
-                <div class="col-lg-6 col-md-6">
-                    <div class="account_form">
-                        <h2>Đăng nhập</h2>
-                        <form th:action="@{/login}" method="post" >
-                            <p>
-                                <label>Tên đăng nhập <span>*</span></label>
-                                <input type="text" name="username">
-                            </p>
-                            <p>
-                                <label>Mật khẩu <span>*</span></label>
-                                <input type="password" name="password">
-                            </p>
-                            <div class="login_submit">
-                                <button type="submit">Đăng nhập</button>
-                                <a href="/fogot-password">Quên mật khẩu ?</a>
-                            </div>
+            <!-- customer login start -->
+            <div class="customer_login">
+                <div class="row">
+                    <!--login area start-->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="account_form">
+                            <h2>Đăng nhập</h2>
+                            <form th:action="@{/login}" method="post">
+                                <p>
+                                    <label>Tên đăng nhập <span>*</span></label>
+                                    <input type="text" name="username">
+                                </p>
+                                <p>
+                                    <label>Mật khẩu <span>*</span></label>
+                                    <input type="password" name="password">
+                                </p>
+                                <div class="login_submit">
+                                    <button type="submit">Đăng nhập</button>
+                                    <a href="/fogot-password">Quên mật khẩu ?</a>
+                                </div>
 
-                        </form>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <!--login area start-->
+                    <!--login area start-->
 
-                <!--register area start-->
-                <div class="col-lg-6 col-md-6">
-                    <div class="account_form register">
-                        <h2>Đăng kí</h2>
-                        <form action="#">
-                            <p>
-                                <label>Email address  <span>*</span></label>
-                                <input type="text">
-                            </p>
-                            <p>
-                                <label>Số diện thoại <span>*</span></label>
-                                <input type="text">
-                            </p>
-                            <p>
-                                <label>Tên đăng nhập <span>*</span></label>
-                                <input type="text">
-                            </p>
-                            <p>
-                                <label>Mật khẩu <span>*</span></label>
-                                <input type="password">
-                            </p>
-                            <p>
-                                <label>Nhập lại mật khẩu <span>*</span></label>
-                                <input type="password">
-                            </p>
-                            <div class="login_submit">
-                                <button type="submit">Đăng kí</button>
-                            </div>
-                        </form>
+                    <!--register area start-->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="account_form register">
+                            <h2>Đăng kí</h2>
+                            <span th:text="${thanhcong}" class="text-danger"></span>
+                            <form th:action="@{/sign-up}" method="post" th:object="${userSignUpRequest}">
+                                <p>
+                                    <label>Họ Tên <span>*</span></label>
+                                    <span th:errors="*{name}" class="text-danger"></span>
+                                    <input th:field="*{name}" class="form-control" type="text">
+                                </p>
+                                <p>
+                                    <label>Email <span>*</span></label>
+                                    <span th:text="${emailExists}" class="text-danger"></span>
+                                    <span th:errors="*{email}" class="text-danger"></span>
+                                    <input th:field="*{email}" class="form-control" type="text">
+                                </p>
+                                <p>
+                                    <label>Số điện thoại <span>*</span></label>
+                                    <span th:text="${sdtExists}" class="text-danger"></span>
+                                    <span th:errors="*{phoneNumber}" class="text-danger"></span>
+                                    <input th:field="*{phoneNumber}" class="form-control" type="text" >
+                                </p>
+                                <p>
+                                    <label>Tên đăng nhập <span>*</span></label>
+                                    <span th:text="${usernameExists}" class="text-danger"></span>
+                                    <span th:errors="*{username}" class="text-danger"></span>
+                                    <input th:field="*{username}" class="form-control" type="text">
+                                </p>
+                                <p>
+                                    <label>Mật khẩu <span>*</span></label>
+                                    <span th:errors="*{password}" class="text-danger"></span>
+                                    <input th:field="*{password}" class="form-control" type="password" >
+
+                                </p>
+                                <p>
+                                    <label>Nhập lại mật khẩu <span>*</span></label>
+                                    <span th:errors="*{confirmPassword}" class="text-danger"></span>
+                                    <input th:field="*{confirmPassword}" class="form-control" type="password">
+                                </p>
+                                <span th:text="${error}" class="text-danger"></span>
+                                <div class="login_submit">
+                                    <button type="submit">Đăng kí</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                    <!--register area end-->
                 </div>
-                <!--register area end-->
             </div>
-        </div>
-        <!-- customer login end -->
+            <!-- customer login end -->
 
-    </div>
+        </div>
         <!--pos page inner end-->
     </div>
 </div>
@@ -120,7 +136,11 @@
 
 <!--footer area start-->
 <div th:replace="~{layout/webfooter :: webfooter}"></div>
+<script>
+    function dangky() {
 
+    }
+</script>
 
 <!-- all js here -->
 <script src="web\assets\js\vendor\jquery-1.12.0.min.js"></script>

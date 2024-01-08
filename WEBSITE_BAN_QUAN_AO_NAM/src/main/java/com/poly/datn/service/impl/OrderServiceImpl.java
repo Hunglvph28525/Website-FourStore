@@ -5,10 +5,7 @@ import com.poly.datn.entity.*;
 import com.poly.datn.entity.composite.CartId;
 import com.poly.datn.entity.composite.InvoiceId;
 import com.poly.datn.repository.*;
-import com.poly.datn.service.CartService;
-import com.poly.datn.service.OderService;
-import com.poly.datn.service.PaymentService;
-import com.poly.datn.service.UserService;
+import com.poly.datn.service.*;
 import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -52,7 +49,8 @@ public class OrderServiceImpl implements OderService {
     @Autowired
     private CartDetailRepository cartDetailRepository;
 
-
+    @Autowired
+    private InvoiceService invoiceService;
 
 
     @Override
@@ -103,14 +101,14 @@ public class OrderServiceImpl implements OderService {
                     .quantity(x.getQuantity())
                     .build());
         });
-        if (detailDto.getPromotion() != null){
+        if (detailDto.getPromotion() != null) {
             Promotion promotion = detailDto.getPromotion();
-            promotion.setQuantity(promotion.getQuantity() -1);
+            promotion.setQuantity(promotion.getQuantity() - 1);
             promotionRepository.save(promotion);
         }
         Cart cart = cartRepository.getByUser_Id(user.getId());
         productDetails.stream().forEach(x -> {
-            CartId cartId = new CartId(x,cart);
+            CartId cartId = new CartId(x, cart);
             cartDetailRepository.deleteById(cartId);
         });
         productDetailRepository.saveAll(productDetails);
@@ -122,7 +120,7 @@ public class OrderServiceImpl implements OderService {
             invoiceRepository.save(temp);
             return "redirect:/thankyou";
         } else {
-            return "redirect:" + paymentService.paymentOnlineOnWeb(temp,reg);
+            return "redirect:" + paymentService.paymentOnlineOnWeb(temp, reg);
         }
     }
 
@@ -140,10 +138,11 @@ public class OrderServiceImpl implements OderService {
             return MessageUtil.builder().status(1).object(new OrderDetailDto()).build();
         } else {
 //            invoice.setPaymentDate(datePay);
-            invoice.setPaymentInfo(ghiChu + "Thanh toán thất bại");
-            invoice.setPaymentStatus("0");
-//            invoice.setShippingDate(LocalDateTime.now());
-            invoiceRepository.save(invoice);
+//            invoice.setPaymentInfo(ghiChu + "Thanh toán thất bại");
+//            invoice.setPaymentStatus("0");
+////            invoice.setShippingDate(LocalDateTime.now());
+//            invoiceRepository.save(invoice);
+            invoiceService.delete(invoice.getCodeBill());
             return MessageUtil.builder().message("Áp dụng phiếu giảm giá thành công !").status(0).type("bg-success").build();
         }
     }

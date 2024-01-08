@@ -236,27 +236,22 @@
                 <table>
                     <thead>
                     <tr>
-                        <th style="text-align: center">STT</th>
-                        <th style="text-align: center">Mã giảm giá</th>
-                        <th style="text-align: center">Điều kiện</th>
-                        <th style="text-align: center">Giảm giá</th>
-                        <th style="text-align: center">Lượt dùng</th>
-
-                        <th style="text-align: center">Chức năng</th>
+                        <th>STT</th>
+                        <th>Mã giảm giá</th>
+                        <th>Điều kiện</th>
+                        <th>Giảm giá</th>
+                        <th>Lượt dùng</th>
+                        <th>Chức năng</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="x,arr : ${pgg}">
-                        <td style="text-align: center"
-                            th:text="${arr.index + 1}"></td>
-                        <td style="text-align: center" th:text="${x.giftCode}"></td>
-                        <td style="text-align: center"
-                            th:text="${'Đơn tối thiểu ' + x.minValue1 + ' đ'}"></td>
-                        <td style="text-align: center"
-                            th:text="${x.discount + '%'}"></td>
-                        <td style="text-align: center" th:text="${x.quantity}"></td>
-                        <td style="text-align: center">
-                            <!-- data-toggle="modal" data-target="#modal_box"-->
+                        <td th:text="${arr.index + 1}"></td>
+                        <td th:text="${x.giftCode}"></td>
+                        <td th:text="${'Đơn tối thiểu ' + x.minValue1 + ' đ'}"></td>
+                        <td th:text="${x.discount + '%'}"></td>
+                        <td th:text="${x.quantity}"></td>
+                        <td>
                             <a th:href="@{'/checkout/add-pgg/'+${x.id}}"
                                class="btn btn-success">chọn</a>
                         </td>

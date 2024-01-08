@@ -2,9 +2,7 @@ package com.poly.datn.service;
 
 import com.poly.datn.dto.ProductDto;
 import com.poly.datn.dto.ProductRequest;
-import com.poly.datn.entity.Category;
 import com.poly.datn.entity.Product;
-import com.poly.datn.entity.TypeProduct;
 import com.poly.datn.util.MessageUtil;
 
 import java.util.List;
@@ -25,5 +23,11 @@ public interface ProductService {
     MessageUtil save(Long id);
 
     ProductDto getDetail(Long id);
+
+    List<ProductDto> getAllWebLoc(Long idType, Long idBrand);
+
+    List<ProductDto> getAllWeb();
+
+    List<ProductDto> getAllWebSPmoi();
 
 }

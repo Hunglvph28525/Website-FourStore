@@ -26,6 +26,20 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    public MessageUtil address(Address address) {
+        User user = UserUltil.getUser();
+        if (user == null) return MessageUtil.builder().status(0).message("Lỗi vui lòng đăng nhập lại").status(1).type("bg-success").build();
+        address.setUser(user);
+        if(address.getStatus().equals("on")){
+            List<Address> addresses = addressRepository.findByIdKhachHang(user.getId());
+            addresses.stream().forEach(x -> x.setStatus("off"));
+            addressRepository.saveAll(addresses);
+        }
+        addressRepository.save(address);
+        return MessageUtil.builder().status(1).message("thành công").status(1).type("bg-success").build();
+    }
+
+    @Override
     public MessageUtil selectMacDinh(Long idUser, Long idAddress) {
         User user = repository.getReferenceById(idUser);
         user.getAddresses().stream().forEach(x ->{
@@ -43,6 +57,15 @@ public class AddressServiceImpl implements AddressService {
     public List<Address> getAddressForCustomer() {
         User user = UserUltil.getUser();
         if (user == null)return null;
-        return user.getAddresses().stream().toList();
+        List<Address> addresses = repository.getAddressByUser(user.getId());
+        return addresses;
+    }
+
+    @Override
+    public MessageUtil delete(Long id) {
+        User user = UserUltil.getUser();
+        if (user == null) return MessageUtil.builder().status(0).message("Lỗi vui lòng đăng nhập lại").status(1).type("bg-success").build();
+        addressRepository.deleteById(id);
+        return MessageUtil.builder().status(1).message("thành công").status(1).type("bg-success").build();
     }
 }

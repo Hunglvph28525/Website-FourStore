@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -116,6 +117,34 @@ public class ProductServiceImpl implements ProductService {
         productDto.setVertions(vertions);
         return productDto;
     }
+
+    @Override
+    public List<ProductDto> getAllWebLoc(Long idType, Long idBrand) {
+        List<Product> products;
+        if (idType == 0 && idBrand == 0){
+            products = productRepository.getAllWeb();
+        }
+        else {
+            products = productRepository.getAllWebBytypeOrbrand(idType,idBrand);
+        }
+        List<ProductDto> productDtos = products.stream().map(x -> new ProductDto(x)).collect(Collectors.toList());
+        return productDtos;
+    }
+
+    @Override
+    public List<ProductDto> getAllWeb() {
+        List<Product> products = productRepository.getAllWeb();
+        List<ProductDto> productDtos = products.stream().map(x -> new ProductDto(x)).collect(Collectors.toList());
+        return productDtos;
+    }
+
+    @Override
+    public List<ProductDto> getAllWebSPmoi() {
+        List<Product> products = productRepository.findTop3Products();
+        List<ProductDto> productDtos = products.stream().map(x -> new ProductDto(x)).collect(Collectors.toList());
+        return productDtos.stream().toList().subList(0,7);
+    }
+
 
     @Override
     public ProductRequest getProduct(Long id) {

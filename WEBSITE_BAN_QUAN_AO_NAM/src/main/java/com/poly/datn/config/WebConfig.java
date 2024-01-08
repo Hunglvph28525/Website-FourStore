@@ -1,6 +1,8 @@
 package com.poly.datn.config;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.ErrorPageRegistrar;
@@ -25,6 +27,16 @@ public class WebConfig implements ErrorPageRegistrar {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public Cloudinary cloudinary() {
+        Cloudinary cloud = new Cloudinary(ObjectUtils.asMap(
+                "cloud_name", "dg8hhxkah",
+                "api_key", "689858737754194",
+                "api_secret", "_Bjo7wwguxDZt9DiZ882PLuox10",
+                "secure",true));
+        return cloud ;
     }
 
 }

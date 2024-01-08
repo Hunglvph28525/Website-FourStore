@@ -1,7 +1,9 @@
 package com.poly.datn.config;
 
+import com.poly.datn.entity.PaymentMethod;
 import com.poly.datn.entity.Role;
 import com.poly.datn.entity.User;
+import com.poly.datn.repository.PaymentMethodRepository;
 import com.poly.datn.repository.RoleRepository;
 import com.poly.datn.repository.UserRepository;
 import com.poly.datn.service.UserService;
@@ -22,8 +24,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 
 @Configuration
@@ -45,7 +51,7 @@ public class SercurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(c -> c.requestMatchers("/admin/**")
                         .hasRole("ADMIN")
-                        .requestMatchers("/user/**","/cart/**","/checkout/**")
+                        .requestMatchers("/user/**","/cart/**","/checkout/**","/invoice/**","/tai-khoan")
                         .hasAnyRole("ADMIN", "USER")
                         .anyRequest().permitAll()
                 )
@@ -75,7 +81,7 @@ public class SercurityConfig {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner commandLineRunner(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, PaymentMethodRepository paymentMethodRepository) {
         return args -> {
             // initial roles
             if (roleRepository.count() < 2) {
@@ -96,12 +102,30 @@ public class SercurityConfig {
                                 .username("admin")
                                 .password(passwordEncoder.encode("123456"))
 //                        .avatar("/assets/images/users/avatar-2.jpg")
-                                .avatar("http://res.cloudinary.com/dg8hhxkah/image/upload/v1698829775/other/hicavrlz4yxdasq1uasw.jpg")
+                                .avatar("https://res.cloudinary.com/dg8hhxkah/image/upload/v1703776131/other/bixhah1m4u2nu0zqsq7m.jpg")
                                 .name("FourStore Shop")
                                 .roles(Collections.singletonList(roleRepository
                                         .getByName(RoleUtil.ADMIN.getValue())))
                                 .build()
                 );
+            if (paymentMethodRepository.findAll().stream().count() <= 0){
+                List<PaymentMethod> paymentMethods = new ArrayList<>();
+                paymentMethods.add(PaymentMethod.builder()
+                        .id(1)
+                        .methodName("Thanh toán khi nhận hàng (COD)")
+                        .createDate(Date.valueOf(LocalDate.now()))
+                        .description("Khi nhận hàng thì thanh toán ")
+                        .status("1")
+                        .build());
+                paymentMethods.add(PaymentMethod.builder()
+                        .id(2)
+                        .methodName("Thanh toán bằng VN Pay")
+                        .createDate(Date.valueOf(LocalDate.now()))
+                        .description("Thanh toán bằng tài khoản ngân hàng ")
+                        .status("1")
+                        .build());
+                paymentMethodRepository.saveAll(paymentMethods);
+            }
         };
     }
 }
