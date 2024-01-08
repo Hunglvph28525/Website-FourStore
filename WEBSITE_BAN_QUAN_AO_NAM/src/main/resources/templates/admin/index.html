@@ -77,129 +77,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- col-12 -->
-<!--                <div class="col-md-12">-->
-<!--                    <div class="tile">-->
-<!--                        <h3 class="tile-title">Tình trạng đơn hàng</h3>-->
-<!--                        <div>-->
-<!--                            <table class="table table-bordered">-->
-<!--                                <thead>-->
-<!--                                <tr>-->
-<!--                                    <th>ID đơn hàng</th>-->
-<!--                                    <th>Tên khách hàng</th>-->
-<!--                                    <th>Tổng tiền</th>-->
-<!--                                    <th>Trạng thái</th>-->
-<!--                                </tr>-->
-<!--                                </thead>-->
-<!--                                <tbody>-->
-<!--                                <tr>-->
-<!--                                    <td>AL3947</td>-->
-<!--                                    <td>Phạm Thị Ngọc</td>-->
-<!--                                    <td>-->
-<!--                                        19.770.000 đ-->
-<!--                                    </td>-->
-<!--                                    <td><span class="badge bg-info">Chờ xử lý</span></td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>ER3835</td>-->
-<!--                                    <td>Nguyễn Thị Mỹ Yến</td>-->
-<!--                                    <td>-->
-<!--                                        16.770.000 đ-->
-<!--                                    </td>-->
-<!--                                    <td><span class="badge bg-warning">Đang vận chuyển</span></td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>MD0837</td>-->
-<!--                                    <td>Triệu Thanh Phú</td>-->
-<!--                                    <td>-->
-<!--                                        9.400.000 đ-->
-<!--                                    </td>-->
-<!--                                    <td><span class="badge bg-success">Đã hoàn thành</span></td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>MT9835</td>-->
-<!--                                    <td>Đặng Hoàng Phúc</td>-->
-<!--                                    <td>-->
-<!--                                        40.650.000 đ-->
-<!--                                    </td>-->
-<!--                                    <td><span class="badge bg-danger">Đã hủy </span></td>-->
-<!--                                </tr>-->
-<!--                                </tbody>-->
-<!--                            </table>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash; / div trống&ndash;&gt;-->
-<!--                    </div>-->
-<!--                </div>-->
-                <!-- / col-12 -->
-                <!-- col-12 -->
-                <div class="col-md-12">
-                    <div class="tile">
-                        <h3 class="tile-title">Khách hàng mới</h3>
-                        <div>
-                            <table class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Tên khách hàng</th>
-                                    <th>Email</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Giới tính</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="x,arr : ${newKH}">
-                                    <td th:text="${x.id}"></td>
-                                    <td th:text="${x.name}"></td>
-                                    <td th:text="${x.email}"></td>
-                                    <td th:text="${x.phoneNumber}"></td>
-                                    <td th:text="${x.gender} == true?'Nam':'Nữ'"></td>
-                                </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-                <!-- / col-12 -->
-            </div>
-        </div>
-        <!--END left-->
-        <!--Right-->
-        <div class="col-md-12 col-lg-6">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="tile">
-                        <h3 class="tile-title">Sản phẩm sắp hết hàng</h3>
-
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>Tên sản phẩm</th>
-                                <th>Ảnh</th>
-                                <th>Màu sắc</th>
-                                <th>Size</th>
-                                <th>Số lượng</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="x,arr : ${sphet}">
-                                <td th:text="${x.productName}"></td>
-                                <td><img th:src="@{${x.url}}" alt="ảnh san pham" width="100px;"></td>
-                                <td th:text="${x.colorName}"></td>
-                                <td th:text="${x.name}"></td>
-                                <td th:text="${x.quantity}"></td>
-                            </tr>
-
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-
-
                 <div class="col-md-12">
                     <div class="tile">
                         <h3 class="tile-title">Đơn hàng mới</h3>
@@ -237,11 +114,72 @@
                     </div>
                 </div>
 
+                <!-- / col-12 -->
+
+            </div>
+        </div>
+        <!--END left-->
+        <!--Right-->
+        <div class="col-md-12 col-lg-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tile">
+                        <h3 class="tile-title">Sản phẩm sắp hết hàng</h3>
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Tên sản phẩm</th>
+                                <th>Màu sắc</th>
+                                <th>Size</th>
+                                <th>Số lượng</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,arr : ${sphet}">
+                                <td th:text="${x.product.productName}"></td>
+                                <td th:text="${x.color.name}"></td>
+                                <td th:text="${x.size.name}"></td>
+                                <td th:text="${x.quantity}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="tile">
+                    <h3 class="tile-title">Khách hàng mới</h3>
+                    <div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên khách hàng</th>
+                                <th>Email</th>
+                                <th>Số điện thoại</th>
+                                <th>Giới tính</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="x,arr : ${newKH}">
+                                <td th:text="${x.id}"></td>
+                                <td th:text="${x.name}"></td>
+                                <td th:text="${x.email}"></td>
+                                <td th:text="${x.phoneNumber}"></td>
+                                <td th:text="${x.gender} == true?'Nam':'Nữ'"></td>
+                            </tr>
 
 
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
 
         </div>
+
         <!--END right-->
     </div>
 

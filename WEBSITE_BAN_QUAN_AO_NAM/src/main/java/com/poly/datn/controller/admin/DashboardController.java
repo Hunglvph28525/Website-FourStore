@@ -37,7 +37,7 @@ public class DashboardController {
         model.addAttribute("tonghoadon",invoiceRepository.getHoaDon());
         model.addAttribute("spsaphet",productDetailRepository.getSPSapHet());
         model.addAttribute("newKH",userRepository.getNewKH());
-        model.addAttribute("sphet",productDetailRepository.sapHet());
+        model.addAttribute("sphet",productDetailRepository.getSpSapHet());
 
         model.addAttribute("all", invoiceService.hoaDonMoi());
 

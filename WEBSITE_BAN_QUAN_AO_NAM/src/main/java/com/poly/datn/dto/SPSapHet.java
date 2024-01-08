@@ -4,8 +4,6 @@ public interface SPSapHet {
 
     String getProductName();
 
-    String getUrl();
-
     String getColorName();
 
     String getName();
