@@ -708,7 +708,7 @@
                                                         th:text="${arr.index + 1}"></td>
                                                     <td style="text-align: center" th:text="${x.giftCode}"></td>
                                                     <td style="text-align: center"
-                                                        th:text="${'Đơn tối thiểu ' + x.minValue1 + ' đ'}"></td>
+                                                        th:text="${'Đơn tối thiểu ' + x.minValueFomat + ' Giảm tối đa ' + x.maxValueFomat}"></td>
                                                     <td style="text-align: center"
                                                         th:text="${x.discount + '%'}"></td>
                                                     <td style="text-align: center" th:text="${x.quantity}"></td>
@@ -935,6 +935,11 @@
     const format = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'});
 
     function updateQuantity(productId, codeBill, newQuantity, price) {
+        console.log(newQuantity);
+        if (newQuantity == "") {
+            alert("số lượng không để trống");
+            return;
+        }
         var newTotal = newQuantity * price;
         console.log(format.format(newTotal));
         document.getElementById('total-' + productId).innerText = format.format(newTotal);
@@ -980,7 +985,7 @@
         var o = document.getElementById('grandTotal-' + codeBill);
 
         let m = o.innerText || o.textContent;
-        console.log("output của m "+ m);
+        console.log("output của m " + m);
         let tienphaitra = parseFormattedCurrency(m);
         let n = Number(tienKhach) - Number(tienphaitra);
         if (n >= 0) {
@@ -988,8 +993,9 @@
         } else {
             x.innerText = 'Quý khách còn thiếu :' + format.format(-n);
         }
-        console.log('output của tien phải tra '+ tienphaitra);
+        console.log('output của tien phải tra ' + tienphaitra);
     }
+
     function parseFormattedCurrency(x) {
         const cleanedString = x.replace(/[^\d.,]/g, '');
 

@@ -280,7 +280,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         promotion = promotionRepository.getReferenceById(pgg);
         System.out.println(promotion);
         if (invoice.getTotal().doubleValue() >= promotion.getMinValue().doubleValue() && promotion.getQuantity() > 0) {
-            invoice.setGiaGiam(invoice.getTotal().multiply(BigDecimal.valueOf(promotion.getDiscountValue()).divide(new BigDecimal("100"))));
+            BigDecimal giaGiam = invoice.getTotal().multiply(BigDecimal.valueOf(promotion.getDiscountValue()).divide(new BigDecimal("100")));
+            if (giaGiam.doubleValue() > promotion.getMaxValue().doubleValue()){
+                giaGiam = promotion.getMaxValue();
+            }
+            invoice.setGiaGiam(giaGiam);
             invoice.setGrandTotal(invoice.getTotal().subtract(invoice.getGiaGiam()));
             invoice.setPromotion(promotion);
             promotion.setQuantity(promotion.getQuantity() - 1);

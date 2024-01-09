@@ -23,7 +23,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail,Lon
     //tổng sản phẩm
     @Query(value = "select sum(quantity) from productDetails",nativeQuery = true)
     Integer getTongSoSP();
-    
+
 
     //số sản phẩm sắp hết hàng
     @Query(value = "select count(id) from productDetails where quantity < 5",nativeQuery = true)

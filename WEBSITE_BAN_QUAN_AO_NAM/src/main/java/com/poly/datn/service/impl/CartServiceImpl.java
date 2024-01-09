@@ -227,9 +227,12 @@ public class CartServiceImpl implements CartService {
             promotionRepository.save(promotion);
         }
         promotion = promotionRepository.getReferenceById(idPgg);
-
         if (detailDto.getTotal().doubleValue() >= promotion.getMinValue().doubleValue() && promotion.getQuantity() > 0) {
-            detailDto.setGiaGiam(detailDto.getTotal() * promotion.getDiscountValue() / 100);
+            int giaGiam = detailDto.getTotal() * promotion.getDiscountValue() / 100;
+            if (giaGiam > promotion.getMaxValue().doubleValue()){
+                giaGiam = promotion.getMaxValue().intValue();
+            }
+            detailDto.setGiaGiam(giaGiam);
             detailDto.setGiaGiamFomat(Fomater.fomatTien().format(detailDto.getGiaGiam()));
             detailDto.setGrandTotal(detailDto.getTotal() + detailDto.getShippingCost() - detailDto.getGiaGiam());
             detailDto.setGrandTotalFomat(Fomater.fomatTien().format(detailDto.getGrandTotal()));
