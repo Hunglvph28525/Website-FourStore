@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
 
+    <!--    =====================-->
+
+    <link rel="stylesheet" href="/assets/vendor/select2/select2.css">
+    <link rel="stylesheet" href="/assets/vendor/select2/select2.min.css">
+
 </head>
 <body class="app sidebar-mini rtl">
 <div th:replace="~{layout/navbar :: navbar}"></div>
@@ -176,7 +181,7 @@
 
 
                         <button class="btn btn-save" type="submit" style="height: 40px;margin-top: 30px">Lưu lại</button>
-                        <a class="btn btn-cancel" href="/doc/table-data-table.html" style="height: 40px;margin-left: 10px;margin-top: 30px">Hủy bỏ</a>
+                        <a class="btn btn-cancel" href="/admin/customer" style="height: 40px;margin-left: 10px;margin-top: 30px">Hủy bỏ</a>
                     </form>
                 </div>
             </div>
@@ -221,12 +226,20 @@ MODAL
 
 
 <!-- Essential javascripts for application to work-->
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/main.js"></script>
-<!-- The javascript plugin to display page loading on top-->
-<script src="js/plugins/pace.min.js"></script>
+<script src="/assets/js/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/popper.min.js"></script>
+<script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/js/main1.js"></script>
+<!--===============================================================================================-->
+<script src="/assets/assets/js/plugins/pace.min.js"></script>
+<!--===============================================================================================-->
+<script type="text/javascript" src="/assets/js/plugins/chart.js"></script>
+<script src="/assets/vendor/select2/select2.js"></script>
+<script src="/assets/vendor/select2/select2.min.js.js"></script>
 
 </body>
 
