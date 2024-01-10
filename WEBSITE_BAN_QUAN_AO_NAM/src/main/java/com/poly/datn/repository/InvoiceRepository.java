@@ -63,33 +63,37 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
     //doanh thu tháng này
 
-    @Query(value = "SELECT SUM(t1)\n" +
-            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            WHERE month(invoices.create_date) = month(GETDATE()) AND Invoices.status = '4'\n" +
-            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
-            "            WHERE month(invoices.create_date) = month(GETDATE()) AND Invoices.status = '4'\n" +
-            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+//    @Query(value = "SELECT SUM(t1)\n" +
+//            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            WHERE month(invoices.create_date) = month(GETDATE()) AND Invoices.status = '4'\n" +
+//            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
+//            "            WHERE month(invoices.create_date) = month(GETDATE()) AND Invoices.status = '4'\n" +
+//            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+    @Query(value = " select sum(grand_total) \n" +
+            "\t\t\t\t\t   from Invoices where month(invoices.create_date) = month(GETDATE()) and Invoices.payment_status = '1'",nativeQuery = true)
     Double getDoanhThuThangNay();
 
     //doanh thu hôm nay
 
 
-    @Query(value = "SELECT SUM(t1)\n" +
-            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            WHERE DAY(invoices.create_date) = DAY(GETDATE()) AND Invoices.status = '4'\n" +
-            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
-            "            WHERE DAY(invoices.create_date) = DAY(GETDATE()) AND Invoices.status = '4'\n" +
-            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+//    @Query(value = "SELECT SUM(t1)\n" +
+//            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            WHERE DAY(invoices.create_date) = DAY(GETDATE()) AND Invoices.status = '4'\n" +
+//            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
+//            "            WHERE DAY(invoices.create_date) = DAY(GETDATE()) AND Invoices.status = '4'\n" +
+//            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+    @Query(value = "   select sum(grand_total) \n" +
+            "\t\t\t\t\t   from Invoices where day(invoices.create_date) = day(GETDATE()) and Invoices.payment_status = '1'",nativeQuery = true)
     Double getDoanhThuHomNay();
 
     @Query(value = "\n" +
@@ -111,24 +115,29 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     //tìm kiếm doanh thu theo ngày
 
 
-    @Query(value = " SELECT a.createDate, a.t1 + COALESCE(b.t2, 0) AS price\n" +
-            "FROM (\n" +
-            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price ) AS t1\n" +
-            "FROM invoices\n" +
-            "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "AND invoices.id_promotion IS NULL\n" +
-            "WHERE Invoices.status = '4' and invoices.create_date BETWEEN :ngay1 and :ngay2\n" +
-            "GROUP BY CONVERT(DATE, invoices.create_date)\n" +
-            ") AS a\n" +
-            "LEFT JOIN (\n" +
-            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
-            "FROM invoices\n" +
-            "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "JOIN promotions ON promotions.id = invoices.id_promotion\n" +
-            "WHERE Invoices.status = '4' and Invoices.create_date BETWEEN  :ngay1 and :ngay2\n" +
-            "GROUP BY discount_value,CONVERT(DATE, invoices.create_date)\n" +
-            ") AS b ON 1 = 1\n" +
-            "\t\t\t\t",nativeQuery = true)
+//    @Query(value = " SELECT a.createDate, a.t1 + COALESCE(b.t2, 0) AS price\n" +
+//            "FROM (\n" +
+//            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price ) AS t1\n" +
+//            "FROM invoices\n" +
+//            "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "AND invoices.id_promotion IS NULL\n" +
+//            "WHERE Invoices.status = '4' and invoices.create_date BETWEEN :ngay1 and :ngay2\n" +
+//            "GROUP BY CONVERT(DATE, invoices.create_date)\n" +
+//            ") AS a\n" +
+//            "LEFT JOIN (\n" +
+//            "SELECT CONVERT(DATE, invoices.create_date) AS 'createDate',SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+//            "FROM invoices\n" +
+//            "JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "JOIN promotions ON promotions.id = invoices.id_promotion\n" +
+//            "WHERE Invoices.status = '4' and Invoices.create_date BETWEEN  :ngay1 and :ngay2\n" +
+//            "GROUP BY discount_value,CONVERT(DATE, invoices.create_date)\n" +
+//            ") AS b ON 1 = 1\n" +
+//            "\t\t\t\t",nativeQuery = true)
+
+@Query(value = " select CONVERT(DATE, invoices.create_date) AS 'createDate',sum(grand_total) AS price \n" +
+        "\t\t\t\t\t   from Invoices  \n" +
+        "\t\t\t\t\t   WHERE Invoices.payment_status = '1' and invoices.create_date BETWEEN :ngay1 and :ngay2 GROUP BY CONVERT(DATE, invoices.create_date)",nativeQuery = true
+)
 
 
     List<BieuDoCot> getTimKiemBieuDoCot(Date ngay1, Date ngay2);
@@ -156,34 +165,39 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
     //doanh thu năm nay
 
 
-    @Query(value = "SELECT SUM(t1)\n" +
-            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            WHERE year(invoices.create_date) = year(GETDATE()) AND Invoices.status = '4'\n" +
-            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
-            "            WHERE year(invoices.create_date) = year(GETDATE()) AND Invoices.status = '4'\n" +
-            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+//    @Query(value = "SELECT SUM(t1)\n" +
+//            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            WHERE year(invoices.create_date) = year(GETDATE()) AND Invoices.status = '4'\n" +
+//            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
+//            "            WHERE year(invoices.create_date) = year(GETDATE()) AND Invoices.status = '4'\n" +
+//            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+
+    @Query(value = " select sum(grand_total) \n" +
+            "             from Invoices where year(invoices.create_date) = year(GETDATE()) and Invoices.payment_status = '1'",nativeQuery = true)
     Double getDoanhThuNamNay();
 
 
     //tổng doanh thu
 
 
-    @Query(value = "SELECT SUM(t1)\n" +
-            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            WHERE  Invoices.status = '4'\n" +
-            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
-            "            FROM invoices\n" +
-            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
-            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
-            "            WHERE  Invoices.status = '4'\n" +
-            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+//    @Query(value = "SELECT SUM(t1)\n" +
+//            "FROM ( SELECT SUM(invoicedetails.quantity * price ) AS t1\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            WHERE  Invoices.status = '4'\n" +
+//            "            AND invoices.id_promotion IS NULL UNION ALL  SELECT SUM(invoicedetails.quantity * price ) - SUM(invoicedetails.quantity * price)/100 * discount_value AS t2\n" +
+//            "            FROM invoices\n" +
+//            "            JOIN invoicedetails ON invoices.code_bill = invoicedetails.ivoice_id\n" +
+//            "            JOIN promotions ON promotions.id = invoices.id_promotion\n" +
+//            "            WHERE  Invoices.status = '4'\n" +
+//            "            GROUP BY discount_value) AS combined_query",nativeQuery = true)
+    @Query(value = "\t   select sum(grand_total) \n" +
+            "             from Invoices where  Invoices.payment_status = '1'",nativeQuery = true)
     Double getTongDoanhThu();
 
     //doanh thu 7 ngày trước
