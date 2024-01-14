@@ -281,7 +281,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         System.out.println(promotion);
         if (invoice.getTotal().doubleValue() >= promotion.getMinValue().doubleValue() && promotion.getQuantity() > 0) {
             BigDecimal giaGiam = invoice.getTotal().multiply(BigDecimal.valueOf(promotion.getDiscountValue()).divide(new BigDecimal("100")));
-            if (giaGiam.doubleValue() > promotion.getMaxValue().doubleValue()){
+            if (giaGiam.doubleValue() > promotion.getMaxValue().doubleValue()) {
                 giaGiam = promotion.getMaxValue();
             }
             invoice.setGiaGiam(giaGiam);
@@ -316,6 +316,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     public MessageUtil payment(String codeBill, Integer paymentMethod, Double tienKhachDua) {
         Invoice invoice = repository.getReferenceById(codeBill);
         invoice.setPaymentMethod(paymentMethodRepository.getReferenceById(paymentMethod));
+        List<InvoiceDetail> invoiceDetails = detailRepository.getByCodeBill(codeBill);
+        if (invoiceDetails.stream().count() <= 0)
+            return MessageUtil.builder().message("Thanh toán không thành công !").status(1).type("bg-danger").build();
+        if (tienKhachDua == null)
+            return MessageUtil.builder().message("Thanh toán không thành công !").status(1).type("bg-danger").build();
         if (tienKhachDua >= invoice.getGrandTotal().doubleValue()) {
             invoice.setPaymentDate(LocalDateTime.now());
             if (invoice.getShipping()) {
@@ -490,7 +495,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setPaymentStatus("1");
         invoice.setPaymentDate(LocalDateTime.now());
         invoice = repository.save(invoice);
-        updateStatus(codeBill,note);
+        updateStatus(codeBill, note);
         return MessageUtil.builder().message("Xác nhận thanh toán thành công !").status(1).type("bg-success").object(invoice).build();
     }
 

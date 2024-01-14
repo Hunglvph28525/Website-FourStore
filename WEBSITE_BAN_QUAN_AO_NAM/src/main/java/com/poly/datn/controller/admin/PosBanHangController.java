@@ -88,7 +88,7 @@ public class PosBanHangController {
         } else {
             MessageUtil messageUtil = invoiceService.payment(codeBill, paymentMethod, tienKhachDua);
             attributes.addFlashAttribute("message", messageUtil);
-            return "redirect:/admin/invoice/"+codeBill;
+            return "redirect:/admin/sale";
         }
 
     }

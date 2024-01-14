@@ -457,7 +457,7 @@
 
                                         </div>
                                         <div class="col-md-12">
-                                            <form method="post"
+                                            <form method="post" th:id="${'from'+ i.index}"
                                                   th:action="@{'/admin/sale/invoice/payment/'+${tab.codeBill}}">
                                                 <div class="form-group">
                                                     <div class="cnt_full">
@@ -486,7 +486,8 @@
                                                     </div>
 
                                                 </div>
-                                                <button class="btn btn-warning mt-3"
+                                                <button class="btn btn-warning mt-3" type="button"
+                                                        th:attr="onclick='submitForm('+ ${i.index} + ')'"
                                                         style=" float: right;margin-right: 60px; width: 250px;height: 60px">
                                                     Thanh toán
                                                 </button>
@@ -1074,11 +1075,41 @@
             }
         })(i);
     }
+    function validateForm(index) {
+        var form = document.getElementById("from" + index);
 
+        // Kiểm tra xem có ít nhất một radio button được chọn không
+        var paymentMethod = form.elements["paymentMethod"];
+        var isPaymentMethodSelected = false;
+
+        for (var i = 0; i < paymentMethod.length; i++) {
+            if (paymentMethod[i].checked) {
+                isPaymentMethodSelected = true;
+                break;
+            }
+        }
+
+        if (!isPaymentMethodSelected) {
+            alert("Vui lòng chọn một phương thức thanh toán");
+            return false; // Ngăn chặn form được submit nếu có lỗi
+        }
+        return true;
+    }
+
+    function submitForm(index) {
+        var form = document.getElementById("from" + index);
+
+        // Kiểm tra xác nhận của người dùng
+        var isConfirmed = window.confirm("Bạn có chắc chắn muốn thực hiện thanh toán?");
+
+        // Kiểm tra và submit form nếu được xác nhận và hợp lệ
+        if (isConfirmed && validateForm(index)) {
+            form.submit();
+        } else {
+            console.log("Người dùng đã hủy bỏ thanh toán hoặc có lỗi trong form.");
+        }
+    }
     /*]]>*/
-</script>
-<script>
-
 </script>
 
 </body>
