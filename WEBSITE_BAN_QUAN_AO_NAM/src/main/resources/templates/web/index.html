@@ -156,46 +156,46 @@
                 <!--banner area end-->
 
                 <!--featured product area start-->
-                <div class="new_product_area product_two">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="block_title">
-                                <h3>Sản phấm bán chạy </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="single_p_active owl-carousel">
-                            <div class="col-lg-3" th:each="x : ${topProducts}">
-                                <div class="single_product">
-                                    <div class="product_thumb">
-                                        <a th:href="@{'/shop/'+${x.id}}"><img
-                                                th:src="@{${x.image}}"
-                                                alt=""></a>
-                                        <div class="img_icone">
-                                            <img src="/web/assets/img/cart/span-new.png" alt="">
-                                        </div>
-                                        <div class="product_action">
-                                            <a href="#" data-toggle="modal" data-target="#modal_box"
-                                               title="Quick view">Thêm vào giỏ hàng</a>
+<!--                <div class="new_product_area product_two">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-12">-->
+<!--                            <div class="block_title">-->
+<!--                                <h3>Sản phấm bán chạy </h3>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="row">-->
+<!--                        <div class="single_p_active owl-carousel">-->
+<!--                            <div class="col-lg-3" th:each="x : ${topProducts}">-->
+<!--                                <div class="single_product">-->
+<!--                                    <div class="product_thumb">-->
+<!--                                        <a th:href="@{'/shop/'+${x.id}}"><img-->
+<!--                                                th:src="@{${x.image}}"-->
+<!--                                                alt=""></a>-->
+<!--                                        <div class="img_icone">-->
+<!--                                            <img src="/web/assets/img/cart/span-new.png" alt="">-->
+<!--                                        </div>-->
+<!--                                        <div class="product_action">-->
+<!--                                            <a href="#" data-toggle="modal" data-target="#modal_box"-->
+<!--                                               title="Quick view">Thêm vào giỏ hàng</a>-->
 
-                                        </div>
-                                    </div>
-                                    <div class="product_content">
-                                        <span class="product_price" th:text="${x.priceFomat}"></span>
-                                        <h3 class="product_title"><a th:href="@{'/shop/'+${x.id}}" th:text="${x.name}"></a></h3>
-                                    </div>
-                                    <div class="product_info">
-                                        <ul>
-                                            <li><a th:href="@{'/shop/'+${x.id}}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="product_content">-->
+<!--                                        <span class="product_price" th:text="${x.priceFomat}"></span>-->
+<!--                                        <h3 class="product_title"><a th:href="@{'/shop/'+${x.id}}" th:text="${x.name}"></a></h3>-->
+<!--                                    </div>-->
+<!--                                    <div class="product_info">-->
+<!--                                        <ul>-->
+<!--                                            <li><a th:href="@{'/shop/'+${x.id}}"> <i class="fa fa-shopping-cart"></i>Xem chi tiết</a></li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
 
-                        </div>
-                    </div>
-                </div>
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
                 <!--featured product area start-->
 
                 <!--blog area start-->
