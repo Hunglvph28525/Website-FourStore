@@ -58,6 +58,7 @@ public class UserRequest {
                 .avatar(this.avatar)
                 .cccd(this.cccd)
                 .status(this.status)
+                .username(this.username)
                 .build();
         return user;
 

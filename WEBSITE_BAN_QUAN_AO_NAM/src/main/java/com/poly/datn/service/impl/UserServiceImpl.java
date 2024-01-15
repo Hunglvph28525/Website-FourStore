@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public Optional<User> detail(Long id) {
         return userRepository.findById(id);
@@ -152,12 +151,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-
-
     @Override
     public MessageUtil add(UserRequest userRequest, MultipartFile file) {
-
 
 
         Random random = new Random();
@@ -171,34 +166,40 @@ public class UserServiceImpl implements UserService {
         User uer = userRequest.user();
 
 // Check trùng email
-        if (isEmailExists(uer.getEmail())) {
+        if (userRepository.existsByEmail(uer.getEmail())) {
             return MessageUtil.builder().status(0).message("Email đã tồn tại, thêm thất bại.").type("bg-danger").build();
         }
 
         //check trùng số điện thoại
+        if (userRepository.existsByPhoneNumber(uer.getPhoneNumber())) {
+            return MessageUtil.builder().status(0).message("Số điện thoại đã tồn tại, thêm thất bại.").type("bg-danger").build();
+        }
 
+        if (userRepository.existsByUsername(uer.getUsername())) {
+            return MessageUtil.builder().status(0).message("User name đã tồn tại, thêm thất bại.").type("bg-danger").build();
+        }
 
         uer.setPassword(passwordEncoder.encode(matKhau));
-        String s1 = uer.getEmail();
-        String[] parts = s1.split("@");
-        String part1 = parts[0];
-        uer.setUsername(part1);
+//        uer.setPassword(matKhau);
+
+        uer.setUsername(uer.getUsername());
+        uer.setPhoneNumber(uer.getPhoneNumber());
         uer.setStatus("onKH");
         uer.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(uer.getEmail());
         mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
-        mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
+        mailMessage.setText("Tên đăng nhập:" + uer.getUsername() + "\nMật khẩu đăng nhập:" + matKhau);
         javaMailSender.send(mailMessage);
-        Map<?, ?> uploadResult = null;
-        try {
-            uploadResult = imageService.upload(file, "avatar");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        Map<?, ?> uploadResult = null;
+//        try {
+//            uploadResult = imageService.upload(file, "avatar");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        String avatar = uploadResult.get("url").toString();
-        uer.setAvatar(avatar);
+//        String avatar = uploadResult.get("url").toString();
+//        uer.setAvatar("null");
         User u = userRepository.save(uer);
         Address address = userRequest.address();
         address.setUser(u);
@@ -207,6 +208,34 @@ public class UserServiceImpl implements UserService {
         return MessageUtil.builder().status(1).message("Thêm thành công !").type("bg-success").build();
 
 
+    }
+
+    @Override
+    public MessageUtil updateCustomer(User user) {
+
+        // Check trùng email
+        User uss = userRepository.getReferenceById(user.getId());
+        if(!uss.getEmail().equals(user.getEmail())){
+           if(userRepository.existsByEmail(user.getEmail())){
+               return MessageUtil.builder().status(0).message("Email đã tồn tại, sửa thất bại.").type("bg-danger").build();
+           }
+        }
+
+
+        if(!uss.getPhoneNumber().equals(user.getPhoneNumber())){
+            if(userRepository.existsByPhoneNumber(user.getPhoneNumber())){
+                return MessageUtil.builder().status(0).message("Số điện thoại đã tồn tại, sửa thất bại.").type("bg-danger").build();
+            }
+        }
+
+        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(user.getPassword());
+//        user.setAvatar("https://res.cloudinary.com/dg8hhxkah/image/upload/v1703776131/other/bixhah1m4u2nu0zqsq7m.jpg");
+        user.setStatus(user.getStatus());
+
+        userRepository.save(user);
+        return MessageUtil.builder().status(1).message("Sửa thành công !").type("bg-success").build();
     }
 
 
@@ -234,30 +263,30 @@ public class UserServiceImpl implements UserService {
         User uer = userRequest.user();
 
         // Check trùng email
-        if (isEmailExistsNV(uer.getEmail())) {
+        if (isEmailExists(uer.getEmail())) {
             return MessageUtil.builder().status(0).message("Email đã tồn tại, thêm thất bại.").type("bg-danger").build();
         }
 
+
+        //check trùng số điện thoại
+        if (userRepository.existsByPhoneNumber(uer.getPhoneNumber())) {
+            return MessageUtil.builder().status(0).message("Số điện thoại đã tồn tại, thêm thất bại.").type("bg-danger").build();
+        }
+
+        if (userRepository.existsByUsername(uer.getUsername())) {
+            return MessageUtil.builder().status(0).message("User name đã tồn tại, thêm thất bại.").type("bg-danger").build();
+        }
         uer.setPassword(passwordEncoder.encode(matKhau));
-        String s1 = uer.getEmail();
-        String[] parts = s1.split("@");
-        String part1 = parts[0];
-        uer.setUsername(part1);
+
+        uer.setUsername(uer.getUsername());
         uer.setStatus("onNV");
         uer.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_NV")));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(uer.getEmail());
         mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
-        mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
+        mailMessage.setText("Tên đăng nhập:" + uer.getUsername() + "\nMật khẩu đăng nhập:" + matKhau);
         javaMailSender.send(mailMessage);
-        Map<?, ?> uploadResult = null;
-        try {
-            uploadResult = imageService.upload(file, "avatar");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String avatar = uploadResult.get("url").toString();
-        uer.setAvatar(avatar);
+
         User u = userRepository.save(uer);
         Address address = userRequest.address();
         address.setUser(u);
@@ -285,7 +314,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public MessageUtil doiThongTin(String pass) {
         User user = UserUltil.getUser();
-        if (user == null) return MessageUtil.builder().status(0).message("Đã xảy ra lõi vui lòng đăng nhập lại !").type("bg-danger").build();
+        if (user == null)
+            return MessageUtil.builder().status(0).message("Đã xảy ra lõi vui lòng đăng nhập lại !").type("bg-danger").build();
         user.setPassword(passwordEncoder.encode(pass));
         userRepository.save(user);
         return MessageUtil.builder().status(0).message("Đổi mật khẩu thông !").type("bg-success").build();
@@ -298,7 +328,8 @@ public class UserServiceImpl implements UserService {
             userSignUpRequest.setPassword("");
             userSignUpRequest.setConfirmPassword("");
             return "web/login";
-        }if (userRepository.existsByPhoneNumber(userSignUpRequest.getPhoneNumber())) {
+        }
+        if (userRepository.existsByPhoneNumber(userSignUpRequest.getPhoneNumber())) {
             model.addAttribute("sdtExists", "Số Điện thoại đã tồn tại");
             userSignUpRequest.setPassword("");
             userSignUpRequest.setConfirmPassword("");
@@ -316,13 +347,13 @@ public class UserServiceImpl implements UserService {
             return "web/login";
         }
         add(convert(userSignUpRequest));
-        attributes.addFlashAttribute("thanhcong", "Tạo tài khaorn thành công ");
+        attributes.addFlashAttribute("thanhcong", "Tạo tài khoan thành công ");
         return "redirect:/login";
     }
 
     @Override
     public String fogotPass(String email, RedirectAttributes attributes) {
-        if (userRepository.existsByEmail(email)){
+        if (userRepository.existsByEmail(email)) {
             User user = userRepository.getByEmail(email).get();
             String newPass = "123456abc";
             user.setPassword(passwordEncoder.encode(newPass));
@@ -332,10 +363,10 @@ public class UserServiceImpl implements UserService {
             mailMessage.setSubject("Mật Khảu Mới Của Bạn ");
             mailMessage.setText("Chào bạn :" + user.getUsername() + "\nMật khẩu mới của bạn là :" + newPass + "Hãy dùng nó để đăng nhập và đổi mật khẩu để đảm bảo an toàn");
             javaMailSender.send(mailMessage);
-            attributes.addFlashAttribute("message",MessageUtil.builder().status(0).message("Vui Lòng kiểm tra email đẻ lấy thông tin đăng nhập").type("bg-success").build());
+            attributes.addFlashAttribute("message", MessageUtil.builder().status(0).message("Vui Lòng kiểm tra email đẻ lấy thông tin đăng nhập").type("bg-success").build());
             return "redirect:/login";
         }
-        attributes.addFlashAttribute("message",MessageUtil.builder().status(0).message("Thông tin không chính xác vui lòng thử lại").type("bg-danger").build());
+        attributes.addFlashAttribute("message", MessageUtil.builder().status(0).message("Thông tin không chính xác vui lòng thử lại").type("bg-danger").build());
         return "redirect:fogot-password";
     }
 

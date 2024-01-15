@@ -38,6 +38,9 @@ public interface UserService extends Converter<UserSignUpRequest, User>, UserDet
 
     MessageUtil add(UserRequest userRequest, MultipartFile file);
 
+
+    MessageUtil updateCustomer(User user);
+
     List<Address> findByIdDiaChi(Long cid);
 
 

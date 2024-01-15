@@ -142,7 +142,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> getAllWebSPmoi() {
         List<Product> products = productRepository.findTop3Products();
         List<ProductDto> productDtos = products.stream().map(x -> new ProductDto(x)).collect(Collectors.toList());
-        return productDtos.stream().toList().subList(0,7);
+        return productDtos.stream().toList();
     }
 
 

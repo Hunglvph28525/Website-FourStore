@@ -9,6 +9,8 @@ import com.poly.datn.util.MessageUtil;
 import com.poly.datn.util.UserUltil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/admin")
@@ -31,6 +34,9 @@ public class StaffController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    JavaMailSender javaMailSender;
 
 
     @GetMapping("/staff")
@@ -54,7 +60,7 @@ public class StaffController {
     }
 
     @PostMapping("/staff/add")
-    public String add(@Valid @ModelAttribute("att") UserRequest user, BindingResult result, @RequestParam("file") MultipartFile file, RedirectAttributes attributes, Model model) throws IOException {
+    public String add(@Valid @ModelAttribute("att") UserRequest user, BindingResult result, @RequestParam(value = "file",required = false) MultipartFile file, RedirectAttributes attributes, Model model) throws IOException {
         if (result.hasErrors()) {
             return "admin/nhanvien";
         }
@@ -75,24 +81,61 @@ public class StaffController {
     }
 
     @PostMapping("/staff/update")
-    public String update(@ModelAttribute("att") User user, BindingResult result, @RequestParam("file") MultipartFile file) throws IOException {
+    public String update(@ModelAttribute("att") User user, BindingResult result, @RequestParam(value = "file",required = false) MultipartFile file,RedirectAttributes attributes) throws IOException {
+        String oldEmail = userService.detailCustomer(user.getId()).getEmail();
+        System.out.println("EMAIL CŨ CỦA NGƯỜI DÙNG TRƯỚC: " + oldEmail);
 
+        String matKhauCu = userService.detailCustomer(user.getId()).getPassword();
+
+        String userold = userService.detailCustomer(user.getId()).getUsername();
         if (result.hasErrors()) {
             return "admin/update-nhan-vien";
         }
-        Map<?, ?> map = imageService.upload(file, "other");
-        user.setUsername(user.getUsername());
+
+        Random random = new Random();
+        int number;
+        String mk = "";
+        for (int i = 0; i < 5; i++) {
+            number = random.nextInt(9);
+            mk += number;
+        }
+        String matKhau = "abcd" + mk;
+
+
+//        Map<?, ?> map = imageService.upload(file, "other");
+        String s1 = user.getEmail();
+        String[] parts = s1.split("@");
+        String part1 = parts[0];
+//        user.setUsername(part1);
+
         user.setName(user.getName());
         user.setPhoneNumber(user.getPhoneNumber());
-        user.setPassword(user.getPassword());
         user.setEmail(user.getEmail());
         user.setGender(user.getGender());
-        user.setAvatar(map.get("url").toString());
+//        user.setAvatar(map.get("url").toString());
         user.setStatus(user.getStatus());
-        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_NV")));
+        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
         user.setAddresses(user.getAddresses());
 
-        userService.add(user);
+//        if(!user.getEmail().equals(oldEmail) && user.getStatus().equals("onKH")){
+//            user.setPassword(matKhau);
+//            SimpleMailMessage mailMessage = new SimpleMailMessage();
+//            mailMessage.setTo(user.getEmail());
+//            mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
+//            mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
+//            javaMailSender.send(mailMessage);
+//        }
+        if(user.getEmail().equals(oldEmail) && user.getStatus().equals("onKH")){
+            user.setPassword(matKhauCu);
+            user.setUsername(userold);
+        }
+        if(user.getStatus().equals("offKH")){
+            user.setPassword(matKhauCu);
+            user.setUsername(userold);
+        }
+
+        MessageUtil message = userService.updateCustomer(user);
+        attributes.addFlashAttribute("message", message);
 
         return "redirect:/admin/staff";
 
