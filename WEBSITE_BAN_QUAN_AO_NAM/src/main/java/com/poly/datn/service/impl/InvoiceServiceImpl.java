@@ -234,6 +234,12 @@ public class InvoiceServiceImpl implements InvoiceService {
             promotionRepository.save(promotion);
         }
         InvoiceDetail detail = detailRepository.getReferenceById(new InvoiceId(productDetail, invoice));
+        if ((productDetail.getQuantity()+ detail.getQuantity()) < req.getNewQuantity()){
+            Map<String,Object> map = new HashMap<>();
+            map.put("status", "false");
+            return map;
+        }
+
         productDetail.setQuantity(productDetail.getQuantity() + detail.getQuantity());
         detail.setQuantity(req.getNewQuantity());
         productDetail.setQuantity(productDetail.getQuantity() - detail.getQuantity());
@@ -246,7 +252,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setGrandTotal(total);
         invoice.setGrandTotal(invoice.getGrandTotal().add(invoice.getShippingCost()));
         invoice = repository.save(invoice);
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
+        map.put("status", "true");
         map.put("total", invoice.getTotal().intValue());
         map.put("giaGiam", invoice.getGiaGiam().intValue());
         map.put("phiShip", invoice.getShippingCost().intValue());
@@ -597,7 +604,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         run.setText("tiền Khách trả :" + Fomater.fomatTien().format(invoice.getUserPay()));
         XWPFParagraph xWPFParagraph15 = document.createParagraph();
         run = xWPFParagraph15.createRun();
-        run.setText("tiền trả lại :" + Fomater.fomatTien().format(invoice.getTienThoi()));
+        run.setText("tiền trả lại :" + Fomater.fomatTien().format((invoice.getTienThoi() == null ? 0:invoice.getTienThoi())));
         XWPFParagraph xWPFParagraph11 = document.createParagraph();
         xWPFParagraph11.setAlignment(ParagraphAlignment.RIGHT);
         run = xWPFParagraph11.createRun();

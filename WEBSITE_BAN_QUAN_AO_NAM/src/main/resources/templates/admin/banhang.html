@@ -935,11 +935,24 @@
 <script th:inline="javascript">
     const format = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'});
 
+
     function updateQuantity(productId, codeBill, newQuantity, price) {
         console.log(newQuantity);
-        if (newQuantity == "") {
-            alert("số lượng không để trống");
-            return;
+        var input = event.target;
+        console.log(input);
+        if (input.value == '') {
+            input.value = 1;
+            newQuantity = 1;
+
+        } else if (input.value < input.min) {
+            alert("Sản phẩm tối thiểu là 1");
+            input.value = 1;
+            newQuantity = 1;
+
+        } else if (input.value > input.max) {
+            alert("Số Lượng mua vượt Quá số lượng trong kho");
+            input.value = input.max;
+            newQuantity = input.max;
         }
         var newTotal = newQuantity * price;
         console.log(format.format(newTotal));
@@ -959,17 +972,26 @@
             success: function (response) {
                 // Xử lý kết quả từ server nếu cần
                 console.log(response);
-                document.getElementById('totalAmount-' + codeBill).innerText = format.format(response.total);
-                document.getElementById('total-' + codeBill).innerText = format.format(response.total);
-                document.getElementById('giaGiam-' + codeBill).innerText = format.format(response.giaGiam);
-                document.getElementById('phiShip-' + codeBill).innerText = format.format(response.phiShip);
-                document.getElementById('grandTotal-' + codeBill).innerText = format.format(response.grandTotal);
-                document.getElementById('selectPgg' + codeBill).remove();
+                if (response.status == 'true') {
+                    document.getElementById('totalAmount-' + codeBill).innerText = format.format(response.total);
+                    document.getElementById('total-' + codeBill).innerText = format.format(response.total);
+                    document.getElementById('giaGiam-' + codeBill).innerText = format.format(response.giaGiam);
+                    document.getElementById('phiShip-' + codeBill).innerText = format.format(response.phiShip);
+                    document.getElementById('grandTotal-' + codeBill).innerText = format.format(response.grandTotal);
+                    document.getElementById('selectPgg' + codeBill).remove();
+                } else {
+                    alert("Số lượn nhiều hơn trong kho không thể cập nhât");
+                    location.reload();
+                }
+
             },
             error: function () {
                 alert('Đã có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
             }
         });
+
+
+        // location.reload();
     }
 
     function check(x, codeBill) {
@@ -1075,6 +1097,7 @@
             }
         })(i);
     }
+
     function validateForm(index) {
         var form = document.getElementById("from" + index);
 
@@ -1109,6 +1132,7 @@
             console.log("Người dùng đã hủy bỏ thanh toán hoặc có lỗi trong form.");
         }
     }
+
     /*]]>*/
 </script>
 
