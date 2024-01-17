@@ -90,6 +90,18 @@
         transform: rotate(-45deg);
         margin-top: -2px;
     }
+
+    .form-group.error input {
+        border-color: #ff3860;
+    }
+
+    .form-group .error {
+        color: #ff3860;
+        font-size: 15px;
+        height: 13px;
+    }
+
+
 </style>
 <!-- Navbar-->
 
@@ -108,8 +120,8 @@
                 <h3 class="tile-title">Chỉnh sửa nhân viên</h3>
                 <div class="tile-body">
 
-                    <form class="row" th:action="@{/admin/staff/update(id=${att.Id})}" method="post" th:object="${att}" enctype="multipart/form-data">
-                        <div class="form-group col-md-4">
+                    <form class="row" th:action="@{/admin/staff/update(id=${att.Id})}" method="post" th:object="${att}" enctype="multipart/form-data" id="form">
+                        <div class="form-group col-md-4" >
                             <label class="control-label">ID nhân viên</label>
                             <input class="form-control" type="text" th:field="*{Id}" readonly>
                         </div>
@@ -119,15 +131,25 @@
                         <!--                        </div>-->
                         <div class="form-group col-md-4">
                             <label class="control-label">Họ Tên <label style="color:red;">*</label></label>
-                            <input class="form-control" type="text" required th:field="*{name}">
+                            <input class="form-control" type="text"  th:field="*{name}" id="username">
+                            <div class="error"></div>
                         </div>
+
+                        <div class="form-group  col-md-4">
+                            <label class="control-label">CCCD <label style="color:red;">*</label></label>
+                            <input class="form-control" type="text" th:field="*{cccd}" id="cccd">
+                            <div class="error"></div>
+                        </div>
+
                         <div class="form-group col-md-4">
                             <label class="control-label">Email <label style="color:red;">*</label></label>
-                            <input class="form-control" type="text" required th:field="*{email}">
+                            <input class="form-control" type="text"  th:field="*{email}" id="email">
+                            <div class="error"></div>
                         </div>
                         <div class="form-group  col-md-4">
                             <label class="control-label">Số điện thoại <label style="color:red;">*</label></label>
-                            <input class="form-control" type="number" required th:field="*{phoneNumber}">
+                            <input class="form-control" type="number"  th:field="*{phoneNumber}" id="sdt">
+                            <div class="error"></div>
                         </div>
                         <!--                        <div class="form-group col-md-4">-->
                         <!--                            <label class="control-label">Mật khẩu</label>-->
@@ -175,43 +197,117 @@
                 </div>
             </div>
         </div>
+    </div>
 
 </main>
 
 
-<!--
-MODAL
--->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-     data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
 
-            <div class="modal-body">
-                <div class="row">
-                    <div class="form-group  col-md-12">
-              <span class="thong-tin-thanh-toan">
-                <h5>Tạo chức vụ mới</h5>
-              </span>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class="control-label">Nhập tên chức vụ mới</label>
-                        <input class="form-control" type="text" required>
-                    </div>
-                </div>
-                <BR>
-                <button class="btn btn-save" type="button">Lưu lại</button>
-                <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                <BR>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-</div>
-<!--
-MODAL
--->
+
+
+<script>
+
+    const form = document.getElementById('form');
+    const username = document.getElementById('username');
+    const sdt = document.getElementById('sdt');
+    const email = document.getElementById('email');
+    const cccd = document.getElementById('cccd');
+
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        validateInputs();
+    });
+
+    const setError = (element, message) => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+
+        errorDisplay.innerText = message;
+        inputControl.classList.add('error');
+        inputControl.classList.remove('success')
+    }
+
+    const setSuccess = element => {
+        const inputControl = element.parentElement;
+        const errorDisplay = inputControl.querySelector('.error');
+
+        errorDisplay.innerText = '';
+        inputControl.classList.add('success');
+        inputControl.classList.remove('error');
+    };
+
+
+    const isValidEmail = email => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    const isValidSDT = sdt => {
+        const re = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
+        return re.test(String(sdt).toLowerCase());
+    }
+
+
+
+    // var regex = /^[a-z0-9]{6,15}$/;
+    // var phoneno = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
+
+
+    const validateInputs = () => {
+        const usernameValue = username.value.trim();
+        const sdtValue = sdt.value.trim();
+        const emailValue = email.value.trim();
+        const cccdValue = cccd.value.trim();
+
+
+
+        if (usernameValue === '') {
+            setError(username, 'Tên không được để trống');
+        } else {
+            setSuccess(username);
+        }
+
+        if (cccdValue === '') {
+                   setError(cccd, 'CCCD không được để trống');
+                } else {
+                  setSuccess(cccd);
+                }
+
+
+        if (sdtValue === '') {
+            setError(sdt, 'SDT không được để trống');
+        } else if (!isValidSDT(sdtValue)) {
+            setError(sdt, 'Số điện không đúng định dạng');
+
+        } else {
+            setSuccess(sdt);
+        }
+
+
+        if (emailValue === '') {
+            setError(email, 'Email không được để trống');
+        } else if (!isValidEmail(emailValue)) {
+            setError(email, 'Email không đúng định dạng');
+        } else {
+            setSuccess(email);
+        }
+
+        if (usernameValue !== '' && sdtValue!== '' && cccdValue !== '' && emailValue  !== '' && isValidEmail(emailValue) !== '' && isValidSDT(sdtValue)  ) {
+            form.submit();
+
+        }
+
+
+    };
+
+
+</script>
+
+
+
+
 
 <script src="/assets/js/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->

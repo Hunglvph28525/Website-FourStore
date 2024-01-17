@@ -103,6 +103,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isCCCD(String cccd) {
+        return userRepository.existsBycccd(cccd);
+    }
+
+
+    @Override
     public boolean isEmailExistsNV(String email) {
         return userRepository.getByEmailNV(email).isPresent();
     }
@@ -176,7 +182,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (userRepository.existsByUsername(uer.getUsername())) {
-            return MessageUtil.builder().status(0).message("User name đã tồn tại, thêm thất bại.").type("bg-danger").build();
+            return MessageUtil.builder().status(0).message("Tên đăng nhập đã tồn tại, thêm thất bại.").type("bg-danger").build();
         }
 
         uer.setPassword(passwordEncoder.encode(matKhau));
@@ -215,21 +221,24 @@ public class UserServiceImpl implements UserService {
 
         // Check trùng email
         User uss = userRepository.getReferenceById(user.getId());
-        if(!uss.getEmail().equals(user.getEmail())){
-           if(userRepository.existsByEmail(user.getEmail())){
-               return MessageUtil.builder().status(0).message("Email đã tồn tại, sửa thất bại.").type("bg-danger").build();
-           }
+        if (!uss.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(user.getEmail())) {
+                return MessageUtil.builder().status(0).message("Email đã tồn tại, sửa thất bại.").type("bg-danger").build();
+            }
         }
 
-
-        if(!uss.getPhoneNumber().equals(user.getPhoneNumber())){
-            if(userRepository.existsByPhoneNumber(user.getPhoneNumber())){
+//Check trùng sdt
+        if (!uss.getPhoneNumber().equals(user.getPhoneNumber())) {
+            if (userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
                 return MessageUtil.builder().status(0).message("Số điện thoại đã tồn tại, sửa thất bại.").type("bg-danger").build();
             }
         }
 
+
+
+
         user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
 //        user.setPassword(user.getPassword());
 //        user.setAvatar("https://res.cloudinary.com/dg8hhxkah/image/upload/v1703776131/other/bixhah1m4u2nu0zqsq7m.jpg");
         user.setStatus(user.getStatus());
@@ -237,6 +246,45 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return MessageUtil.builder().status(1).message("Sửa thành công !").type("bg-success").build();
     }
+
+
+
+    @Override
+    public MessageUtil updateSaff(User user) {
+
+        // Check trùng email
+        User uss = userRepository.getReferenceById(user.getId());
+        if (!uss.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(user.getEmail())) {
+                return MessageUtil.builder().status(0).message("Email đã tồn tại, sửa thất bại.").type("bg-danger").build();
+            }
+        }
+
+//Check trùng sdt
+        if (!uss.getPhoneNumber().equals(user.getPhoneNumber())) {
+            if (userRepository.existsByPhoneNumber(user.getPhoneNumber())) {
+                return MessageUtil.builder().status(0).message("Số điện thoại đã tồn tại, sửa thất bại.").type("bg-danger").build();
+            }
+        }
+
+        //Check trùng cccd
+        if (!uss.getCccd().equals(user.getCccd())) {
+            if (userRepository.existsBycccd(user.getCccd())) {
+                return MessageUtil.builder().status(0).message("CCCD đã tồn tại, sửa thất bại.").type("bg-danger").build();
+            }
+        }
+
+
+        user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(user.getPassword());
+//        user.setAvatar("https://res.cloudinary.com/dg8hhxkah/image/upload/v1703776131/other/bixhah1m4u2nu0zqsq7m.jpg");
+        user.setStatus(user.getStatus());
+
+        userRepository.save(user);
+        return MessageUtil.builder().status(1).message("Sửa thành công !").type("bg-success").build();
+    }
+
 
 
     @Override
@@ -267,6 +315,12 @@ public class UserServiceImpl implements UserService {
             return MessageUtil.builder().status(0).message("Email đã tồn tại, thêm thất bại.").type("bg-danger").build();
         }
 
+        //Check trùng cccd
+
+        if (isCCCD(uer.getCccd())) {
+            return MessageUtil.builder().status(0).message("CCCD đã tồn tại, thêm thất bại.").type("bg-danger").build();
+        }
+
 
         //check trùng số điện thoại
         if (userRepository.existsByPhoneNumber(uer.getPhoneNumber())) {
@@ -274,9 +328,10 @@ public class UserServiceImpl implements UserService {
         }
 
         if (userRepository.existsByUsername(uer.getUsername())) {
-            return MessageUtil.builder().status(0).message("User name đã tồn tại, thêm thất bại.").type("bg-danger").build();
+            return MessageUtil.builder().status(0).message("Tên đăng nhập đã tồn tại, thêm thất bại.").type("bg-danger").build();
         }
         uer.setPassword(passwordEncoder.encode(matKhau));
+
 
         uer.setUsername(uer.getUsername());
         uer.setStatus("onNV");

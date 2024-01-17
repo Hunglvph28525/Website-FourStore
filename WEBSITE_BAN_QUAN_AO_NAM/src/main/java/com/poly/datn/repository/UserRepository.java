@@ -24,6 +24,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
             """)
     Optional<User> getByEmail(@Param("u") String email);
 
+
+
+
     @Query("select new com.poly.datn.dto.UserDto(c) from User c where c.status = 'onKH' or c.status='offKH' order by c.Id DESC ")
     List<UserDto> getAll();
 
@@ -52,6 +55,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
     boolean existsByPhoneNumber(String phoneNumber);
     boolean existsByUsername(String username);
+
+    boolean existsBycccd(String cccd);
+
+
+
+
 
 
 

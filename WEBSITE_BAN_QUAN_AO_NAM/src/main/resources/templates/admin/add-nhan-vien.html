@@ -141,8 +141,8 @@
                         <label class="control-label">Tên đăng nhập<label style="color:red;">*</label></label>
 
                         <!--                            <label  class="control-label">Chọn ảnh</label>-->
-                        <input class="form-control" name="username" type="text" th:field="*{username}">
-
+                        <input class="form-control" name="username" type="text" th:field="*{username}" id="user">
+                        <div class="error"></div>
 
                     </div>
 
@@ -267,7 +267,7 @@
     const sdt = document.getElementById('sdt');
     const email = document.getElementById('email');
     const duong = document.getElementById('duong');
-
+    const user = document.getElementById('user');
 
     form.addEventListener('submit', e => {
         e.preventDefault();
@@ -304,18 +304,32 @@
         return re.test(String(sdt).toLowerCase());
     }
 
+    const isValidUser = user => {
+        const re = /^[a-z0-9]{6,15}$/;
+        return re.test(String(user).toLowerCase());
+    }
+
     const validateInputs = () => {
         const usernameValue = username.value.trim();
         const cccdValue = cccd.value.trim();
         const sdtValue = sdt.value.trim();
         const emailValue = email.value.trim();
         const duongValue = duong.value.trim();
-
+        const userValue = user.value.trim();
 
         if (usernameValue === '') {
             setError(username, 'Tên không được để trống');
         } else {
             setSuccess(username);
+        }
+
+        if (userValue === '') {
+            setError(user, 'Tên đăng nhập không được để trống');
+        } else if(!isValidUser(userValue)) {
+            setError(user, 'Tên đăng nhập phải có độ dài từ 6-15 ký tự và phải chứa số hoặc chữ');
+
+        }else{
+            setSuccess(user);
         }
 
 
@@ -350,7 +364,12 @@
             setSuccess(duong);
         }
 
-        if (usernameValue !== '' && cccdValue !== '' && sdtValue !== '' && emailValue !== '' && duongValue !== '' && isValidEmail(emailValue) !== '' && isValidSDT(sdtValue)) {
+        // if (usernameValue !== '' && cccdValue !== '' && sdtValue !== '' && emailValue !== '' && duongValue !== '' && isValidEmail(emailValue) !== '' && isValidSDT(sdtValue) !== '' && isValidUser(userValue) ) {
+        //     form.submit();
+        // }
+
+        if (usernameValue !== '' && isValidUser(userValue) && isValidSDT(sdtValue) && isValidEmail(emailValue) && duongValue !== '' && cccdValue !== '') {
+            // All inputs are valid, submit the form
             form.submit();
         }
 

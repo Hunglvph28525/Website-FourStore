@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService extends Converter<UserSignUpRequest, User>, UserDetailsService {
-    
+
     List<User> getAll();
 
     void add(User user);
@@ -31,6 +31,10 @@ public interface UserService extends Converter<UserSignUpRequest, User>, UserDet
 
     boolean isEmailExists(String email);
 
+    boolean isCCCD(String cccd);
+
+
+
 
     List<UserDto> getAll(String status);
 
@@ -38,6 +42,8 @@ public interface UserService extends Converter<UserSignUpRequest, User>, UserDet
 
     MessageUtil add(UserRequest userRequest, MultipartFile file);
 
+
+    MessageUtil updateSaff(User user);
 
     MessageUtil updateCustomer(User user);
 
