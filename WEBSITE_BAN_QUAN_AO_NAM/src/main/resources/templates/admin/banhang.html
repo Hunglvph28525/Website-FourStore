@@ -944,16 +944,16 @@
             input.value = 1;
             newQuantity = 1;
 
-        } else if (input.value < input.min) {
-            alert("Sản phẩm tối thiểu là 1");
-            input.value = 1;
-            newQuantity = 1;
-
-        } else if (input.value > input.max) {
-            alert("Số Lượng mua vượt Quá số lượng trong kho");
-            input.value = input.max;
-            newQuantity = input.max;
         }
+        // else if (input.value < input.min) {
+        //     alert("Sản phẩm tối thiểu là 1");
+        //     input.value = 1;
+        //     newQuantity = 1;
+        // } else if (input.value > input.max) {
+        //     alert("Số Lượng mua vượt Quá số lượng trong kho");
+        //     input.value = input.max;
+        //     newQuantity = input.max;
+        // }
         var newTotal = newQuantity * price;
         console.log(format.format(newTotal));
         document.getElementById('total-' + productId).innerText = format.format(newTotal);

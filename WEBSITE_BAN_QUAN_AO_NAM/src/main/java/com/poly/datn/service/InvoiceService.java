@@ -60,4 +60,6 @@ public interface InvoiceService {
     Object getInvoceByUser();
 
     void xuatHd(String codeBill, HttpServletResponse response) throws IOException;
+
+    void deleteHdCho(Invoice invoice);
 }

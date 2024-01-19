@@ -152,11 +152,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     public MessageUtil delete(String codeBill) {
         Invoice invoice = repository.getReferenceById(codeBill);
         List<InvoiceDetail> list = detailRepository.getByCodeBill(codeBill);
-        list.stream().forEach(x -> {
+        for (InvoiceDetail x : list) {
             ProductDetail productDetail = productDetailRepository.getReferenceById(x.getInvoiceId().getProductDetail().getId());
-            productDetail.setQuantity(productDetail.getQuantity() + x.getQuantity());
+            int slgoc = productDetail.getQuantity();
+            productDetail.setQuantity(slgoc + x.getQuantity());
             productDetailRepository.save(productDetail);
-        });
+        }
         detailRepository.deleteAll(list);
         List<Transaction> transactions = invoice.getTransactions().stream().toList();
         transactionRepository.deleteAll(transactions);
@@ -234,8 +235,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             promotionRepository.save(promotion);
         }
         InvoiceDetail detail = detailRepository.getReferenceById(new InvoiceId(productDetail, invoice));
-        if ((productDetail.getQuantity()+ detail.getQuantity()) < req.getNewQuantity()){
-            Map<String,Object> map = new HashMap<>();
+        if ((productDetail.getQuantity() + detail.getQuantity()) < req.getNewQuantity()) {
+            Map<String, Object> map = new HashMap<>();
             map.put("status", "false");
             return map;
         }
@@ -604,7 +605,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         run.setText("tiền Khách trả :" + Fomater.fomatTien().format(invoice.getUserPay()));
         XWPFParagraph xWPFParagraph15 = document.createParagraph();
         run = xWPFParagraph15.createRun();
-        run.setText("tiền trả lại :" + Fomater.fomatTien().format((invoice.getTienThoi() == null ? 0:invoice.getTienThoi())));
+        run.setText("tiền trả lại :" + Fomater.fomatTien().format((invoice.getTienThoi() == null ? 0 : invoice.getTienThoi())));
         XWPFParagraph xWPFParagraph11 = document.createParagraph();
         xWPFParagraph11.setAlignment(ParagraphAlignment.RIGHT);
         run = xWPFParagraph11.createRun();
@@ -622,6 +623,23 @@ public class InvoiceServiceImpl implements InvoiceService {
     private String address(ShippingAddress x) {
         if (x == null) return "Không";
         return x.getStreet() + ", " + x.getWard() + ", " + x.getDistrict() + ", " + x.getProvince();
+    }
+
+    @Override
+    public void deleteHdCho(Invoice invoice) {
+        List<InvoiceDetail> list = detailRepository.getByCodeBill(invoice.getCodeBill());
+        for (InvoiceDetail x : list) {
+            ProductDetail productDetail = productDetailRepository.findById(x.getInvoiceId().getProductDetail().getId()).orElse(null);
+            if (productDetail != null) {
+                int slgoc = productDetail.getQuantity();
+                productDetail.setQuantity(slgoc + x.getQuantity());
+                productDetailRepository.save(productDetail);
+            }
+        }
+        detailRepository.deleteAll(list);
+        List<Transaction> transactions = transactionRepository.findByCodeBill(invoice.getCodeBill());
+        transactionRepository.deleteAll(transactions);
+        repository.delete(invoice);
     }
 
 }
