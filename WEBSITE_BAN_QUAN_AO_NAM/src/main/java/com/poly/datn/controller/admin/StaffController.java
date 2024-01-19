@@ -102,39 +102,30 @@ public class StaffController {
         String matKhau = "abcd" + mk;
 
 
-//        Map<?, ?> map = imageService.upload(file, "other");
         String s1 = user.getEmail();
         String[] parts = s1.split("@");
         String part1 = parts[0];
-//        user.setUsername(part1);
 
         user.setName(user.getName());
         user.setPhoneNumber(user.getPhoneNumber());
         user.setEmail(user.getEmail());
         user.setGender(user.getGender());
-//        user.setAvatar(map.get("url").toString());
         user.setStatus(user.getStatus());
         user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
         user.setAddresses(user.getAddresses());
+        user.setPassword(matKhauCu);
+        user.setUsername(userold);
 
-//        if(!user.getEmail().equals(oldEmail) && user.getStatus().equals("onKH")){
-//            user.setPassword(matKhau);
-//            SimpleMailMessage mailMessage = new SimpleMailMessage();
-//            mailMessage.setTo(user.getEmail());
-//            mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
-//            mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
-//            javaMailSender.send(mailMessage);
+//        if(user.getEmail().equals(oldEmail) && user.getStatus().equals("onNV")){
+//            user.setPassword(matKhauCu);
+//            user.setUsername(userold);
 //        }
-        if(user.getEmail().equals(oldEmail) && user.getStatus().equals("onKH")){
-            user.setPassword(matKhauCu);
-            user.setUsername(userold);
-        }
-        if(user.getStatus().equals("offKH")){
-            user.setPassword(matKhauCu);
-            user.setUsername(userold);
-        }
+//        if(user.getStatus().equals("offNV")){
+//            user.setPassword(matKhauCu);
+//            user.setUsername(userold);
+//        }
 
-        MessageUtil message = userService.updateCustomer(user);
+        MessageUtil message = userService.updateSaff(user);
         attributes.addFlashAttribute("message", message);
 
         return "redirect:/admin/staff";

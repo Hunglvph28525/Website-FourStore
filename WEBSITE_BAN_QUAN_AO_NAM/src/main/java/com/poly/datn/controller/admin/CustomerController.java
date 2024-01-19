@@ -145,10 +145,6 @@ public class CustomerController {
     @PostMapping("/customer/update")
     public String update(@ModelAttribute("att") User user, BindingResult result, @RequestParam(value = "file",required = false) MultipartFile file, RedirectAttributes attributes) throws IOException {
 
-//        if (result.hasErrors()) {
-//            return "admin/update-khach-hang";
-//        }
-        //email cũ
 
 
 
@@ -168,47 +164,33 @@ public class CustomerController {
         String matKhau = "abcd" + mk;
 
 
-//        Map<?, ?> map = imageService.upload(file, "other");
         String s1 = user.getEmail();
         String[] parts = s1.split("@");
         String part1 = parts[0];
 
-//        user.setUsername(part1);
-//        user.setPassword(matKhau);
+
         user.setName(user.getName());
         user.setPhoneNumber(user.getPhoneNumber());
 
 
         user.setEmail(s1);
         user.setGender(user.getGender());
-//        user.setAvatar(map.get("url").toString());
         user.setStatus(user.getStatus());
         user.setRoles(Collections.singletonList(roleRepository.getByName("ROLE_USER")));
         user.setAddresses(user.getAddresses());
+        user.setPassword(matKhauCu);
+        user.setUsername(userold);
 
-
-//        if(!user.getEmail().equals(oldEmail) && user.getStatus().equals("onKH")){
-//            user.setPassword(matKhau);
-//            SimpleMailMessage mailMessage = new SimpleMailMessage();
-//            mailMessage.setTo(user.getEmail());
-//            mailMessage.setSubject("THÔNG TIN ĐĂNG NHẬP CỦA BẠN");
-//            mailMessage.setText("Tên đăng nhập:" + part1 + "\nMật khẩu đăng nhập:" + matKhau);
-//            javaMailSender.send(mailMessage);
-//        }
-//        if(user.getEmail().equals(oldEmail) && user.getStatus().equals("onKH")){
+//        if(user.getStatus().equals("onKH")){
 //            user.setPassword(matKhauCu);
+//            user.setUsername(userold);
 //        }
-
-        if(user.getStatus().equals("onKH")){
-            user.setPassword(matKhauCu);
-            user.setUsername(userold);
-        }
-
-
-        if(user.getStatus().equals("offKH")){
-            user.setPassword(matKhauCu);
-            user.setUsername(userold);
-        }
+//
+//
+//        if(user.getStatus().equals("offKH")){
+//            user.setPassword(matKhauCu);
+//            user.setUsername(userold);
+//        }
 
 
 
